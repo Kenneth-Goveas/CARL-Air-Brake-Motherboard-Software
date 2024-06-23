@@ -9,3 +9,9 @@ target_compile_definitions(util_config PRIVATE _GNU_SOURCE _POSIX_C_SOURCE=20080
 target_include_directories(util_config PUBLIC include)
 target_link_libraries(util_config INTERFACE util_log)
 target_sources(util_config PRIVATE src/util/config.c)
+
+add_library(term_display STATIC)
+target_compile_definitions(term_display PRIVATE _GNU_SOURCE)
+target_include_directories(term_display PUBLIC include)
+target_link_libraries(term_display INTERFACE util_log)
+target_sources(term_display PRIVATE src/term/display.c)
