@@ -33,3 +33,8 @@ target_compile_definitions(dev_clock PRIVATE _POSIX_C_SOURCE=199309L)
 target_include_directories(dev_clock PUBLIC include)
 target_link_libraries(dev_clock INTERFACE rt util_log)
 target_sources(dev_clock PRIVATE src/dev/clock.c)
+
+add_library(dev_i2c STATIC)
+target_include_directories(dev_i2c PUBLIC include)
+target_link_libraries(dev_i2c INTERFACE util_log)
+target_sources(dev_i2c PRIVATE src/dev/i2c.c)
