@@ -38,3 +38,8 @@ add_library(dev_i2c STATIC)
 target_include_directories(dev_i2c PUBLIC include)
 target_link_libraries(dev_i2c INTERFACE util_log)
 target_sources(dev_i2c PRIVATE src/dev/i2c.c)
+
+add_library(dev_servo STATIC)
+target_include_directories(dev_servo PUBLIC include)
+target_link_libraries(dev_servo INTERFACE util_log dev_i2c)
+target_sources(dev_servo PRIVATE src/dev/servo.c)
