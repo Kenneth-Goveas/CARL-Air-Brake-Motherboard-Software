@@ -1,0 +1,139 @@
+#ifndef __DEV_BMP388_H__
+#define __DEV_BMP388_H__
+
+#define BMP388_ADDR1                0x76
+#define BMP388_ADDR2                0x77
+
+#define BMP388_REG_CMD              0x7E
+#define BMP388_REG_PWR_CTRL         0x1B
+#define BMP388_REG_ODR              0x1D
+#define BMP388_REG_OSR              0x1C
+#define BMP388_REG_CFG              0x1F
+#define BMP388_REG_CAL              0x31
+#define BMP388_REG_STAT             0x03
+#define BMP388_REG_ERR              0x02
+#define BMP388_REG_DATA             0x04
+
+#define BMP388_BIT_PRES_EN_MSK      0x01
+#define BMP388_BIT_TEMP_EN_MSK      0x02
+#define BMP388_BIT_MODE_MSK         0x30
+#define BMP388_BIT_ODR_MSK          0x1F
+#define BMP388_BIT_OSRP_MSK         0x07
+#define BMP388_BIT_OSRT_MSK         0x38
+#define BMP388_BIT_IIR_MSK          0x0E
+#define BMP388_BIT_CMD_RDY_MSK      0x10
+#define BMP388_BIT_DRDY_PRES_MSK    0x20
+#define BMP388_BIT_DRDY_TEMP_MSK    0x40
+#define BMP388_BIT_FTL_ERR_MSK      0x01
+#define BMP388_BIT_CMD_ERR_MSK      0x02
+#define BMP388_BIT_CFG_ERR_MSK      0x04
+
+#define BMP388_BIT_PRES_EN_POS      0
+#define BMP388_BIT_TEMP_EN_POS      1
+#define BMP388_BIT_MODE_POS         4
+#define BMP388_BIT_ODR_POS          0
+#define BMP388_BIT_OSRP_POS         0
+#define BMP388_BIT_OSRT_POS         3
+#define BMP388_BIT_IIR_POS          1
+#define BMP388_BIT_CMD_RDY_POS      4
+#define BMP388_BIT_DRDY_PRES_POS    5
+#define BMP388_BIT_DRDY_TEMP_POS    6
+#define BMP388_BIT_FTL_ERR_POS      0
+#define BMP388_BIT_CMD_ERR_POS      1
+#define BMP388_BIT_CFG_ERR_POS      2
+
+#define BMP388_PRST_CMD_RST         0xB6
+#define BMP388_PRST_MODE_SLP        0x00
+#define BMP388_PRST_MODE_NRM        0x03
+#define BMP388_PRST_ODR_200_000_HZ  0x00
+#define BMP388_PRST_ODR_100_000_HZ  0x01
+#define BMP388_PRST_ODR_050_000_HZ  0x02
+#define BMP388_PRST_ODR_025_000_HZ  0x03
+#define BMP388_PRST_ODR_012_500_HZ  0x04
+#define BMP388_PRST_ODR_006_250_HZ  0x05
+#define BMP388_PRST_ODR_003_125_HZ  0x06
+#define BMP388_PRST_ODR_001_562_HZ  0x07
+#define BMP388_PRST_ODR_000_781_HZ  0x08
+#define BMP388_PRST_ODR_000_391_HZ  0x09
+#define BMP388_PRST_ODR_000_195_HZ  0x0A
+#define BMP388_PRST_ODR_000_098_HZ  0x0B
+#define BMP388_PRST_ODR_000_049_HZ  0x0C
+#define BMP388_PRST_ODR_000_024_HZ  0x0D
+#define BMP388_PRST_ODR_000_012_HZ  0x0E
+#define BMP388_PRST_ODR_000_006_HZ  0x0F
+#define BMP388_PRST_ODR_000_003_HZ  0x10
+#define BMP388_PRST_ODR_000_002_HZ  0x11
+#define BMP388_PRST_OSR_01X         0x00
+#define BMP388_PRST_OSR_02X         0x01
+#define BMP388_PRST_OSR_04X         0x02
+#define BMP388_PRST_OSR_08X         0x03
+#define BMP388_PRST_OSR_16X         0x04
+#define BMP388_PRST_OSR_32X         0x05
+#define BMP388_PRST_IIR_000         0x00
+#define BMP388_PRST_IIR_001         0x01
+#define BMP388_PRST_IIR_003         0x02
+#define BMP388_PRST_IIR_007         0x03
+#define BMP388_PRST_IIR_015         0x04
+#define BMP388_PRST_IIR_031         0x05
+#define BMP388_PRST_IIR_063         0x06
+#define BMP388_PRST_IIR_127         0x07
+
+#define BMP388_GET_BITS(reg, bit) \
+    (((reg) & (bit##_MSK)) >> (bit##_POS))
+
+#define BMP388_SET_BITS(reg, bit, val) \
+    (((reg) & ~(bit##_MSK)) | ((val) << (bit##_POS)))
+
+typedef enum {
+    BMP388_DRATE_200_000_HZ = BMP388_PRST_ODR_200_000_HZ,
+    BMP388_DRATE_100_000_HZ = BMP388_PRST_ODR_100_000_HZ,
+    BMP388_DRATE_050_000_HZ = BMP388_PRST_ODR_050_000_HZ,
+    BMP388_DRATE_025_000_HZ = BMP388_PRST_ODR_025_000_HZ,
+    BMP388_DRATE_012_500_HZ = BMP388_PRST_ODR_012_500_HZ,
+    BMP388_DRATE_006_250_HZ = BMP388_PRST_ODR_006_250_HZ,
+    BMP388_DRATE_003_125_HZ = BMP388_PRST_ODR_003_125_HZ,
+    BMP388_DRATE_001_562_HZ = BMP388_PRST_ODR_001_562_HZ,
+    BMP388_DRATE_000_781_HZ = BMP388_PRST_ODR_000_781_HZ,
+    BMP388_DRATE_000_391_HZ = BMP388_PRST_ODR_000_391_HZ,
+    BMP388_DRATE_000_195_HZ = BMP388_PRST_ODR_000_195_HZ,
+    BMP388_DRATE_000_098_HZ = BMP388_PRST_ODR_000_098_HZ,
+    BMP388_DRATE_000_049_HZ = BMP388_PRST_ODR_000_049_HZ,
+    BMP388_DRATE_000_024_HZ = BMP388_PRST_ODR_000_024_HZ,
+    BMP388_DRATE_000_012_HZ = BMP388_PRST_ODR_000_012_HZ,
+    BMP388_DRATE_000_006_HZ = BMP388_PRST_ODR_000_006_HZ,
+    BMP388_DRATE_000_003_HZ = BMP388_PRST_ODR_000_003_HZ,
+    BMP388_DRATE_000_002_HZ = BMP388_PRST_ODR_000_002_HZ
+} bmp388_drate_t;
+
+typedef enum {
+    BMP388_OVSMP_01X = BMP388_PRST_OSR_01X,
+    BMP388_OVSMP_02X = BMP388_PRST_OSR_02X,
+    BMP388_OVSMP_04X = BMP388_PRST_OSR_04X,
+    BMP388_OVSMP_08X = BMP388_PRST_OSR_08X,
+    BMP388_OVSMP_16X = BMP388_PRST_OSR_16X,
+    BMP388_OVSMP_32X = BMP388_PRST_OSR_32X
+} bmp388_ovsmp_t;
+
+typedef enum {
+    BMP388_IIR_000 = BMP388_PRST_IIR_000,
+    BMP388_IIR_001 = BMP388_PRST_IIR_001,
+    BMP388_IIR_003 = BMP388_PRST_IIR_003,
+    BMP388_IIR_007 = BMP388_PRST_IIR_007,
+    BMP388_IIR_015 = BMP388_PRST_IIR_015,
+    BMP388_IIR_031 = BMP388_PRST_IIR_031,
+    BMP388_IIR_063 = BMP388_PRST_IIR_063,
+    BMP388_IIR_127 = BMP388_PRST_IIR_127
+} bmp388_iir_t;
+
+int bmp388_init (
+    bmp388_drate_t drate1, bmp388_drate_t drate2,
+    bmp388_ovsmp_t pres_ovsmp1, bmp388_ovsmp_t pres_ovsmp2,
+    bmp388_ovsmp_t temp_ovsmp1, bmp388_ovsmp_t temp_ovsmp2,
+    bmp388_iir_t iir1, bmp388_iir_t iir2
+);
+int bmp388_update (void);
+void bmp388_get_pres (double * pres);
+void bmp388_get_temp (double * temp);
+void bmp388_get_alt (double * alt);
+
+#endif
