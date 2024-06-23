@@ -1,0 +1,5 @@
+add_library(util_log STATIC)
+target_compile_definitions(util_log PRIVATE _GNU_SOURCE _POSIX_C_SOURCE=199309L)
+target_include_directories(util_log PUBLIC include)
+target_link_libraries(util_log INTERFACE rt)
+target_sources(util_log PRIVATE src/util/log.c)
