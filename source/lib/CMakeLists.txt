@@ -49,3 +49,9 @@ target_compile_definitions(dev_bmp388 PRIVATE _GNU_SOURCE _POSIX_C_SOURCE=200112
 target_include_directories(dev_bmp388 PUBLIC include)
 target_link_libraries(dev_bmp388 INTERFACE m util_log dev_i2c)
 target_sources(dev_bmp388 PRIVATE src/dev/bmp388.c)
+
+add_library(dev_bno055 STATIC)
+target_compile_definitions(dev_bno055 PRIVATE _GNU_SOURCE _POSIX_C_SOURCE=200112L)
+target_include_directories(dev_bno055 PUBLIC include)
+target_link_libraries(dev_bno055 INTERFACE m util_log dev_i2c)
+target_sources(dev_bno055 PRIVATE src/dev/bno055.c)
