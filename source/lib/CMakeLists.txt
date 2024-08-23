@@ -11,3 +11,5 @@ endfunction()
 function(lib_lnk libname)
   target_link_libraries(${libname} INTERFACE ${ARGN})
 endfunction()
+
+lib(sys_logging sys logging)
