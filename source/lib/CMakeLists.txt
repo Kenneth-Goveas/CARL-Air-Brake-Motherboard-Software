@@ -13,3 +13,6 @@ function(lib_lnk libname)
 endfunction()
 
 lib(sys_logging sys logging)
+lib(sys_config sys config)
+
+lib_lnk(sys_config sys_logging)
