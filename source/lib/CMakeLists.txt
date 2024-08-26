@@ -12,7 +12,11 @@ function(lib_lnk libname)
   target_link_libraries(${libname} INTERFACE ${ARGN})
 endfunction()
 
+lib(math_lapack math lapack)
+
 lib(sys_logging sys logging)
 lib(sys_config sys config)
+
+lib_lnk(math_lapack blas lapack)
 
 lib_lnk(sys_config sys_logging)
