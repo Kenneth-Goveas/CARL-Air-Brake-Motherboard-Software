@@ -13,10 +13,14 @@ function(lib_lnk libname)
 endfunction()
 
 lib(math_lapack math lapack)
+lib(math_linalg math linalg)
 
 lib(sys_logging sys logging)
 lib(sys_config sys config)
 
 lib_lnk(math_lapack blas lapack)
+
+lib_def(math_linalg _GNU_SOURCE _POSIX_C_SOURCE=200112L)
+lib_lnk(math_linalg m math_lapack)
 
 lib_lnk(sys_config sys_logging)
