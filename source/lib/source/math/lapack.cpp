@@ -678,12 +678,12 @@ void dgetrf (
     for (int i = 0; i < comm; i++) {
         if (pivot_buf[i] != i) {
             for (int j = 0; j < rows; j++) {
-                if ((*perm)[i][j] == 1) {
-                    (*perm)[i][j] = 0;
-                    (*perm)[pivot_buf[i]][j] = 1;
-                } else if ((*perm)[pivot_buf[i]][j] == 1) {
-                    (*perm)[i][j] = 1;
-                    (*perm)[pivot_buf[i]][j] = 0;
+                if ((*perm)[j][i] == 1) {
+                    (*perm)[j][i] = 0;
+                    (*perm)[j][pivot_buf[i]] = 1;
+                } else if ((*perm)[j][pivot_buf[i]] == 1) {
+                    (*perm)[j][i] = 1;
+                    (*perm)[j][pivot_buf[i]] = 0;
                 }
             }
         }
