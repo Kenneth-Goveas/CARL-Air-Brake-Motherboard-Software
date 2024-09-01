@@ -23,4 +23,4 @@ lib_lnk(math_lapack blas lapack)
 lib_def(math_linalg _GNU_SOURCE _POSIX_C_SOURCE=200112L)
 lib_lnk(math_linalg m math_lapack)
 
-lib_lnk(sys_config sys_logging)
+lib_lnk(sys_config math_linalg sys_logging)

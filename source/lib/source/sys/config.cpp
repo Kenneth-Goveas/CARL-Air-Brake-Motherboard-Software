@@ -9,6 +9,8 @@
 #include <vector>
 #include <regex>
 
+#include <math/linalg.hpp>
+
 #include <sys/logging.hpp>
 #include <sys/config.hpp>
 
@@ -33,16 +35,16 @@ std::vector<std::string> name_fscl;
 std::vector<double> val_fscl;
 
 std::vector<std::string> name_ivec;
-std::vector<std::vector<int>> val_ivec;
+std::vector<linalg::ivector> val_ivec;
 
 std::vector<std::string> name_fvec;
-std::vector<std::vector<double>> val_fvec;
+std::vector<linalg::fvector> val_fvec;
 
 std::vector<std::string> name_imat;
-std::vector<std::vector<std::vector<int>>> val_imat;
+std::vector<linalg::imatrix> val_imat;
 
 std::vector<std::string> name_fmat;
-std::vector<std::vector<std::vector<double>>> val_fmat;
+std::vector<linalg::fmatrix> val_fmat;
 
 bool vec_sntx_arbit_len (std::string inpt);
 bool vec_sntx_fixed_len (std::string inpt, int len);
@@ -56,25 +58,21 @@ template <typename type>
 type vec_parse (std::string inpt, int len);
 
 template <>
-std::vector<int>
-vec_parse<std::vector<int>> (std::string inpt, int len);
+linalg::ivector vec_parse<linalg::ivector> (std::string inpt, int len);
 
 template <>
-std::vector<double>
-vec_parse<std::vector<double>> (std::string inpt, int len);
+linalg::fvector vec_parse<linalg::fvector> (std::string inpt, int len);
 
 template <typename type>
 type mat_parse (std::string inpt, int rows, int cols);
 
 template <>
-std::vector<std::vector<int>>
-mat_parse<std::vector<std::vector<int>>> (
+linalg::imatrix mat_parse<linalg::imatrix> (
     std::string inpt, int rows, int cols
 );
 
 template <>
-std::vector<std::vector<double>>
-mat_parse<std::vector<std::vector<double>>> (
+linalg::fmatrix mat_parse<linalg::fmatrix> (
     std::string inpt, int rows, int cols
 );
 
@@ -94,20 +92,16 @@ template <>
 double conv_inpt_to_val<double> (std::string inpt);
 
 template <>
-std::vector<int>
-conv_inpt_to_val<std::vector<int>> (std::string inpt);
+linalg::ivector conv_inpt_to_val<linalg::ivector> (std::string inpt);
 
 template <>
-std::vector<double>
-conv_inpt_to_val<std::vector<double>> (std::string inpt);
+linalg::fvector conv_inpt_to_val<linalg::fvector> (std::string inpt);
 
 template <>
-std::vector<std::vector<int>>
-conv_inpt_to_val<std::vector<std::vector<int>>> (std::string inpt);
+linalg::imatrix conv_inpt_to_val<linalg::imatrix> (std::string inpt);
 
 template <>
-std::vector<std::vector<double>>
-conv_inpt_to_val<std::vector<std::vector<double>>> (std::string inpt);
+linalg::fmatrix conv_inpt_to_val<linalg::fmatrix> (std::string inpt);
 
 template <typename type>
 std::string conv_val_to_oupt (type val);
@@ -125,24 +119,16 @@ template <>
 std::string conv_val_to_oupt<double> (double val);
 
 template <>
-std::string conv_val_to_oupt<std::vector<int>> (
-    std::vector<int> val
-);
+std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val);
 
 template <>
-std::string conv_val_to_oupt<std::vector<double>> (
-    std::vector<double> val
-);
+std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val);
 
 template <>
-std::string conv_val_to_oupt<std::vector<std::vector<int>>> (
-    std::vector<std::vector<int>> val
-);
+std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val);
 
 template <>
-std::string conv_val_to_oupt<std::vector<std::vector<double>>> (
-    std::vector<std::vector<double>> val
-);
+std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val);
 
 template <typename type>
 std::string param (std::string name, std::string inpt);
@@ -160,24 +146,16 @@ template <>
 std::string param<double> (std::string name, std::string inpt);
 
 template <>
-std::string param<std::vector<int>> (
-    std::string name, std::string inpt
-);
+std::string param<linalg::ivector> (std::string name, std::string inpt);
 
 template <>
-std::string param<std::vector<double>> (
-    std::string name, std::string inpt
-);
+std::string param<linalg::fvector> (std::string name, std::string inpt);
 
 template <>
-std::string param<std::vector<std::vector<int>>> (
-    std::string name, std::string inpt
-);
+std::string param<linalg::imatrix> (std::string name, std::string inpt);
 
 template <>
-std::string param<std::vector<std::vector<double>>> (
-    std::string name, std::string inpt
-);
+std::string param<linalg::fmatrix> (std::string name, std::string inpt);
 
 std::string strip (std::string line);
 bool blank (std::string line);
@@ -397,9 +375,8 @@ double get<double> (std::string name) {
 }
 
 template <>
-std::vector<int>
-get<std::vector<int>> (std::string name) {
-    std::vector<int> val;
+linalg::ivector get<linalg::ivector> (std::string name) {
+    linalg::ivector val;
     std::string oupt;
 
     logging::inf(intern::mod,
@@ -427,9 +404,8 @@ get<std::vector<int>> (std::string name) {
 }
 
 template <>
-std::vector<double>
-get<std::vector<double>> (std::string name) {
-    std::vector<double> val;
+linalg::fvector get<linalg::fvector> (std::string name) {
+    linalg::fvector val;
     std::string oupt;
 
     logging::inf(intern::mod,
@@ -457,9 +433,8 @@ get<std::vector<double>> (std::string name) {
 }
 
 template <>
-std::vector<std::vector<int>>
-get<std::vector<std::vector<int>>> (std::string name) {
-    std::vector<std::vector<int>> val;
+linalg::imatrix get<linalg::imatrix> (std::string name) {
+    linalg::imatrix val;
     std::string oupt;
 
     logging::inf(intern::mod,
@@ -487,9 +462,8 @@ get<std::vector<std::vector<int>>> (std::string name) {
 }
 
 template <>
-std::vector<std::vector<double>>
-get<std::vector<std::vector<double>>> (std::string name) {
-    std::vector<std::vector<double>> val;
+linalg::fmatrix get<linalg::fmatrix> (std::string name) {
+    linalg::fmatrix val;
     std::string oupt;
 
     logging::inf(intern::mod,
@@ -737,13 +711,12 @@ bool mat_sntx_fixed_rows_fixed_cols (std::string inpt, int rows, int cols) {
 }
 
 template <>
-std::vector<int>
-vec_parse<std::vector<int>> (std::string inpt, int len) {
+linalg::ivector vec_parse<linalg::ivector> (std::string inpt, int len) {
     std::string pat = "";
     std::regex reg;
     std::smatch match;
     std::istringstream istr;
-    std::vector<int> val;
+    linalg::ivector val;
 
     pat += "^"
            "\\[";
@@ -764,7 +737,7 @@ vec_parse<std::vector<int>> (std::string inpt, int len) {
         return val;
     }
 
-    val.resize(len);
+    linalg::resize(&val, len);
     for (int i = 0; i < len; i++) {
         istr = std::istringstream(match[i + 1]);
         istr >> std::noskipws >> val[i];
@@ -782,13 +755,12 @@ vec_parse<std::vector<int>> (std::string inpt, int len) {
 }
 
 template <>
-std::vector<double>
-vec_parse<std::vector<double>> (std::string inpt, int len) {
+linalg::fvector vec_parse<linalg::fvector> (std::string inpt, int len) {
     std::string pat = "";
     std::regex reg;
     std::smatch match;
     std::istringstream istr;
-    std::vector<double> val;
+    linalg::fvector val;
 
     pat += "^"
            "\\[";
@@ -809,7 +781,7 @@ vec_parse<std::vector<double>> (std::string inpt, int len) {
         return val;
     }
 
-    val.resize(len);
+    linalg::resize(&val, len);
     for (int i = 0; i < len; i++) {
         istr = std::istringstream(match[i + 1]);
         istr >> std::noskipws >> val[i];
@@ -827,15 +799,14 @@ vec_parse<std::vector<double>> (std::string inpt, int len) {
 }
 
 template <>
-std::vector<std::vector<int>>
-mat_parse<std::vector<std::vector<int>>> (
+linalg::imatrix mat_parse<linalg::imatrix> (
     std::string inpt, int rows, int cols
 ) {
     std::string pat = "";
     std::regex reg;
     std::smatch match;
     std::istringstream istr;
-    std::vector<std::vector<int>> val;
+    linalg::imatrix val;
 
     pat += "^"
            "\\[";
@@ -865,9 +836,8 @@ mat_parse<std::vector<std::vector<int>>> (
         return val;
     }
 
-    val.resize(rows);
+    linalg::resize(&val, rows, cols);
     for (int i = 0; i < rows; i++) {
-        val[i].resize(cols);
         for (int j = 0; j < cols; j++) {
             istr = std::istringstream(match[i * cols + j + 1]);
             istr >> std::noskipws >> val[i][j];
@@ -886,15 +856,14 @@ mat_parse<std::vector<std::vector<int>>> (
 }
 
 template <>
-std::vector<std::vector<double>>
-mat_parse<std::vector<std::vector<double>>> (
+linalg::fmatrix mat_parse<linalg::fmatrix> (
     std::string inpt, int rows, int cols
 ) {
     std::string pat = "";
     std::regex reg;
     std::smatch match;
     std::istringstream istr;
-    std::vector<std::vector<double>> val;
+    linalg::fmatrix val;
 
     pat += "^"
            "\\[";
@@ -924,9 +893,8 @@ mat_parse<std::vector<std::vector<double>>> (
         return val;
     }
 
-    val.resize(rows);
+    linalg::resize(&val, rows, cols);
     for (int i = 0; i < rows; i++) {
-        val[i].resize(cols);
         for (int j = 0; j < cols; j++) {
             istr = std::istringstream(match[i * cols + j + 1]);
             istr >> std::noskipws >> val[i][j];
@@ -1044,10 +1012,9 @@ double conv_inpt_to_val<double> (std::string inpt) {
 }
 
 template <>
-std::vector<int>
-conv_inpt_to_val<std::vector<int>> (std::string inpt) {
+linalg::ivector conv_inpt_to_val<linalg::ivector> (std::string inpt) {
     int len;
-    std::vector<int> val;
+    linalg::ivector val;
 
     if (!vec_sntx_arbit_len(inpt)) {
         fail = true;
@@ -1056,7 +1023,7 @@ conv_inpt_to_val<std::vector<int>> (std::string inpt) {
 
     for (len = 1; !vec_sntx_fixed_len(inpt, len); len++);
 
-    val = vec_parse<std::vector<int>>(inpt, len);
+    val = vec_parse<linalg::ivector>(inpt, len);
     if (fail) {
         fail = true;
         return val;
@@ -1067,10 +1034,9 @@ conv_inpt_to_val<std::vector<int>> (std::string inpt) {
 }
 
 template <>
-std::vector<double>
-conv_inpt_to_val<std::vector<double>> (std::string inpt) {
+linalg::fvector conv_inpt_to_val<linalg::fvector> (std::string inpt) {
     int len;
-    std::vector<double> val;
+    linalg::fvector val;
 
     if (!vec_sntx_arbit_len(inpt)) {
         fail = true;
@@ -1079,7 +1045,7 @@ conv_inpt_to_val<std::vector<double>> (std::string inpt) {
 
     for (len = 1; !vec_sntx_fixed_len(inpt, len); len++);
 
-    val = vec_parse<std::vector<double>>(inpt, len);
+    val = vec_parse<linalg::fvector>(inpt, len);
     if (fail) {
         fail = true;
         return val;
@@ -1090,10 +1056,9 @@ conv_inpt_to_val<std::vector<double>> (std::string inpt) {
 }
 
 template <>
-std::vector<std::vector<int>>
-conv_inpt_to_val<std::vector<std::vector<int>>> (std::string inpt) {
+linalg::imatrix conv_inpt_to_val<linalg::imatrix> (std::string inpt) {
     int rows, cols;
-    std::vector<std::vector<int>> val;
+    linalg::imatrix val;
 
     if (!mat_sntx_arbit_rows_arbit_cols(inpt)) {
         fail = true;
@@ -1108,7 +1073,7 @@ conv_inpt_to_val<std::vector<std::vector<int>>> (std::string inpt) {
         return val;
     }
 
-    val = mat_parse<std::vector<std::vector<int>>>(inpt, rows, cols);
+    val = mat_parse<linalg::imatrix>(inpt, rows, cols);
     if (fail) {
         fail = true;
         return val;
@@ -1119,10 +1084,9 @@ conv_inpt_to_val<std::vector<std::vector<int>>> (std::string inpt) {
 }
 
 template <>
-std::vector<std::vector<double>>
-conv_inpt_to_val<std::vector<std::vector<double>>> (std::string inpt) {
+linalg::fmatrix conv_inpt_to_val<linalg::fmatrix> (std::string inpt) {
     int rows, cols;
-    std::vector<std::vector<double>> val;
+    linalg::fmatrix val;
 
     if (!mat_sntx_arbit_rows_arbit_cols(inpt)) {
         fail = true;
@@ -1137,7 +1101,7 @@ conv_inpt_to_val<std::vector<std::vector<double>>> (std::string inpt) {
         return val;
     }
 
-    val = mat_parse<std::vector<std::vector<double>>>(inpt, rows, cols);
+    val = mat_parse<linalg::fmatrix>(inpt, rows, cols);
     if (fail) {
         fail = true;
         return val;
@@ -1196,16 +1160,14 @@ std::string conv_val_to_oupt<double> (double val) {
 }
 
 template <>
-std::string conv_val_to_oupt<std::vector<int>> (
-    std::vector<int> val
-) {
+std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val) {
     std::ostringstream ostr;
     std::string oupt;
 
     ostr << "[";
-    for (auto i = 0; i < val.size(); i++) {
+    for (int i = 0; i < linalg::dim(val); i++) {
         ostr << std::showpos << val[i];
-        if (i < val.size() - 1) {
+        if (i < linalg::dim(val) - 1) {
             ostr << ", ";
         }
     }
@@ -1218,17 +1180,15 @@ std::string conv_val_to_oupt<std::vector<int>> (
 }
 
 template <>
-std::string conv_val_to_oupt<std::vector<double>> (
-    std::vector<double> val
-) {
+std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val) {
     std::ostringstream ostr;
     std::string oupt;
 
     ostr << "[";
-    for (auto i = 0; i < val.size(); i++) {
+    for (int i = 0; i < linalg::dim(val); i++) {
         ostr << std::showpos << std::scientific << std::setprecision(2)
              << val[i];
-        if (i < val.size() - 1) {
+        if (i < linalg::dim(val) - 1) {
             ostr << ", ";
         }
     }
@@ -1241,23 +1201,21 @@ std::string conv_val_to_oupt<std::vector<double>> (
 }
 
 template <>
-std::string conv_val_to_oupt<std::vector<std::vector<int>>> (
-    std::vector<std::vector<int>> val
-) {
+std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val) {
     std::ostringstream ostr;
     std::string oupt;
 
     ostr << "[";
-    for (auto i = 0; i < val.size(); i++) {
+    for (int i = 0; i < linalg::rows(val); i++) {
         ostr << "[";
-        for (auto j = 0; j < val[i].size(); j++) {
+        for (int j = 0; j < linalg::cols(val); j++) {
             ostr << std::showpos << val[i][j];
-            if (j < val[i].size() - 1) {
+            if (j < linalg::cols(val) - 1) {
                 ostr << ", ";
             }
         }
         ostr << "]";
-        if (i < val.size() - 1) {
+        if (i < linalg::rows(val) - 1) {
             ostr << ", ";
         }
     }
@@ -1270,24 +1228,22 @@ std::string conv_val_to_oupt<std::vector<std::vector<int>>> (
 }
 
 template <>
-std::string conv_val_to_oupt<std::vector<std::vector<double>>> (
-    std::vector<std::vector<double>> val
-) {
+std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val) {
     std::ostringstream ostr;
     std::string oupt;
 
     ostr << "[";
-    for (auto i = 0; i < val.size(); i++) {
+    for (int i = 0; i < linalg::rows(val); i++) {
         ostr << "[";
-        for (auto j = 0; j < val[i].size(); j++) {
+        for (int j = 0; j < linalg::cols(val); j++) {
             ostr << std::showpos << std::scientific << std::setprecision(2)
                  << val[i][j];
-            if (j < val[i].size() - 1) {
+            if (j < linalg::cols(val) - 1) {
                 ostr << ", ";
             }
         }
         ostr << "]";
-        if (i < val.size() - 1) {
+        if (i < linalg::rows(val) - 1) {
             ostr << ", ";
         }
     }
@@ -1380,13 +1336,11 @@ std::string param<double> (std::string name, std::string inpt) {
 }
 
 template <>
-std::string param<std::vector<int>> (
-    std::string name, std::string inpt
-) {
-    std::vector<int> val;
+std::string param<linalg::ivector> (std::string name, std::string inpt) {
+    linalg::ivector val;
     std::string oupt;
 
-    val = conv_inpt_to_val<std::vector<int>>(inpt);
+    val = conv_inpt_to_val<linalg::ivector>(inpt);
     if (fail) {
         fail = true;
         return oupt;
@@ -1402,13 +1356,11 @@ std::string param<std::vector<int>> (
 }
 
 template <>
-std::string param<std::vector<double>> (
-    std::string name, std::string inpt
-) {
-    std::vector<double> val;
+std::string param<linalg::fvector> (std::string name, std::string inpt) {
+    linalg::fvector val;
     std::string oupt;
 
-    val = conv_inpt_to_val<std::vector<double>>(inpt);
+    val = conv_inpt_to_val<linalg::fvector>(inpt);
     if (fail) {
         fail = true;
         return oupt;
@@ -1424,13 +1376,11 @@ std::string param<std::vector<double>> (
 }
 
 template <>
-std::string param<std::vector<std::vector<int>>> (
-    std::string name, std::string inpt
-) {
-    std::vector<std::vector<int>> val;
+std::string param<linalg::imatrix> (std::string name, std::string inpt) {
+    linalg::imatrix val;
     std::string oupt;
 
-    val = conv_inpt_to_val<std::vector<std::vector<int>>>(inpt);
+    val = conv_inpt_to_val<linalg::imatrix>(inpt);
     if (fail) {
         fail = true;
         return oupt;
@@ -1446,13 +1396,11 @@ std::string param<std::vector<std::vector<int>>> (
 }
 
 template <>
-std::string param<std::vector<std::vector<double>>> (
-    std::string name, std::string inpt
-) {
-    std::vector<std::vector<double>> val;
+std::string param<linalg::fmatrix> (std::string name, std::string inpt) {
+    linalg::fmatrix val;
     std::string oupt;
 
-    val = conv_inpt_to_val<std::vector<std::vector<double>>>(inpt);
+    val = conv_inpt_to_val<linalg::fmatrix>(inpt);
     if (fail) {
         fail = true;
         return oupt;
@@ -1623,7 +1571,7 @@ void parse (std::string line) {
         return;
     }
 
-    oupt = param<std::vector<int>>(name, inpt);
+    oupt = param<linalg::ivector>(name, inpt);
     if (!fail) {
         logging::inf(mod,
             "Parsed line as integer vector parameter: ",
@@ -1633,7 +1581,7 @@ void parse (std::string line) {
         return;
     }
 
-    oupt = param<std::vector<double>>(name, inpt);
+    oupt = param<linalg::fvector>(name, inpt);
     if (!fail) {
         logging::inf(mod,
             "Parsed line as floating point vector parameter: ",
@@ -1643,7 +1591,7 @@ void parse (std::string line) {
         return;
     }
 
-    oupt = param<std::vector<std::vector<int>>>(name, inpt);
+    oupt = param<linalg::imatrix>(name, inpt);
     if (!fail) {
         logging::inf(mod,
             "Parsed line as integer matrix parameter: ",
@@ -1653,7 +1601,7 @@ void parse (std::string line) {
         return;
     }
 
-    oupt = param<std::vector<std::vector<double>>>(name, inpt);
+    oupt = param<linalg::fmatrix>(name, inpt);
     if (!fail) {
         logging::inf(mod,
             "Parsed line as floating point matrix parameter: ",

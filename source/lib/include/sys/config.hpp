@@ -2,7 +2,8 @@
 #define __SYS_CONFIG_HPP__
 
 #include <string>
-#include <vector>
+
+#include <math/linalg.hpp>
 
 namespace config {
 
@@ -26,20 +27,16 @@ template <>
 double get<double> (std::string name);
 
 template <>
-std::vector<int>
-get<std::vector<int>> (std::string name);
+linalg::ivector get<linalg::ivector> (std::string name);
 
 template <>
-std::vector<double>
-get<std::vector<double>> (std::string name);
+linalg::fvector get<linalg::fvector> (std::string name);
 
 template <>
-std::vector<std::vector<int>>
-get<std::vector<std::vector<int>>> (std::string name);
+linalg::imatrix get<linalg::imatrix> (std::string name);
 
 template <>
-std::vector<std::vector<double>>
-get<std::vector<std::vector<double>>> (std::string name);
+linalg::fmatrix get<linalg::fmatrix> (std::string name);
 
 }
 
