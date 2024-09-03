@@ -202,7 +202,7 @@ void init (std::string path) {
                 break;
             } else {
                 logging::err(intern::mod,
-                    "Failed to read config file",
+                    "Failed to read config file ",
                     "(", std::strerror(errno), ")"
                 );
                 logging::wrn(intern::mod,
