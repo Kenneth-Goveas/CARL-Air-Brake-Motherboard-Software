@@ -72,8 +72,6 @@ void erase_line (void) {
 
     std::cout << "\e[2K";
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 void erase_screen (void) {
@@ -83,8 +81,6 @@ void erase_screen (void) {
 
     std::cout << "\e[2J";
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 void color_default (void) {
@@ -94,8 +90,6 @@ void color_default (void) {
 
     std::cout << "\e[m";
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 void color_fore (color clr) {
@@ -108,8 +102,6 @@ void color_fore (color clr) {
 
     std::cout << "\e[38;5;" << clr << "m";
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 void color_back (color clr) {
@@ -122,8 +114,6 @@ void color_back (color clr) {
 
     std::cout << "\e[48;5;" << clr << "m";
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 void cursor_hide (void) {
@@ -133,8 +123,6 @@ void cursor_hide (void) {
 
     std::cout << "\e[?25l";
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 void cursor_show (void) {
@@ -144,8 +132,6 @@ void cursor_show (void) {
 
     std::cout << "\e[?25h";
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 void cursor_row (int row) {
@@ -211,8 +197,6 @@ void newline (void) {
     );
 
     std::cout << std::endl;
-
-    intern::fail = false;
 }
 
 template <>
@@ -486,24 +470,18 @@ double conv_inpt_to_val<double> (std::string inpt) {
 template <>
 std::string conv_val_to_oupt<bool> (bool val) {
     std::string oupt;
-
     if (val) {
         oupt = "True";
     } else {
         oupt = "False";
     }
-
-    fail = false;
     return oupt;
 }
 
 template <>
 std::string conv_val_to_oupt<std::string> (std::string val) {
     std::string oupt;
-
     oupt = std::string("“") + val + std::string("”");
-
-    fail = false;
     return oupt;
 }
 
@@ -515,7 +493,6 @@ std::string conv_val_to_oupt<int> (int val) {
     ostr << std::showpos << val;
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -527,7 +504,6 @@ std::string conv_val_to_oupt<double> (double val) {
     ostr << std::showpos << std::scientific << std::setprecision(2) << val;
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -585,7 +561,6 @@ std::string conv_color_to_oupt (color clr) {
             break;
     }
 
-    fail = false;
     return oupt;
 }
 
@@ -606,12 +581,9 @@ std::string strip (std::string inpt) {
         }
     }
 
-    fail = false;
     return inpt;
 }
 
-void append (std::ostringstream * ostr) {
-    fail = false;
-}
+void append (std::ostringstream * ostr) {}
 
 }

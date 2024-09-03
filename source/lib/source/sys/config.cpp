@@ -513,10 +513,8 @@ bool vec_sntx_arbit_len (std::string inpt) {
 
     reg.assign(pat, std::regex_constants::extended);
     if (std::regex_match(inpt, reg)) {
-        fail = false;
         return true;
     } else {
-        fail = false;
         return false;
     }
 }
@@ -540,10 +538,8 @@ bool vec_sntx_fixed_len (std::string inpt, int len) {
 
     reg.assign(pat, std::regex_constants::extended);
     if (std::regex_match(inpt, reg)) {
-        fail = false;
         return true;
     } else {
-        fail = false;
         return false;
     }
 }
@@ -585,10 +581,8 @@ bool mat_sntx_arbit_rows_arbit_cols (std::string inpt) {
 
     reg.assign(pat, std::regex_constants::extended);
     if (std::regex_match(inpt, reg)) {
-        fail = false;
         return true;
     } else {
-        fail = false;
         return false;
     }
 }
@@ -621,10 +615,8 @@ bool mat_sntx_fixed_rows_arbit_cols (std::string inpt, int rows) {
 
     reg.assign(pat, std::regex_constants::extended);
     if (std::regex_match(inpt, reg)) {
-        fail = false;
         return true;
     } else {
-        fail = false;
         return false;
     }
 }
@@ -666,10 +658,8 @@ bool mat_sntx_arbit_rows_fixed_cols (std::string inpt, int cols) {
 
     reg.assign(pat, std::regex_constants::extended);
     if (std::regex_match(inpt, reg)) {
-        fail = false;
         return true;
     } else {
-        fail = false;
         return false;
     }
 }
@@ -702,10 +692,8 @@ bool mat_sntx_fixed_rows_fixed_cols (std::string inpt, int rows, int cols) {
 
     reg.assign(pat, std::regex_constants::extended);
     if (std::regex_match(inpt, reg)) {
-        fail = false;
         return true;
     } else {
-        fail = false;
         return false;
     }
 }
@@ -1114,24 +1102,18 @@ linalg::fmatrix conv_inpt_to_val<linalg::fmatrix> (std::string inpt) {
 template <>
 std::string conv_val_to_oupt<bool> (bool val) {
     std::string oupt;
-
     if (val) {
         oupt = "True";
     } else {
         oupt = "False";
     }
-
-    fail = false;
     return oupt;
 }
 
 template <>
 std::string conv_val_to_oupt<std::string> (std::string val) {
     std::string oupt;
-
     oupt = std::string("“") + val + std::string("”");
-
-    fail = false;
     return oupt;
 }
 
@@ -1143,7 +1125,6 @@ std::string conv_val_to_oupt<int> (int val) {
     ostr << std::showpos << val;
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -1155,7 +1136,6 @@ std::string conv_val_to_oupt<double> (double val) {
     ostr << std::showpos << std::scientific << std::setprecision(2) << val;
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -1175,7 +1155,6 @@ std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val) {
 
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -1196,7 +1175,6 @@ std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val) {
 
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -1223,7 +1201,6 @@ std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val) {
 
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -1251,7 +1228,6 @@ std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val) {
 
     oupt = ostr.str();
 
-    fail = false;
     return oupt;
 }
 
@@ -1439,18 +1415,15 @@ std::string strip (std::string line) {
         }
     }
 
-    fail = false;
     return line;
 }
 
 bool blank (std::string line) {
     for (auto i = 0; i < line.size(); i++) {
         if (line[i] != ' ' && line[i] != '\t') {
-            fail = false;
             return false;
         }
     }
-    fail = false;
     return true;
 }
 
@@ -1485,11 +1458,9 @@ std::vector<std::string> split (std::string line) {
 bool exists (std::string name) {
     for (auto i = 0; i < name_all.size(); i++) {
         if (name == name_all[i]) {
-            fail = false;
             return true;
         }
     }
-    fail = false;
     return false;
 }
 

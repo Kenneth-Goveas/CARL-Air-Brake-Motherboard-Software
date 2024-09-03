@@ -69,8 +69,6 @@ void print (types ... args) {
 
     std::cout << str;
     std::cout.flush();
-
-    intern::fail = false;
 }
 
 }
@@ -81,8 +79,6 @@ template <typename type, typename ... types>
 void append (std::ostringstream * ostr, type arg, types ... args) {
     *ostr << arg;
     append(ostr, args ...);
-
-    fail = false;
 }
 
 }
