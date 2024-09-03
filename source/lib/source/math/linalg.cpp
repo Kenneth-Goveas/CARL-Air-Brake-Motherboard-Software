@@ -1715,28 +1715,23 @@ bool is_finite (double scl) {
 
 bool is_finite (const fvector & vec) {
     int fpc;
-
     if (vec.data.empty()) {
         return false;
     }
-
     for (int i = 0; i < vec.dim; i++) {
         fpc = std::fpclassify(vec.data[i]);
         if (fpc == FP_NAN || fpc == FP_INFINITE) {
             return false;
         }
     }
-
     return true;
 }
 
 bool is_finite (const fmatrix & mat) {
     int fpc;
-
     if (mat.data.empty()) {
         return false;
     }
-
     for (int i = 0; i < mat.rows; i++) {
         for (int j = 0; j < mat.cols; j++) {
             fpc = std::fpclassify(mat.data[i][j]);
@@ -1745,7 +1740,6 @@ bool is_finite (const fmatrix & mat) {
             }
         }
     }
-
     return true;
 }
 

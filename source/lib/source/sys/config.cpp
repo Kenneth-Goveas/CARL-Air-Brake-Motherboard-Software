@@ -1152,7 +1152,6 @@ std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val) {
         }
     }
     ostr << "]";
-
     oupt = ostr.str();
 
     return oupt;
@@ -1172,7 +1171,6 @@ std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val) {
         }
     }
     ostr << "]";
-
     oupt = ostr.str();
 
     return oupt;
@@ -1198,7 +1196,6 @@ std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val) {
         }
     }
     ostr << "]";
-
     oupt = ostr.str();
 
     return oupt;
@@ -1225,7 +1222,6 @@ std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val) {
         }
     }
     ostr << "]";
-
     oupt = ostr.str();
 
     return oupt;

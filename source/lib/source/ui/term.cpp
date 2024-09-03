@@ -209,7 +209,6 @@ bool scan<bool> (void) {
     );
 
     std::getline(std::cin, inpt);
-
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
             "No input supplied"
@@ -221,7 +220,6 @@ bool scan<bool> (void) {
     }
 
     inpt = intern::strip(inpt);
-
     logging::inf(intern::mod,
         "Received input: “", inpt, "”"
     );
@@ -260,7 +258,6 @@ std::string scan<std::string> (void) {
     );
 
     std::getline(std::cin, inpt);
-
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
             "No input supplied"
@@ -272,7 +269,6 @@ std::string scan<std::string> (void) {
     }
 
     inpt = intern::strip(inpt);
-
     logging::inf(intern::mod,
         "Received input: “", inpt, "”"
     );
@@ -311,7 +307,6 @@ int scan<int> (void) {
     );
 
     std::getline(std::cin, inpt);
-
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
             "No input supplied"
@@ -323,7 +318,6 @@ int scan<int> (void) {
     }
 
     inpt = intern::strip(inpt);
-
     logging::inf(intern::mod,
         "Received input: “", inpt, "”"
     );
@@ -362,7 +356,6 @@ double scan<double> (void) {
     );
 
     std::getline(std::cin, inpt);
-
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
             "No input supplied"
@@ -374,7 +367,6 @@ double scan<double> (void) {
     }
 
     inpt = intern::strip(inpt);
-
     logging::inf(intern::mod,
         "Received input: “", inpt, "”"
     );
