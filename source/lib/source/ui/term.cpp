@@ -2,6 +2,9 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <regex>
+
+#include <math/linalg.hpp>
 
 #include <sys/logging.hpp>
 
@@ -13,6 +16,36 @@ std::string mod = "term";
 
 bool fail;
 bool eof;
+
+bool vec_sntx_arbit_len (std::string inpt);
+bool vec_sntx_fixed_len (std::string inpt, int len);
+
+bool mat_sntx_arbit_rows_arbit_cols (std::string inpt);
+bool mat_sntx_fixed_rows_arbit_cols (std::string inpt, int rows);
+bool mat_sntx_arbit_rows_fixed_cols (std::string inpt, int cols);
+bool mat_sntx_fixed_rows_fixed_cols (std::string inpt, int rows, int cols);
+
+template <typename type>
+type vec_parse (std::string inpt, int len);
+
+template <>
+linalg::ivector vec_parse<linalg::ivector> (std::string inpt, int len);
+
+template <>
+linalg::fvector vec_parse<linalg::fvector> (std::string inpt, int len);
+
+template <typename type>
+type mat_parse (std::string inpt, int rows, int cols);
+
+template <>
+linalg::imatrix mat_parse<linalg::imatrix> (
+    std::string inpt, int rows, int cols
+);
+
+template <>
+linalg::fmatrix mat_parse<linalg::fmatrix> (
+    std::string inpt, int rows, int cols
+);
 
 template <typename type>
 type conv_inpt_to_val (std::string inpt);
@@ -29,6 +62,18 @@ int conv_inpt_to_val<int> (std::string inpt);
 template <>
 double conv_inpt_to_val<double> (std::string inpt);
 
+template <>
+linalg::ivector conv_inpt_to_val<linalg::ivector> (std::string inpt);
+
+template <>
+linalg::fvector conv_inpt_to_val<linalg::fvector> (std::string inpt);
+
+template <>
+linalg::imatrix conv_inpt_to_val<linalg::imatrix> (std::string inpt);
+
+template <>
+linalg::fmatrix conv_inpt_to_val<linalg::fmatrix> (std::string inpt);
+
 template <typename type>
 std::string conv_val_to_oupt (type val);
 
@@ -43,6 +88,18 @@ std::string conv_val_to_oupt<int> (int val);
 
 template <>
 std::string conv_val_to_oupt<double> (double val);
+
+template <>
+std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val);
+
+template <>
+std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val);
+
+template <>
+std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val);
+
+template <>
+std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val);
 
 std::string conv_color_to_oupt (color clr);
 
@@ -323,13 +380,13 @@ int scan<int> (void) {
     );
 
     logging::inf(intern::mod,
-        "Parsing input as integer"
+        "Parsing input as integer scalar"
     );
 
     val = intern::conv_inpt_to_val<int>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse input as integer (Syntax error)"
+            "Failed to parse input as integer scalar (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -338,7 +395,7 @@ int scan<int> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed input as integer: Value: ", oupt
+        "Parsed input as integer scalar: Value: ", oupt
     );
 
     intern::fail = false;
@@ -372,13 +429,13 @@ double scan<double> (void) {
     );
 
     logging::inf(intern::mod,
-        "Parsing input as floating point"
+        "Parsing input as floating point scalar"
     );
 
     val = intern::conv_inpt_to_val<double>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse input as floating point (Syntax error)"
+            "Failed to parse input as floating point scalar (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -387,7 +444,203 @@ double scan<double> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed input as floating point: Value: ", oupt
+        "Parsed input as floating point scalar: Value: ", oupt
+    );
+
+    intern::fail = false;
+    intern::eof = false;
+    return val;
+}
+
+template <>
+linalg::ivector scan<linalg::ivector> (void) {
+    std::string inpt, oupt;
+    linalg::ivector val;
+
+    logging::inf(intern::mod,
+        "Waiting for input"
+    );
+
+    std::getline(std::cin, inpt);
+    if (std::cin.eof()) {
+        logging::wrn(intern::mod,
+            "No input supplied"
+        );
+        std::cin.clear();
+        intern::fail = false;
+        intern::eof = true;
+        return val;
+    }
+
+    inpt = intern::strip(inpt);
+    logging::inf(intern::mod,
+        "Received input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
+        "Parsing input as integer vector"
+    );
+
+    val = intern::conv_inpt_to_val<linalg::ivector>(inpt);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to parse input as integer vector (Syntax error)"
+        );
+        intern::fail = true;
+        intern::eof = false;
+        return val;
+    }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed input as integer vector: Value: ", oupt
+    );
+
+    intern::fail = false;
+    intern::eof = false;
+    return val;
+}
+
+template <>
+linalg::fvector scan<linalg::fvector> (void) {
+    std::string inpt, oupt;
+    linalg::fvector val;
+
+    logging::inf(intern::mod,
+        "Waiting for input"
+    );
+
+    std::getline(std::cin, inpt);
+    if (std::cin.eof()) {
+        logging::wrn(intern::mod,
+            "No input supplied"
+        );
+        std::cin.clear();
+        intern::fail = false;
+        intern::eof = true;
+        return val;
+    }
+
+    inpt = intern::strip(inpt);
+    logging::inf(intern::mod,
+        "Received input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
+        "Parsing input as floating point vector"
+    );
+
+    val = intern::conv_inpt_to_val<linalg::fvector>(inpt);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to parse input as floating point vector (Syntax error)"
+        );
+        intern::fail = true;
+        intern::eof = false;
+        return val;
+    }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed input as floating point vector: Value: ", oupt
+    );
+
+    intern::fail = false;
+    intern::eof = false;
+    return val;
+}
+
+template <>
+linalg::imatrix scan<linalg::imatrix> (void) {
+    std::string inpt, oupt;
+    linalg::imatrix val;
+
+    logging::inf(intern::mod,
+        "Waiting for input"
+    );
+
+    std::getline(std::cin, inpt);
+    if (std::cin.eof()) {
+        logging::wrn(intern::mod,
+            "No input supplied"
+        );
+        std::cin.clear();
+        intern::fail = false;
+        intern::eof = true;
+        return val;
+    }
+
+    inpt = intern::strip(inpt);
+    logging::inf(intern::mod,
+        "Received input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
+        "Parsing input as integer matrix"
+    );
+
+    val = intern::conv_inpt_to_val<linalg::imatrix>(inpt);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to parse input as integer matrix (Syntax error)"
+        );
+        intern::fail = true;
+        intern::eof = false;
+        return val;
+    }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed input as integer matrix: Value: ", oupt
+    );
+
+    intern::fail = false;
+    intern::eof = false;
+    return val;
+}
+
+template <>
+linalg::fmatrix scan<linalg::fmatrix> (void) {
+    std::string inpt, oupt;
+    linalg::fmatrix val;
+
+    logging::inf(intern::mod,
+        "Waiting for input"
+    );
+
+    std::getline(std::cin, inpt);
+    if (std::cin.eof()) {
+        logging::wrn(intern::mod,
+            "No input supplied"
+        );
+        std::cin.clear();
+        intern::fail = false;
+        intern::eof = true;
+        return val;
+    }
+
+    inpt = intern::strip(inpt);
+    logging::inf(intern::mod,
+        "Received input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
+        "Parsing input as floating point matrix"
+    );
+
+    val = intern::conv_inpt_to_val<linalg::fmatrix>(inpt);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to parse input as floating point matrix (Syntax error)"
+        );
+        intern::fail = true;
+        intern::eof = false;
+        return val;
+    }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed input as floating point matrix: Value: ", oupt
     );
 
     intern::fail = false;
@@ -398,6 +651,412 @@ double scan<double> (void) {
 }
 
 namespace term :: intern {
+
+bool vec_sntx_arbit_len (std::string inpt) {
+    std::string pat;
+    std::regex reg;
+
+    pat = "^"
+          "\\["
+              "("
+                  "[[:space:]]*"
+                  "[^][[:space:],]+"
+                  "[[:space:]]*"
+              ",)*"
+              "[[:space:]]*"
+              "[^][[:space:],]+"
+              "[[:space:]]*"
+          "\\]"
+          "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (std::regex_match(inpt, reg)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool vec_sntx_fixed_len (std::string inpt, int len) {
+    std::string pat = "";
+    std::regex reg;
+
+    pat += "^"
+           "\\[";
+    for (int i = 0; i < len; i++) {
+        pat += "[[:space:]]*"
+               "[^][[:space:],]+"
+               "[[:space:]]*";
+        if (i < len - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (std::regex_match(inpt, reg)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool mat_sntx_arbit_rows_arbit_cols (std::string inpt) {
+    std::string pat;
+    std::regex reg;
+
+    pat = "^"
+          "\\["
+              "("
+                  "[[:space:]]*"
+                  "\\["
+                      "("
+                          "[[:space:]]*"
+                          "[^][[:space:],]+"
+                          "[[:space:]]*"
+                      ",)*"
+                      "[[:space:]]*"
+                      "[^][[:space:],]+"
+                      "[[:space:]]*"
+                  "\\]"
+                  "[[:space:]]*"
+              ",)*"
+              "[[:space:]]*"
+              "\\["
+                  "("
+                      "[[:space:]]*"
+                      "[^][[:space:],]+"
+                      "[[:space:]]*"
+                  ",)*"
+                  "[[:space:]]*"
+                  "[^][[:space:],]+"
+                  "[[:space:]]*"
+              "\\]"
+              "[[:space:]]*"
+          "\\]"
+          "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (std::regex_match(inpt, reg)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool mat_sntx_fixed_rows_arbit_cols (std::string inpt, int rows) {
+    std::string pat = "";
+    std::regex reg;
+
+    pat += "^"
+           "\\[";
+    for (int i = 0; i < rows; i++) {
+        pat +=  "[[:space:]]*"
+                "\\["
+                    "("
+                        "[[:space:]]*"
+                        "[^][[:space:],]+"
+                        "[[:space:]]*"
+                    ",)*"
+                    "[[:space:]]*"
+                    "[^][[:space:],]+"
+                    "[[:space:]]*"
+                "\\]"
+                "[[:space:]]*";
+        if (i < rows - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (std::regex_match(inpt, reg)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool mat_sntx_arbit_rows_fixed_cols (std::string inpt, int cols) {
+    std::string pat = "";
+    std::regex reg;
+
+    pat += "^"
+           "\\[";
+    pat += "("
+               "[[:space:]]*"
+               "\\["
+                   "("
+                       "[[:space:]]*"
+                       "[^][[:space:],]+"
+                       "[[:space:]]*"
+                   ",)*"
+                   "[[:space:]]*"
+                   "[^][[:space:],]+"
+                   "[[:space:]]*"
+               "\\]"
+               "[[:space:]]*"
+           ",)*";
+    pat += "[[:space:]]*"
+           "\\[";
+    for (int i = 0; i < cols; i++) {
+        pat += "[[:space:]]*"
+               "[^][[:space:],]+"
+               "[[:space:]]*";
+        if (i < cols - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "[[:space:]]*";
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (std::regex_match(inpt, reg)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool mat_sntx_fixed_rows_fixed_cols (std::string inpt, int rows, int cols) {
+    std::string pat = "";
+    std::regex reg;
+
+    pat += "^"
+           "\\[";
+    for (int i = 0; i < rows; i++) {
+        pat += "[[:space:]]*"
+               "\\[";
+        for (int j = 0; j < cols; j++) {
+            pat += "[[:space:]]*"
+                   "[^][[:space:],]+"
+                   "[[:space:]]*";
+            if (j < cols - 1) {
+                pat += ",";
+            }
+        }
+        pat += "\\]"
+               "[[:space:]]*";
+        if (i < rows - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (std::regex_match(inpt, reg)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+template <>
+linalg::ivector vec_parse<linalg::ivector> (std::string inpt, int len) {
+    std::string pat = "";
+    std::regex reg;
+    std::smatch match;
+    std::istringstream istr;
+    linalg::ivector val;
+
+    pat += "^"
+           "\\[";
+    for (int i = 0; i < len; i++) {
+        pat += "[[:space:]]*"
+               "([^][[:space:],]+)"
+               "[[:space:]]*";
+        if (i < len - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (!std::regex_match(inpt, match, reg)) {
+        fail = true;
+        return val;
+    }
+
+    linalg::resize(&val, len);
+    for (int i = 0; i < len; i++) {
+        istr = std::istringstream(match[i + 1]);
+        istr >> std::noskipws >> val[i];
+        if (istr.fail()) {
+            fail = true;
+            return val;
+        } else if (!istr.eof()) {
+            fail = true;
+            return val;
+        }
+    }
+
+    fail = false;
+    return val;
+}
+
+template <>
+linalg::fvector vec_parse<linalg::fvector> (std::string inpt, int len) {
+    std::string pat = "";
+    std::regex reg;
+    std::smatch match;
+    std::istringstream istr;
+    linalg::fvector val;
+
+    pat += "^"
+           "\\[";
+    for (int i = 0; i < len; i++) {
+        pat += "[[:space:]]*"
+               "([^][[:space:],]+)"
+               "[[:space:]]*";
+        if (i < len - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (!std::regex_match(inpt, match, reg)) {
+        fail = true;
+        return val;
+    }
+
+    linalg::resize(&val, len);
+    for (int i = 0; i < len; i++) {
+        istr = std::istringstream(match[i + 1]);
+        istr >> std::noskipws >> val[i];
+        if (istr.fail()) {
+            fail = true;
+            return val;
+        } else if (!istr.eof()) {
+            fail = true;
+            return val;
+        }
+    }
+
+    fail = false;
+    return val;
+}
+
+template <>
+linalg::imatrix mat_parse<linalg::imatrix> (
+    std::string inpt, int rows, int cols
+) {
+    std::string pat = "";
+    std::regex reg;
+    std::smatch match;
+    std::istringstream istr;
+    linalg::imatrix val;
+
+    pat += "^"
+           "\\[";
+    for (int i = 0; i < rows; i++) {
+        pat += "[[:space:]]*"
+               "\\[";
+        for (int j = 0; j < cols; j++) {
+            pat += "[[:space:]]*"
+                   "([^][[:space:],]+)"
+                   "[[:space:]]*";
+            if (j < cols - 1) {
+                pat += ",";
+            }
+        }
+        pat += "\\]"
+               "[[:space:]]*";
+        if (i < rows - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (!std::regex_match(inpt, match, reg)) {
+        fail = true;
+        return val;
+    }
+
+    linalg::resize(&val, rows, cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            istr = std::istringstream(match[i * cols + j + 1]);
+            istr >> std::noskipws >> val[i][j];
+            if (istr.fail()) {
+                fail = true;
+                return val;
+            } else if (!istr.eof()) {
+                fail = true;
+                return val;
+            }
+        }
+    }
+
+    fail = false;
+    return val;
+}
+
+template <>
+linalg::fmatrix mat_parse<linalg::fmatrix> (
+    std::string inpt, int rows, int cols
+) {
+    std::string pat = "";
+    std::regex reg;
+    std::smatch match;
+    std::istringstream istr;
+    linalg::fmatrix val;
+
+    pat += "^"
+           "\\[";
+    for (int i = 0; i < rows; i++) {
+        pat += "[[:space:]]*"
+               "\\[";
+        for (int j = 0; j < cols; j++) {
+            pat += "[[:space:]]*"
+                   "([^][[:space:],]+)"
+                   "[[:space:]]*";
+            if (j < cols - 1) {
+                pat += ",";
+            }
+        }
+        pat += "\\]"
+               "[[:space:]]*";
+        if (i < rows - 1) {
+            pat += ",";
+        }
+    }
+    pat += "\\]"
+           "$";
+
+    reg.assign(pat, std::regex_constants::extended);
+    if (!std::regex_match(inpt, match, reg)) {
+        fail = true;
+        return val;
+    }
+
+    linalg::resize(&val, rows, cols);
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            istr = std::istringstream(match[i * cols + j + 1]);
+            istr >> std::noskipws >> val[i][j];
+            if (istr.fail()) {
+                fail = true;
+                return val;
+            } else if (!istr.eof()) {
+                fail = true;
+                return val;
+            }
+        }
+    }
+
+    fail = false;
+    return val;
+}
 
 template <>
 bool conv_inpt_to_val<bool> (std::string inpt) {
@@ -460,6 +1119,106 @@ double conv_inpt_to_val<double> (std::string inpt) {
 }
 
 template <>
+linalg::ivector conv_inpt_to_val<linalg::ivector> (std::string inpt) {
+    int len;
+    linalg::ivector val;
+
+    if (!vec_sntx_arbit_len(inpt)) {
+        fail = true;
+        return val;
+    }
+
+    for (len = 1; !vec_sntx_fixed_len(inpt, len); len++);
+
+    val = vec_parse<linalg::ivector>(inpt, len);
+    if (fail) {
+        fail = true;
+        return val;
+    } else {
+        fail = false;
+        return val;
+    }
+}
+
+template <>
+linalg::fvector conv_inpt_to_val<linalg::fvector> (std::string inpt) {
+    int len;
+    linalg::fvector val;
+
+    if (!vec_sntx_arbit_len(inpt)) {
+        fail = true;
+        return val;
+    }
+
+    for (len = 1; !vec_sntx_fixed_len(inpt, len); len++);
+
+    val = vec_parse<linalg::fvector>(inpt, len);
+    if (fail) {
+        fail = true;
+        return val;
+    } else {
+        fail = false;
+        return val;
+    }
+}
+
+template <>
+linalg::imatrix conv_inpt_to_val<linalg::imatrix> (std::string inpt) {
+    int rows, cols;
+    linalg::imatrix val;
+
+    if (!mat_sntx_arbit_rows_arbit_cols(inpt)) {
+        fail = true;
+        return val;
+    }
+
+    for (rows = 1; !mat_sntx_fixed_rows_arbit_cols(inpt, rows); rows++);
+    for (cols = 1; !mat_sntx_arbit_rows_fixed_cols(inpt, cols); cols++);
+
+    if (!mat_sntx_fixed_rows_fixed_cols(inpt, rows, cols)) {
+        fail = true;
+        return val;
+    }
+
+    val = mat_parse<linalg::imatrix>(inpt, rows, cols);
+    if (fail) {
+        fail = true;
+        return val;
+    } else {
+        fail = false;
+        return val;
+    }
+}
+
+template <>
+linalg::fmatrix conv_inpt_to_val<linalg::fmatrix> (std::string inpt) {
+    int rows, cols;
+    linalg::fmatrix val;
+
+    if (!mat_sntx_arbit_rows_arbit_cols(inpt)) {
+        fail = true;
+        return val;
+    }
+
+    for (rows = 1; !mat_sntx_fixed_rows_arbit_cols(inpt, rows); rows++);
+    for (cols = 1; !mat_sntx_arbit_rows_fixed_cols(inpt, cols); cols++);
+
+    if (!mat_sntx_fixed_rows_fixed_cols(inpt, rows, cols)) {
+        fail = true;
+        return val;
+    }
+
+    val = mat_parse<linalg::fmatrix>(inpt, rows, cols);
+    if (fail) {
+        fail = true;
+        return val;
+    } else {
+        fail = false;
+        return val;
+    }
+}
+
+template <>
 std::string conv_val_to_oupt<bool> (bool val) {
     std::string oupt;
     if (val) {
@@ -494,6 +1253,94 @@ std::string conv_val_to_oupt<double> (double val) {
     std::string oupt;
 
     ostr << std::showpos << std::scientific << std::setprecision(2) << val;
+    oupt = ostr.str();
+
+    return oupt;
+}
+
+template <>
+std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val) {
+    std::ostringstream ostr;
+    std::string oupt;
+
+    ostr << "[";
+    for (int i = 0; i < linalg::dim(val); i++) {
+        ostr << std::showpos << val[i];
+        if (i < linalg::dim(val) - 1) {
+            ostr << ", ";
+        }
+    }
+    ostr << "]";
+    oupt = ostr.str();
+
+    return oupt;
+}
+
+template <>
+std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val) {
+    std::ostringstream ostr;
+    std::string oupt;
+
+    ostr << "[";
+    for (int i = 0; i < linalg::dim(val); i++) {
+        ostr << std::showpos << std::scientific << std::setprecision(2)
+             << val[i];
+        if (i < linalg::dim(val) - 1) {
+            ostr << ", ";
+        }
+    }
+    ostr << "]";
+    oupt = ostr.str();
+
+    return oupt;
+}
+
+template <>
+std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val) {
+    std::ostringstream ostr;
+    std::string oupt;
+
+    ostr << "[";
+    for (int i = 0; i < linalg::rows(val); i++) {
+        ostr << "[";
+        for (int j = 0; j < linalg::cols(val); j++) {
+            ostr << std::showpos << val[i][j];
+            if (j < linalg::cols(val) - 1) {
+                ostr << ", ";
+            }
+        }
+        ostr << "]";
+        if (i < linalg::rows(val) - 1) {
+            ostr << ", ";
+        }
+    }
+    ostr << "]";
+    oupt = ostr.str();
+
+    return oupt;
+}
+
+template <>
+std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val) {
+    std::ostringstream ostr;
+    std::string oupt;
+
+    ostr << "[";
+    for (int i = 0; i < linalg::rows(val); i++) {
+        ostr << "[";
+        for (int j = 0; j < linalg::cols(val); j++) {
+            ostr << std::showpos << std::scientific << std::setprecision(2)
+                 << val[i][j];
+            if (j < linalg::cols(val) - 1) {
+                ostr << ", ";
+            }
+        }
+        ostr << "]";
+        if (i < linalg::rows(val) - 1) {
+            ostr << ", ";
+        }
+    }
+    ostr << "]";
     oupt = ostr.str();
 
     return oupt;

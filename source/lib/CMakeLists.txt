@@ -30,4 +30,4 @@ lib_lnk(math_randn m math_linalg)
 
 lib_lnk(sys_config math_linalg sys_logging)
 
-lib_lnk(ui_term sys_logging)
+lib_lnk(ui_term math_linalg sys_logging)

@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <math/linalg.hpp>
+
 namespace term {
 
 typedef enum {
@@ -59,6 +61,18 @@ int scan<int> (void);
 
 template <>
 double scan<double> (void);
+
+template <>
+linalg::ivector scan<linalg::ivector> (void);
+
+template <>
+linalg::fvector scan<linalg::fvector> (void);
+
+template <>
+linalg::imatrix scan<linalg::imatrix> (void);
+
+template <>
+linalg::fmatrix scan<linalg::fmatrix> (void);
 
 }
 
