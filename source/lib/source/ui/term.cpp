@@ -1077,7 +1077,46 @@ bool conv_inpt_to_val<bool> (std::string inpt) {
 
 template <>
 std::string conv_inpt_to_val<std::string> (std::string inpt) {
-    std::string val = inpt;
+    bool escap = false;
+    std::string val;
+
+    if (inpt.size() < 2) {
+        fail = true;
+        return val;
+    }
+
+    if (inpt[0] != '"' || inpt[inpt.size() - 1] != '"') {
+        fail = true;
+        return val;
+    }
+
+    val = "";
+    for (auto i = 1; i < inpt.size() - 1; i++) {
+        if (escap) {
+            escap = false;
+            if (inpt[i] == '\\' || inpt[i] == '"') {
+                val += inpt[i];
+            } else {
+                fail = true;
+                return val;
+            }
+        } else {
+            if (inpt[i] == '\\') {
+                escap = true;
+            } else if (inpt[i] == '"') {
+                fail = true;
+                return val;
+            } else {
+                val += inpt[i];
+            }
+        }
+    }
+
+    if (escap) {
+        fail = true;
+        return val;
+    }
+
     fail = false;
     return val;
 }

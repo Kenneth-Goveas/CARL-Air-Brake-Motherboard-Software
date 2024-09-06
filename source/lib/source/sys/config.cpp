@@ -903,11 +903,11 @@ linalg::fmatrix mat_parse<linalg::fmatrix> (
 template <>
 bool conv_inpt_to_val<bool> (std::string inpt) {
     bool val;
-    if (inpt == "true") {
+    if (inpt == "yes") {
         val = true;
         fail = false;
         return val;
-    } else if (inpt == "false") {
+    } else if (inpt == "no") {
         val = false;
         fail = false;
         return val;
