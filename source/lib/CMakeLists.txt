@@ -21,6 +21,7 @@ lib(sys_config sys config)
 
 lib(ui_terminal ui terminal)
 lib(ui_input ui input)
+lib(ui_output ui output)
 
 lib_lnk(math_lapack blas lapack)
 
@@ -34,3 +35,5 @@ lib_lnk(sys_config math_linalg sys_logging)
 lib_lnk(ui_terminal sys_logging)
 
 lib_lnk(ui_input math_linalg sys_logging)
+
+lib_lnk(ui_output math_linalg sys_logging)
