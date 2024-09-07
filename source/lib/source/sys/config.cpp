@@ -103,32 +103,14 @@ linalg::imatrix conv_inpt_to_val<linalg::imatrix> (std::string inpt);
 template <>
 linalg::fmatrix conv_inpt_to_val<linalg::fmatrix> (std::string inpt);
 
-template <typename type>
-std::string conv_val_to_oupt (type val);
-
-template <>
-std::string conv_val_to_oupt<bool> (bool val);
-
-template <>
-std::string conv_val_to_oupt<std::string> (std::string val);
-
-template <>
-std::string conv_val_to_oupt<int> (int val);
-
-template <>
-std::string conv_val_to_oupt<double> (double val);
-
-template <>
-std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val);
-
-template <>
-std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val);
-
-template <>
-std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val);
-
-template <>
-std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val);
+std::string conv_val_to_oupt (bool val);
+std::string conv_val_to_oupt (std::string val);
+std::string conv_val_to_oupt (int val);
+std::string conv_val_to_oupt (double val);
+std::string conv_val_to_oupt (linalg::ivector val);
+std::string conv_val_to_oupt (linalg::fvector val);
+std::string conv_val_to_oupt (linalg::imatrix val);
+std::string conv_val_to_oupt (linalg::fmatrix val);
 
 template <typename type>
 std::string param (std::string name, std::string inpt);
@@ -1099,8 +1081,7 @@ linalg::fmatrix conv_inpt_to_val<linalg::fmatrix> (std::string inpt) {
     }
 }
 
-template <>
-std::string conv_val_to_oupt<bool> (bool val) {
+std::string conv_val_to_oupt (bool val) {
     std::string oupt;
     if (val) {
         oupt = "True";
@@ -1110,15 +1091,13 @@ std::string conv_val_to_oupt<bool> (bool val) {
     return oupt;
 }
 
-template <>
-std::string conv_val_to_oupt<std::string> (std::string val) {
+std::string conv_val_to_oupt (std::string val) {
     std::string oupt;
     oupt = std::string("“") + val + std::string("”");
     return oupt;
 }
 
-template <>
-std::string conv_val_to_oupt<int> (int val) {
+std::string conv_val_to_oupt (int val) {
     std::ostringstream ostr;
     std::string oupt;
 
@@ -1128,8 +1107,7 @@ std::string conv_val_to_oupt<int> (int val) {
     return oupt;
 }
 
-template <>
-std::string conv_val_to_oupt<double> (double val) {
+std::string conv_val_to_oupt (double val) {
     std::ostringstream ostr;
     std::string oupt;
 
@@ -1139,8 +1117,7 @@ std::string conv_val_to_oupt<double> (double val) {
     return oupt;
 }
 
-template <>
-std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val) {
+std::string conv_val_to_oupt (linalg::ivector val) {
     std::ostringstream ostr;
     std::string oupt;
 
@@ -1157,8 +1134,7 @@ std::string conv_val_to_oupt<linalg::ivector> (linalg::ivector val) {
     return oupt;
 }
 
-template <>
-std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val) {
+std::string conv_val_to_oupt (linalg::fvector val) {
     std::ostringstream ostr;
     std::string oupt;
 
@@ -1176,8 +1152,7 @@ std::string conv_val_to_oupt<linalg::fvector> (linalg::fvector val) {
     return oupt;
 }
 
-template <>
-std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val) {
+std::string conv_val_to_oupt (linalg::imatrix val) {
     std::ostringstream ostr;
     std::string oupt;
 
@@ -1201,8 +1176,7 @@ std::string conv_val_to_oupt<linalg::imatrix> (linalg::imatrix val) {
     return oupt;
 }
 
-template <>
-std::string conv_val_to_oupt<linalg::fmatrix> (linalg::fmatrix val) {
+std::string conv_val_to_oupt (linalg::fmatrix val) {
     std::ostringstream ostr;
     std::string oupt;
 
