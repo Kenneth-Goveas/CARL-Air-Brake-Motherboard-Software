@@ -330,7 +330,7 @@ fvector & fvector :: operator *= (double scl) {
 }
 
 fvector & fvector :: operator /= (double scl) {
-    if (!(is_finite(*this) && is_finite(scl) && scl != 0)) {
+    if (!(is_finite(*this) && is_finite(scl) && is_neq(scl, 0))) {
         std::raise(SIGFPE);
     }
     for (int i = 0; i < this->dim; i++) {
@@ -400,7 +400,7 @@ fmatrix & fmatrix :: operator *= (double scl) {
 }
 
 fmatrix & fmatrix :: operator /= (double scl) {
-    if (!(is_finite(*this) && is_finite(scl) && scl != 0)) {
+    if (!(is_finite(*this) && is_finite(scl) && is_neq(scl, 0))) {
         std::raise(SIGFPE);
     }
     for (int i = 0; i < this->rows; i++) {
@@ -1316,7 +1316,7 @@ fvector operator * (double scl, const fvector & vec) {
 
 fvector operator / (const fvector & vec, double scl) {
     fvector res;
-    if (!(is_finite(vec) && is_finite(scl) && scl != 0)) {
+    if (!(is_finite(vec) && is_finite(scl) && is_neq(scl, 0))) {
         std::raise(SIGFPE);
     }
     resize(&res, vec.dim);
@@ -1393,7 +1393,7 @@ fmatrix operator * (double scl, const fmatrix & mat) {
 
 fmatrix operator / (const fmatrix & mat, double scl) {
     fmatrix res;
-    if (!(is_finite(mat) && is_finite(scl) && scl != 0)) {
+    if (!(is_finite(mat) && is_finite(scl) && is_neq(scl, 0))) {
         std::raise(SIGFPE);
     }
     resize(&res, mat.rows, mat.cols);
