@@ -117,7 +117,7 @@ bool eof (void) {
 
 template <>
 bool scan<bool> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     bool val;
 
     logging::inf(intern::mod,
@@ -136,6 +136,10 @@ bool scan<bool> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as boolean"
     );
 
@@ -143,12 +147,17 @@ bool scan<bool> (void) {
     val = intern::conv_inpt_to_val<bool>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as boolean (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as boolean: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
@@ -157,7 +166,7 @@ bool scan<bool> (void) {
 
 template <>
 std::string scan<std::string> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     std::string val;
 
     logging::inf(intern::mod,
@@ -176,6 +185,10 @@ std::string scan<std::string> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as string"
     );
 
@@ -183,12 +196,17 @@ std::string scan<std::string> (void) {
     val = intern::conv_inpt_to_val<std::string>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as string (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as string: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
@@ -197,7 +215,7 @@ std::string scan<std::string> (void) {
 
 template <>
 int scan<int> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     int val;
 
     logging::inf(intern::mod,
@@ -216,6 +234,10 @@ int scan<int> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as integer scalar"
     );
 
@@ -223,12 +245,17 @@ int scan<int> (void) {
     val = intern::conv_inpt_to_val<int>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as integer scalar (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as integer scalar: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
@@ -237,7 +264,7 @@ int scan<int> (void) {
 
 template <>
 double scan<double> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     double val;
 
     logging::inf(intern::mod,
@@ -256,6 +283,10 @@ double scan<double> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as floating point scalar"
     );
 
@@ -263,12 +294,17 @@ double scan<double> (void) {
     val = intern::conv_inpt_to_val<double>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as floating point scalar (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as floating point scalar: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
@@ -277,7 +313,7 @@ double scan<double> (void) {
 
 template <>
 linalg::ivector scan<linalg::ivector> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     linalg::ivector val;
 
     logging::inf(intern::mod,
@@ -296,6 +332,10 @@ linalg::ivector scan<linalg::ivector> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as integer vector"
     );
 
@@ -303,12 +343,17 @@ linalg::ivector scan<linalg::ivector> (void) {
     val = intern::conv_inpt_to_val<linalg::ivector>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as integer vector (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as integer vector: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
@@ -317,7 +362,7 @@ linalg::ivector scan<linalg::ivector> (void) {
 
 template <>
 linalg::fvector scan<linalg::fvector> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     linalg::fvector val;
 
     logging::inf(intern::mod,
@@ -336,6 +381,10 @@ linalg::fvector scan<linalg::fvector> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as floating point vector"
     );
 
@@ -343,12 +392,17 @@ linalg::fvector scan<linalg::fvector> (void) {
     val = intern::conv_inpt_to_val<linalg::fvector>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as floating point vector (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as floating point vector: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
@@ -357,7 +411,7 @@ linalg::fvector scan<linalg::fvector> (void) {
 
 template <>
 linalg::imatrix scan<linalg::imatrix> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     linalg::imatrix val;
 
     logging::inf(intern::mod,
@@ -376,6 +430,10 @@ linalg::imatrix scan<linalg::imatrix> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as integer matrix"
     );
 
@@ -383,12 +441,17 @@ linalg::imatrix scan<linalg::imatrix> (void) {
     val = intern::conv_inpt_to_val<linalg::imatrix>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as integer matrix (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as integer matrix: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
@@ -397,7 +460,7 @@ linalg::imatrix scan<linalg::imatrix> (void) {
 
 template <>
 linalg::fmatrix scan<linalg::fmatrix> (void) {
-    std::string inpt;
+    std::string inpt, oupt;
     linalg::fmatrix val;
 
     logging::inf(intern::mod,
@@ -416,6 +479,10 @@ linalg::fmatrix scan<linalg::fmatrix> (void) {
     }
 
     logging::inf(intern::mod,
+        "Received user input: “", inpt, "”"
+    );
+
+    logging::inf(intern::mod,
         "Parsing user input as floating point matrix"
     );
 
@@ -423,12 +490,17 @@ linalg::fmatrix scan<linalg::fmatrix> (void) {
     val = intern::conv_inpt_to_val<linalg::fmatrix>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input (Syntax error)"
+            "Failed to parse user input as floating point matrix (Syntax error)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     }
+
+    oupt = intern::conv_val_to_oupt(val);
+    logging::inf(intern::mod,
+        "Parsed user input as floating point matrix: Value: ", oupt
+    );
 
     intern::fail = false;
     intern::eof = false;
