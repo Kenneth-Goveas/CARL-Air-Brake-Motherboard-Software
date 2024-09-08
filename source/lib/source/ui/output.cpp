@@ -139,6 +139,19 @@ void print (linalg::fmatrix val) {
     std::cout.flush();
 }
 
+void print (const char * val) {
+    std::string oupt, disp;
+
+    oupt = intern::conv_val_to_oupt(std::string(val));
+    logging::inf(intern::mod,
+        "Printing string: Value: ", oupt
+    );
+
+    disp = intern::conv_val_to_disp(std::string(val));
+    std::cout << disp;
+    std::cout.flush();
+}
+
 }
 
 namespace output :: intern {

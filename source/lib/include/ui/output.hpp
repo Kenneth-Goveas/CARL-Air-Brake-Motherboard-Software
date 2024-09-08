@@ -15,6 +15,7 @@ void print (linalg::ivector val);
 void print (linalg::fvector val);
 void print (linalg::imatrix val);
 void print (linalg::fmatrix val);
+void print (const char * val);
 
 }
 
