@@ -13,27 +13,25 @@ function(lib_lnk libname)
 endfunction()
 
 lib(math_lapack math lapack)
-lib(math_linalg math linalg)
-lib(math_randn math randn)
-
-lib(sys_logging sys logging)
-lib(sys_config sys config)
-
-lib(ui_terminal ui terminal)
-lib(ui_input ui input)
-lib(ui_output ui output)
-
 lib_lnk(math_lapack blas lapack)
 
-lib_def(math_linalg _POSIX_C_SOURCE=200112L)
+lib(math_linalg math linalg)
 lib_lnk(math_linalg m math_lapack)
+lib_def(math_linalg _POSIX_C_SOURCE=200112L)
 
+lib(math_randn math randn)
 lib_lnk(math_randn m math_linalg)
 
+lib(sys_logging sys logging)
+
+lib(sys_config sys config)
 lib_lnk(sys_config math_linalg sys_logging)
 
+lib(ui_terminal ui terminal)
 lib_lnk(ui_terminal sys_logging)
 
+lib(ui_input ui input)
 lib_lnk(ui_input math_linalg sys_logging)
 
+lib(ui_output ui output)
 lib_lnk(ui_output math_linalg sys_logging)
