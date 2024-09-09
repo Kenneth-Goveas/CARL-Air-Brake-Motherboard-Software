@@ -35,3 +35,6 @@ lib_lnk(ui_input math_linalg sys_logging)
 
 lib(ui_output ui output)
 lib_lnk(ui_output math_linalg sys_logging)
+
+lib(ui_panel ui panel)
+lib_lnk(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
