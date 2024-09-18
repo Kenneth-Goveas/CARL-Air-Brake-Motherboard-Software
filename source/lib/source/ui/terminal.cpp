@@ -22,6 +22,14 @@ bool fail (void) {
     return intern::fail;
 }
 
+void newline (void) {
+    logging::inf(intern::mod,
+        "Moving to next line"
+    );
+
+    std::cout << std::endl;
+}
+
 void erase_line (void) {
     logging::inf(intern::mod,
         "Erasing line"

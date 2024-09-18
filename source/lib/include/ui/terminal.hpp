@@ -24,6 +24,8 @@ typedef enum {
 
 bool fail (void);
 
+void newline (void);
+
 void erase_line (void);
 void erase_screen (void);
 
