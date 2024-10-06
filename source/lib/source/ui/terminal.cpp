@@ -24,7 +24,7 @@ bool fail (void) {
 
 void newline (void) {
     logging::inf(intern::mod,
-        "Moving to next line"
+        "Entering new line"
     );
 
     std::cout << std::endl;

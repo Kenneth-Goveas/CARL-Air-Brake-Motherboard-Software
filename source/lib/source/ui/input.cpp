@@ -103,13 +103,17 @@ bool scan<bool> (void) {
     bool val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: Boolean"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -118,18 +122,21 @@ bool scan<bool> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as boolean"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<bool>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as boolean (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -138,7 +145,7 @@ bool scan<bool> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as boolean: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;
@@ -152,13 +159,17 @@ std::string scan<std::string> (void) {
     std::string val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: String"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -167,18 +178,21 @@ std::string scan<std::string> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as string"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<std::string>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as string (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -187,7 +201,7 @@ std::string scan<std::string> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as string: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;
@@ -201,13 +215,17 @@ int scan<int> (void) {
     int val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: Integer scalar"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -216,18 +234,21 @@ int scan<int> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as integer scalar"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<int>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as integer scalar (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -236,7 +257,7 @@ int scan<int> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as integer scalar: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;
@@ -250,13 +271,17 @@ double scan<double> (void) {
     double val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: Real scalar"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -265,18 +290,21 @@ double scan<double> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as floating point scalar"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<double>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as floating point scalar (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -285,7 +313,7 @@ double scan<double> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as floating point scalar: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;
@@ -299,13 +327,17 @@ linalg::ivector scan<linalg::ivector> (void) {
     linalg::ivector val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: Integer vector"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -314,18 +346,21 @@ linalg::ivector scan<linalg::ivector> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as integer vector"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<linalg::ivector>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as integer vector (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -334,7 +369,7 @@ linalg::ivector scan<linalg::ivector> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as integer vector: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;
@@ -348,13 +383,17 @@ linalg::fvector scan<linalg::fvector> (void) {
     linalg::fvector val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: Real vector"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -363,18 +402,21 @@ linalg::fvector scan<linalg::fvector> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as floating point vector"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<linalg::fvector>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as floating point vector (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -383,7 +425,7 @@ linalg::fvector scan<linalg::fvector> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as floating point vector: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;
@@ -397,13 +439,17 @@ linalg::imatrix scan<linalg::imatrix> (void) {
     linalg::imatrix val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: Integer matrix"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -412,18 +458,21 @@ linalg::imatrix scan<linalg::imatrix> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as integer matrix"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<linalg::imatrix>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as integer matrix (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -432,7 +481,7 @@ linalg::imatrix scan<linalg::imatrix> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as integer matrix: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;
@@ -446,13 +495,17 @@ linalg::fmatrix scan<linalg::fmatrix> (void) {
     linalg::fmatrix val;
 
     logging::inf(intern::mod,
-        "Waiting for user input"
+        "Scanning input: Type: Real matrix"
+    );
+
+    logging::inf(intern::mod,
+        "Waiting for input"
     );
 
     std::getline(std::cin, inpt);
     if (std::cin.eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         std::cin.clear();
         intern::fail = false;
@@ -461,18 +514,21 @@ linalg::fmatrix scan<linalg::fmatrix> (void) {
     }
 
     logging::inf(intern::mod,
-        "Received user input: “", inpt, "”"
+        "Received input: “", inpt, "”"
     );
 
     logging::inf(intern::mod,
-        "Parsing user input as floating point matrix"
+        "Parsing input"
     );
 
     inpt = intern::strip(inpt);
     val = intern::conv_inpt_to_val<linalg::fmatrix>(inpt);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to parse user input as floating point matrix (Syntax error)"
+            "Failed to parse input (Syntax error)"
+        );
+        logging::err(intern::mod,
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -481,7 +537,7 @@ linalg::fmatrix scan<linalg::fmatrix> (void) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Parsed user input as floating point matrix: Value: ", oupt
+        "Parsed input: Value: ", oupt
     );
 
     intern::fail = false;

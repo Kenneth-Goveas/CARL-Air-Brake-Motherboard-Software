@@ -40,7 +40,7 @@ void print (bool val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing boolean: Value: ", oupt
+        "Printing output: Type: Boolean, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -53,7 +53,7 @@ void print (std::string val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing string: Value: ", oupt
+        "Printing output: Type: String, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -66,7 +66,7 @@ void print (int val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer scalar: Value: ", oupt
+        "Printing output: Type: Integer scalar, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -79,7 +79,7 @@ void print (double val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point scalar: Value: ", oupt
+        "Printing output: Type: Real scalar, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -92,7 +92,7 @@ void print (linalg::ivector val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer vector: Value: ", oupt
+        "Printing output: Type: Integer vector, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -105,7 +105,7 @@ void print (linalg::fvector val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point vector: Value: ", oupt
+        "Printing output: Type: Real vector, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -118,7 +118,7 @@ void print (linalg::imatrix val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer matrix: Value: ", oupt
+        "Printing output: Type: Integer matrix, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -131,7 +131,7 @@ void print (linalg::fmatrix val) {
 
     oupt = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point matrix: Value: ", oupt
+        "Printing output: Type: Real matrix, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(val);
@@ -144,7 +144,7 @@ void print (const char * val) {
 
     oupt = intern::conv_val_to_oupt(std::string(val));
     logging::inf(intern::mod,
-        "Printing string: Value: ", oupt
+        "Printing output: Type: String, Value: ", oupt
     );
 
     disp = intern::conv_val_to_disp(std::string(val));

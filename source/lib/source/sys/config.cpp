@@ -159,7 +159,11 @@ void init (std::string path) {
     std::string line;
 
     logging::inf(intern::mod,
-        "Opening config file: ", path
+        "Loading parameters from config file: Path: “", path, "”"
+    );
+
+    logging::inf(intern::mod,
+        "Opening config file"
     );
 
     file.open(path);
@@ -168,23 +172,28 @@ void init (std::string path) {
             "Failed to open config file ",
             "(", std::strerror(errno), ")"
         );
+        logging::err(intern::mod,
+            "Failed to load parameters from config file"
+        );
         intern::fail = true;
         return;
     }
 
-    logging::inf(intern::mod,
-        "Parsing config file"
-    );
-
     while (true) {
+        logging::inf(intern::mod,
+            "Reading line from config file"
+        );
         std::getline(file, line);
         if (file.fail()) {
             if (file.eof()) {
+                logging::inf(intern::mod,
+                    "No more lines in config file"
+                );
                 file.clear();
                 break;
             } else {
                 logging::err(intern::mod,
-                    "Failed to read config file ",
+                    "Failed to read line from config file ",
                     "(", std::strerror(errno), ")"
                 );
                 logging::wrn(intern::mod,
@@ -198,15 +207,18 @@ void init (std::string path) {
                         "(", std::strerror(errno), ")"
                     );
                 }
+                logging::err(intern::mod,
+                    "Failed to load parameters from config file"
+                );
                 intern::fail = true;
                 return;
             }
         } else {
+            logging::inf(intern::mod,
+                "Read line from config file: Line: “", line, "”"
+            );
             intern::parse(line);
             if (intern::fail) {
-                logging::err(intern::mod,
-                    "Failed to parse config file"
-                );
                 logging::wrn(intern::mod,
                     "Closing config file"
                 );
@@ -217,6 +229,9 @@ void init (std::string path) {
                         "(", std::strerror(errno), ")"
                     );
                 }
+                logging::err(intern::mod,
+                    "Failed to load parameters from config file"
+                );
                 intern::fail = true;
                 return;
             }
@@ -233,6 +248,9 @@ void init (std::string path) {
             "Failed to close config file ",
             "(", std::strerror(errno), ")"
         );
+        logging::err(intern::mod,
+            "Failed to load parameters from config file"
+        );
         intern::fail = true;
         return;
     }
@@ -246,7 +264,7 @@ bool get<bool> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting boolean parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: Boolean"
     );
 
     for (auto i = 0; i < intern::name_bool.size(); i++) {
@@ -254,7 +272,7 @@ bool get<bool> (std::string name) {
             val = intern::val_bool[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got boolean parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -262,7 +280,7 @@ bool get<bool> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get boolean parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -275,7 +293,7 @@ std::string get<std::string> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting string parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: String"
     );
 
     for (auto i = 0; i < intern::name_str.size(); i++) {
@@ -283,7 +301,7 @@ std::string get<std::string> (std::string name) {
             val = intern::val_str[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got string parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -291,7 +309,7 @@ std::string get<std::string> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get string parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -304,7 +322,7 @@ int get<int> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting integer scalar parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: Integer scalar"
     );
 
     for (auto i = 0; i < intern::name_iscl.size(); i++) {
@@ -312,7 +330,7 @@ int get<int> (std::string name) {
             val = intern::val_iscl[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got integer scalar parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -320,7 +338,7 @@ int get<int> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get integer scalar parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -333,7 +351,7 @@ double get<double> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting floating point scalar parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: Real scalar"
     );
 
     for (auto i = 0; i < intern::name_fscl.size(); i++) {
@@ -341,7 +359,7 @@ double get<double> (std::string name) {
             val = intern::val_fscl[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got floating point scalar parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -349,7 +367,7 @@ double get<double> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get floating point scalar parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -362,7 +380,7 @@ linalg::ivector get<linalg::ivector> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting integer vector parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: Integer vector"
     );
 
     for (auto i = 0; i < intern::name_ivec.size(); i++) {
@@ -370,7 +388,7 @@ linalg::ivector get<linalg::ivector> (std::string name) {
             val = intern::val_ivec[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got integer vector parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -378,7 +396,7 @@ linalg::ivector get<linalg::ivector> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get integer vector parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -391,7 +409,7 @@ linalg::fvector get<linalg::fvector> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting floating point vector parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: Real vector"
     );
 
     for (auto i = 0; i < intern::name_fvec.size(); i++) {
@@ -399,7 +417,7 @@ linalg::fvector get<linalg::fvector> (std::string name) {
             val = intern::val_fvec[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got floating point vector parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -407,7 +425,7 @@ linalg::fvector get<linalg::fvector> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get floating point vector parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -420,7 +438,7 @@ linalg::imatrix get<linalg::imatrix> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting integer matrix parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: Integer matrix"
     );
 
     for (auto i = 0; i < intern::name_imat.size(); i++) {
@@ -428,7 +446,7 @@ linalg::imatrix get<linalg::imatrix> (std::string name) {
             val = intern::val_imat[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got integer matrix parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -436,7 +454,7 @@ linalg::imatrix get<linalg::imatrix> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get integer matrix parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -449,7 +467,7 @@ linalg::fmatrix get<linalg::fmatrix> (std::string name) {
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting floating point matrix parameter: Name: “", name, "”"
+        "Getting parameter: Name: “", name, "”, Type: Real matrix"
     );
 
     for (auto i = 0; i < intern::name_fmat.size(); i++) {
@@ -457,7 +475,7 @@ linalg::fmatrix get<linalg::fmatrix> (std::string name) {
             val = intern::val_fmat[i];
             oupt = intern::conv_val_to_oupt(val);
             logging::inf(intern::mod,
-                "Got floating point matrix parameter: Value: ", oupt
+                "Got parameter: Value: ", oupt
             );
             intern::fail = false;
             return val;
@@ -465,7 +483,7 @@ linalg::fmatrix get<linalg::fmatrix> (std::string name) {
     }
 
     logging::err(intern::mod,
-        "Failed to get floating point matrix parameter (Name not found)"
+        "Failed to get parameter (Name not found)"
     );
 
     intern::fail = true;
@@ -1439,7 +1457,7 @@ void parse (std::string line) {
     std::string name, inpt, oupt;
 
     logging::inf(mod,
-        "Parsing line: “", line, "”"
+        "Parsing line"
     );
 
     line = strip(line);
@@ -1475,8 +1493,8 @@ void parse (std::string line) {
     oupt = param<bool>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as boolean parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: Boolean, Value: ", oupt
         );
         fail = false;
         return;
@@ -1485,8 +1503,8 @@ void parse (std::string line) {
     oupt = param<std::string>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as string parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: String, Value: ", oupt
         );
         fail = false;
         return;
@@ -1495,8 +1513,8 @@ void parse (std::string line) {
     oupt = param<int>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as integer scalar parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: Integer scalar, Value: ", oupt
         );
         fail = false;
         return;
@@ -1505,8 +1523,8 @@ void parse (std::string line) {
     oupt = param<double>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as floating point scalar parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: Real scalar, Value: ", oupt
         );
         fail = false;
         return;
@@ -1515,8 +1533,8 @@ void parse (std::string line) {
     oupt = param<linalg::ivector>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as integer vector parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: Integer vector, Value: ", oupt
         );
         fail = false;
         return;
@@ -1525,8 +1543,8 @@ void parse (std::string line) {
     oupt = param<linalg::fvector>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as floating point vector parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: Real vector, Value: ", oupt
         );
         fail = false;
         return;
@@ -1535,8 +1553,8 @@ void parse (std::string line) {
     oupt = param<linalg::imatrix>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as integer matrix parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: Integer matrix, Value: ", oupt
         );
         fail = false;
         return;
@@ -1545,8 +1563,8 @@ void parse (std::string line) {
     oupt = param<linalg::fmatrix>(name, inpt);
     if (!fail) {
         logging::inf(mod,
-            "Parsed line as floating point matrix parameter: ",
-            "Name: “", name, "”, Value: ", oupt
+            "Parsed line as parameter: ",
+            "Name: “", name, "”, Type: Real matrix, Value: ", oupt
         );
         fail = false;
         return;

@@ -131,19 +131,20 @@ void print (terminal::color clr, int id, int row, int col, bool val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing boolean on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: Boolean, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print boolean on panel #", id, " (Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print boolean on panel #", id, " (Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -165,19 +166,20 @@ void print (terminal::color clr, int id, int row, int col, std::string val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing string on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: String, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print string on panel #", id, " (Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print string on panel #", id, " (Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -199,21 +201,20 @@ void print (terminal::color clr, int id, int row, int col, int val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer scalar on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: Integer scalar, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print integer scalar on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print integer scalar on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -235,22 +236,20 @@ void print (terminal::color clr, int id, int row, int col, double val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point scalar on panel #", id, ": ",
-        "Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: Real scalar, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print floating point scalar on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print floating point scalar on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -274,21 +273,20 @@ void print (
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer vector on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: Integer vector, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print integer vector on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print integer vector on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -312,22 +310,20 @@ void print (
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point vector on panel #", id, ": ",
-        "Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: Real vector, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print floating point vector on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print floating point vector on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -351,21 +347,20 @@ void print (
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer matrix on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: Integer matrix, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print integer matrix on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print integer matrix on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -389,22 +384,20 @@ void print (
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point matrix on panel #", id, ": ",
-        "Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: Real matrix, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print floating point matrix on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print floating point matrix on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -424,21 +417,22 @@ void print (terminal::color clr, int id, int row, int col, const char * val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
-    oupt_val = intern::conv_val_to_oupt(std::string(val));
+    oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing string on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col, ", Value: ", oupt_val
+        "Printing output on panel #", id, ": ",
+        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Type: String, Value: ", oupt_val
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to print string on panel #", id, " (Panel not found)"
+            "Failed to print output on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         return;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to print string on panel #", id, " (Invalid coordinates)"
+            "Failed to print output on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -461,20 +455,20 @@ bool scan<bool> (terminal::color clr, int id, int row, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning boolean on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: Boolean"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan boolean on panel #", id, " (Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan boolean on panel #", id, " (Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -492,7 +486,7 @@ bool scan<bool> (terminal::color clr, int id, int row, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan boolean on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -501,7 +495,7 @@ bool scan<bool> (terminal::color clr, int id, int row, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -510,7 +504,7 @@ bool scan<bool> (terminal::color clr, int id, int row, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned boolean on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -525,20 +519,20 @@ std::string scan<std::string> (terminal::color clr, int id, int row, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning string on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: String"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan string on panel #", id, " (Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan string on panel #", id, " (Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -556,7 +550,7 @@ std::string scan<std::string> (terminal::color clr, int id, int row, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan string on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -565,7 +559,7 @@ std::string scan<std::string> (terminal::color clr, int id, int row, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -574,7 +568,7 @@ std::string scan<std::string> (terminal::color clr, int id, int row, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned string on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -589,22 +583,20 @@ int scan<int> (terminal::color clr, int id, int row, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning integer scalar on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: Integer scalar"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan integer scalar on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan integer scalar on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -622,7 +614,7 @@ int scan<int> (terminal::color clr, int id, int row, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan integer scalar on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -631,7 +623,7 @@ int scan<int> (terminal::color clr, int id, int row, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -640,7 +632,7 @@ int scan<int> (terminal::color clr, int id, int row, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned integer scalar on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -655,22 +647,20 @@ double scan<double> (terminal::color clr, int id, int row, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning floating point scalar on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: Real scalar"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan floating point scalar on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan floating point scalar on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -688,7 +678,7 @@ double scan<double> (terminal::color clr, int id, int row, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan floating point scalar on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -697,7 +687,7 @@ double scan<double> (terminal::color clr, int id, int row, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -706,7 +696,7 @@ double scan<double> (terminal::color clr, int id, int row, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned floating point scalar on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -723,22 +713,20 @@ linalg::ivector scan<linalg::ivector> (
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning integer vector on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: Integer vector"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan integer vector on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan integer vector on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -756,7 +744,7 @@ linalg::ivector scan<linalg::ivector> (
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan integer vector on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -765,7 +753,7 @@ linalg::ivector scan<linalg::ivector> (
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -774,7 +762,7 @@ linalg::ivector scan<linalg::ivector> (
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned integer vector on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -791,22 +779,20 @@ linalg::fvector scan<linalg::fvector> (
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning floating point vector on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: Real vector"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan floating point vector on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan floating point vector on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -824,7 +810,7 @@ linalg::fvector scan<linalg::fvector> (
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan floating point vector on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -833,7 +819,7 @@ linalg::fvector scan<linalg::fvector> (
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -842,7 +828,7 @@ linalg::fvector scan<linalg::fvector> (
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned floating point vector on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -859,22 +845,20 @@ linalg::imatrix scan<linalg::imatrix> (
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning integer matrix on panel #", id, ": Color: ", oupt_clr, ", ",
-        "Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: Integer matrix"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan integer matrix on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan integer matrix on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -892,7 +876,7 @@ linalg::imatrix scan<linalg::imatrix> (
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan integer matrix on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -901,7 +885,7 @@ linalg::imatrix scan<linalg::imatrix> (
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -910,7 +894,7 @@ linalg::imatrix scan<linalg::imatrix> (
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned integer matrix on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -927,22 +911,20 @@ linalg::fmatrix scan<linalg::fmatrix> (
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning floating point matrix on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col
+        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Row: ", row, ", Col: ", col, ", Type: Real matrix"
     );
 
     if (!(id > 0 && id <= intern::clr.size())) {
         logging::err(intern::mod,
-            "Failed to scan floating point matrix on panel #", id, " ",
-            "(Panel not found)"
+            "Failed to scan input on panel #", id, " (Panel not found)"
         );
         intern::fail = true;
         intern::eof = false;
         return val;
     } else if (!(row > 0 && col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan floating point matrix on panel #", id, " ",
-            "(Invalid coordinates)"
+            "Failed to scan input on panel #", id, " (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -960,7 +942,7 @@ linalg::fmatrix scan<linalg::fmatrix> (
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan floating point matrix on panel #", id
+            "Failed to scan input on panel #", id
         );
         intern::fail = true;
         intern::eof = false;
@@ -969,7 +951,7 @@ linalg::fmatrix scan<linalg::fmatrix> (
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -978,7 +960,7 @@ linalg::fmatrix scan<linalg::fmatrix> (
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned floating point matrix on panel #", id, ": Value: ", oupt_val
+        "Scanned input on panel #", id, ": Value: ", oupt_val
     );
 
     intern::fail = false;

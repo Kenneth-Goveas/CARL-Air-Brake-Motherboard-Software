@@ -44,7 +44,7 @@ bool eof (void) {
 
 void newline (void) {
     logging::inf(intern::mod,
-        "Moving to next line"
+        "Entering new line"
     );
 
     terminal::color_default();
@@ -58,13 +58,13 @@ void print (terminal::color clr, int col, bool val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing boolean: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Boolean, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print boolean (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -83,13 +83,13 @@ void print (terminal::color clr, int col, std::string val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing string: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: String, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print string (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -108,13 +108,13 @@ void print (terminal::color clr, int col, int val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer scalar: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Integer scalar, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print integer scalar (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -133,13 +133,13 @@ void print (terminal::color clr, int col, double val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point scalar: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Real scalar, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print floating point scalar (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -158,13 +158,13 @@ void print (terminal::color clr, int col, linalg::ivector val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer vector: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Integer vector, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print integer vector (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -183,13 +183,13 @@ void print (terminal::color clr, int col, linalg::fvector val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point vector: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Real vector, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print floating point vector (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -208,13 +208,13 @@ void print (terminal::color clr, int col, linalg::imatrix val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing integer matrix: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Integer matrix, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print integer matrix (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -233,13 +233,13 @@ void print (terminal::color clr, int col, linalg::fmatrix val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing floating point matrix: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Real matrix, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print floating point matrix (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -258,13 +258,13 @@ void print (terminal::color clr, int col, const char * val) {
     oupt_clr = intern::conv_color_to_oupt(clr);
     oupt_val = intern::conv_val_to_oupt(std::string(val));
     logging::inf(intern::mod,
-        "Printing string: Color: ", oupt_clr, ", ",
-        "Col: ", col, ", Value: ", oupt_val
+        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: String, Value: ", oupt_val
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to print string (Invalid coordinates)"
+            "Failed to print output (Invalid coordinates)"
         );
         intern::fail = true;
         return;
@@ -284,12 +284,13 @@ bool scan<bool> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning boolean: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Boolean"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan boolean (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -302,7 +303,7 @@ bool scan<bool> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan boolean"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -311,7 +312,7 @@ bool scan<bool> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -320,7 +321,7 @@ bool scan<bool> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned boolean: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -335,12 +336,13 @@ std::string scan<std::string> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning string: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: String"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan string (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -353,7 +355,7 @@ std::string scan<std::string> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan string"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -362,7 +364,7 @@ std::string scan<std::string> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -371,7 +373,7 @@ std::string scan<std::string> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned string: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -386,12 +388,13 @@ int scan<int> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning integer scalar: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Integer scalar"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan integer scalar (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -404,7 +407,7 @@ int scan<int> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan integer scalar"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -413,7 +416,7 @@ int scan<int> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -422,7 +425,7 @@ int scan<int> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned integer scalar: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -437,12 +440,13 @@ double scan<double> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning floating point scalar: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Real scalar"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan floating point scalar (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -455,7 +459,7 @@ double scan<double> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan floating point scalar"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -464,7 +468,7 @@ double scan<double> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -473,7 +477,7 @@ double scan<double> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned floating point scalar: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -488,12 +492,13 @@ linalg::ivector scan<linalg::ivector> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning integer vector: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Integer vector"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan integer vector (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -506,7 +511,7 @@ linalg::ivector scan<linalg::ivector> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan integer vector"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -515,7 +520,7 @@ linalg::ivector scan<linalg::ivector> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -524,7 +529,7 @@ linalg::ivector scan<linalg::ivector> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned integer vector: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -539,12 +544,13 @@ linalg::fvector scan<linalg::fvector> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning floating point vector: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Real vector"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan floating point vector (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -557,7 +563,7 @@ linalg::fvector scan<linalg::fvector> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan floating point vector"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -566,7 +572,7 @@ linalg::fvector scan<linalg::fvector> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -575,7 +581,7 @@ linalg::fvector scan<linalg::fvector> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned floating point vector: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -590,12 +596,13 @@ linalg::imatrix scan<linalg::imatrix> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning integer matrix: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Integer matrix"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan integer matrix (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -608,7 +615,7 @@ linalg::imatrix scan<linalg::imatrix> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan integer matrix"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -617,7 +624,7 @@ linalg::imatrix scan<linalg::imatrix> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -626,7 +633,7 @@ linalg::imatrix scan<linalg::imatrix> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned integer matrix: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
@@ -641,12 +648,13 @@ linalg::fmatrix scan<linalg::fmatrix> (terminal::color clr, int col) {
 
     oupt_clr = intern::conv_color_to_oupt(clr);
     logging::inf(intern::mod,
-        "Scanning floating point matrix: Color: ", oupt_clr, ", Col: ", col
+        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Type: Real matrix"
     );
 
     if (!(col > 0)) {
         logging::err(intern::mod,
-            "Failed to scan floating point matrix (Invalid coordinates)"
+            "Failed to scan input (Invalid coordinates)"
         );
         intern::fail = true;
         intern::eof = false;
@@ -659,7 +667,7 @@ linalg::fmatrix scan<linalg::fmatrix> (terminal::color clr, int col) {
 
     if (input::fail()) {
         logging::err(intern::mod,
-            "Failed to scan floating point matrix"
+            "Failed to scan input"
         );
         intern::fail = true;
         intern::eof = false;
@@ -668,7 +676,7 @@ linalg::fmatrix scan<linalg::fmatrix> (terminal::color clr, int col) {
 
     if (input::eof()) {
         logging::wrn(intern::mod,
-            "No user input supplied"
+            "No input received"
         );
         intern::fail = false;
         intern::eof = true;
@@ -677,7 +685,7 @@ linalg::fmatrix scan<linalg::fmatrix> (terminal::color clr, int col) {
 
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Scanned floating point matrix: Value: ", oupt_val
+        "Scanned input: Value: ", oupt_val
     );
 
     intern::fail = false;
