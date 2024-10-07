@@ -41,3 +41,7 @@ lib_lnk(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
 
 lib(ui_console ui console)
 lib_lnk(ui_console math_linalg sys_logging ui_terminal ui_input ui_output)
+
+lib(ipc_shmem ipc shmem)
+lib_lnk(ipc_shmem rt math_linalg sys_logging)
+lib_def(ipc_shmem _POSIX_C_SOURCE=200112L)
