@@ -1524,11 +1524,7 @@ void remove (std::string name) {
             "Failed to remove shared memory object ",
             "(", std::strerror(errno), ")"
         );
-        intern::fail = true;
-        return;
     }
-
-    intern::fail = false;
 }
 
 int map (std::string name) {
@@ -1655,7 +1651,6 @@ int map (std::string name) {
 void unmap (void) {
     int ret;
 
-    intern::fail = false;
     for (auto i = 0; i < intern::data.size(); i++) {
         logging::inf(intern::mod,
             "Unmapping shared memory object #", i + 1
@@ -1672,7 +1667,6 @@ void unmap (void) {
             logging::err(intern::mod,
                 "Failed to unmap shared memory object #", i + 1
             );
-            intern::fail = true;
         }
     }
 
