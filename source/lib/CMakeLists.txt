@@ -50,6 +50,10 @@ lib_lnk_tgt(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
 lib_add(ui_console ui console)
 lib_lnk_tgt(ui_console math_linalg sys_logging ui_terminal ui_input ui_output)
 
+lib_add(ipc_sema ipc sema)
+lib_lnk_tgt(ipc_sema sys_logging)
+lib_lnk_opt(ipc_sema -pthread)
+
 lib_add(ipc_shmem ipc shmem)
 lib_cmp_def(ipc_shmem _POSIX_C_SOURCE=200112L)
 lib_lnk_tgt(ipc_shmem rt math_linalg sys_logging)
