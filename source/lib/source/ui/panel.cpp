@@ -69,7 +69,7 @@ void deinit (void) {
     terminal::erase_screen();
 }
 
-int draw (terminal::color clr, int row, int col, int hght, int wdth) {
+int open (terminal::color clr, int row, int col, int hght, int wdth) {
     int id = intern::clr.size() + 1;
     std::string oupt_clr, blank = "";
 
@@ -100,7 +100,7 @@ int draw (terminal::color clr, int row, int col, int hght, int wdth) {
     terminal::color_back(clr);
     for (int i = 0; i < hght; i++) {
         terminal::cursor_pos(row + i, col);
-        output::print(blank);
+        output::put(blank);
     }
 
     intern::clr.push_back(clr);
@@ -111,7 +111,7 @@ int draw (terminal::color clr, int row, int col, int hght, int wdth) {
     return id;
 }
 
-void erase (void) {
+void close (void) {
     logging::inf(intern::mod,
         "Erasing panels"
     );
@@ -125,7 +125,7 @@ void erase (void) {
     intern::col.resize(0);
 }
 
-void print (terminal::color clr, int id, int row, int col, bool val) {
+void put (terminal::color clr, int id, int row, int col, bool val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -155,12 +155,12 @@ void print (terminal::color clr, int id, int row, int col, bool val) {
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int id, int row, int col, std::string val) {
+void put (terminal::color clr, int id, int row, int col, std::string val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -190,12 +190,12 @@ void print (terminal::color clr, int id, int row, int col, std::string val) {
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int id, int row, int col, int val) {
+void put (terminal::color clr, int id, int row, int col, int val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -225,12 +225,12 @@ void print (terminal::color clr, int id, int row, int col, int val) {
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int id, int row, int col, double val) {
+void put (terminal::color clr, int id, int row, int col, double val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -260,12 +260,12 @@ void print (terminal::color clr, int id, int row, int col, double val) {
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (
+void put (
     terminal::color clr, int id, int row, int col, linalg::ivector val
 ) {
     std::string oupt_clr, oupt_val;
@@ -297,12 +297,12 @@ void print (
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (
+void put (
     terminal::color clr, int id, int row, int col, linalg::fvector val
 ) {
     std::string oupt_clr, oupt_val;
@@ -334,12 +334,12 @@ void print (
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (
+void put (
     terminal::color clr, int id, int row, int col, linalg::imatrix val
 ) {
     std::string oupt_clr, oupt_val;
@@ -371,12 +371,12 @@ void print (
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (
+void put (
     terminal::color clr, int id, int row, int col, linalg::fmatrix val
 ) {
     std::string oupt_clr, oupt_val;
@@ -408,12 +408,12 @@ void print (
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int id, int row, int col, const char * val) {
+void put (terminal::color clr, int id, int row, int col, const char * val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -443,13 +443,13 @@ void print (terminal::color clr, int id, int row, int col, const char * val) {
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
 template <>
-bool scan<bool> (terminal::color clr, int id, int row, int col) {
+bool get<bool> (terminal::color clr, int id, int row, int col) {
     std::string oupt_clr, oupt_val;
     bool val;
 
@@ -481,7 +481,7 @@ bool scan<bool> (terminal::color clr, int id, int row, int col) {
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<bool>();
+    val = input::get<bool>();
     terminal::cursor_hide();
 
     if (input::fail()) {
@@ -513,7 +513,7 @@ bool scan<bool> (terminal::color clr, int id, int row, int col) {
 }
 
 template <>
-std::string scan<std::string> (terminal::color clr, int id, int row, int col) {
+std::string get<std::string> (terminal::color clr, int id, int row, int col) {
     std::string oupt_clr, oupt_val;
     std::string val;
 
@@ -545,7 +545,7 @@ std::string scan<std::string> (terminal::color clr, int id, int row, int col) {
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<std::string>();
+    val = input::get<std::string>();
     terminal::cursor_hide();
 
     if (input::fail()) {
@@ -577,7 +577,7 @@ std::string scan<std::string> (terminal::color clr, int id, int row, int col) {
 }
 
 template <>
-int scan<int> (terminal::color clr, int id, int row, int col) {
+int get<int> (terminal::color clr, int id, int row, int col) {
     std::string oupt_clr, oupt_val;
     int val;
 
@@ -609,7 +609,7 @@ int scan<int> (terminal::color clr, int id, int row, int col) {
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<int>();
+    val = input::get<int>();
     terminal::cursor_hide();
 
     if (input::fail()) {
@@ -641,7 +641,7 @@ int scan<int> (terminal::color clr, int id, int row, int col) {
 }
 
 template <>
-double scan<double> (terminal::color clr, int id, int row, int col) {
+double get<double> (terminal::color clr, int id, int row, int col) {
     std::string oupt_clr, oupt_val;
     double val;
 
@@ -673,7 +673,7 @@ double scan<double> (terminal::color clr, int id, int row, int col) {
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<double>();
+    val = input::get<double>();
     terminal::cursor_hide();
 
     if (input::fail()) {
@@ -705,7 +705,7 @@ double scan<double> (terminal::color clr, int id, int row, int col) {
 }
 
 template <>
-linalg::ivector scan<linalg::ivector> (
+linalg::ivector get<linalg::ivector> (
     terminal::color clr, int id, int row, int col
 ) {
     std::string oupt_clr, oupt_val;
@@ -739,7 +739,7 @@ linalg::ivector scan<linalg::ivector> (
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<linalg::ivector>();
+    val = input::get<linalg::ivector>();
     terminal::cursor_hide();
 
     if (input::fail()) {
@@ -771,7 +771,7 @@ linalg::ivector scan<linalg::ivector> (
 }
 
 template <>
-linalg::fvector scan<linalg::fvector> (
+linalg::fvector get<linalg::fvector> (
     terminal::color clr, int id, int row, int col
 ) {
     std::string oupt_clr, oupt_val;
@@ -805,7 +805,7 @@ linalg::fvector scan<linalg::fvector> (
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<linalg::fvector>();
+    val = input::get<linalg::fvector>();
     terminal::cursor_hide();
 
     if (input::fail()) {
@@ -837,7 +837,7 @@ linalg::fvector scan<linalg::fvector> (
 }
 
 template <>
-linalg::imatrix scan<linalg::imatrix> (
+linalg::imatrix get<linalg::imatrix> (
     terminal::color clr, int id, int row, int col
 ) {
     std::string oupt_clr, oupt_val;
@@ -871,7 +871,7 @@ linalg::imatrix scan<linalg::imatrix> (
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<linalg::imatrix>();
+    val = input::get<linalg::imatrix>();
     terminal::cursor_hide();
 
     if (input::fail()) {
@@ -903,7 +903,7 @@ linalg::imatrix scan<linalg::imatrix> (
 }
 
 template <>
-linalg::fmatrix scan<linalg::fmatrix> (
+linalg::fmatrix get<linalg::fmatrix> (
     terminal::color clr, int id, int row, int col
 ) {
     std::string oupt_clr, oupt_val;
@@ -937,7 +937,7 @@ linalg::fmatrix scan<linalg::fmatrix> (
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
     terminal::cursor_show();
-    val = input::scan<linalg::fmatrix>();
+    val = input::get<linalg::fmatrix>();
     terminal::cursor_hide();
 
     if (input::fail()) {

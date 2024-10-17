@@ -11,31 +11,31 @@ bool fail (void);
 bool eof (void);
 
 template <typename type>
-type scan (void);
+type get (void);
 
 template <>
-bool scan<bool> (void);
+bool get<bool> (void);
 
 template <>
-std::string scan<std::string> (void);
+std::string get<std::string> (void);
 
 template <>
-int scan<int> (void);
+int get<int> (void);
 
 template <>
-double scan<double> (void);
+double get<double> (void);
 
 template <>
-linalg::ivector scan<linalg::ivector> (void);
+linalg::ivector get<linalg::ivector> (void);
 
 template <>
-linalg::fvector scan<linalg::fvector> (void);
+linalg::fvector get<linalg::fvector> (void);
 
 template <>
-linalg::imatrix scan<linalg::imatrix> (void);
+linalg::imatrix get<linalg::imatrix> (void);
 
 template <>
-linalg::fmatrix scan<linalg::fmatrix> (void);
+linalg::fmatrix get<linalg::fmatrix> (void);
 
 }
 

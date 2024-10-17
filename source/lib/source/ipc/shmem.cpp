@@ -83,7 +83,7 @@ bool exists (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -150,7 +150,7 @@ bool fits<bool> (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -172,7 +172,7 @@ bool fits<bool> (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -245,7 +245,7 @@ bool fits<int> (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -267,7 +267,7 @@ bool fits<int> (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -340,7 +340,7 @@ bool fits<double> (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -362,7 +362,7 @@ bool fits<double> (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -443,7 +443,7 @@ bool fits<linalg::ivector> (std::string name, int dim) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -465,7 +465,7 @@ bool fits<linalg::ivector> (std::string name, int dim) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -546,7 +546,7 @@ bool fits<linalg::fvector> (std::string name, int dim) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -568,7 +568,7 @@ bool fits<linalg::fvector> (std::string name, int dim) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -650,7 +650,7 @@ bool fits<linalg::imatrix> (std::string name, int rows, int cols) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -672,7 +672,7 @@ bool fits<linalg::imatrix> (std::string name, int rows, int cols) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -754,7 +754,7 @@ bool fits<linalg::fmatrix> (std::string name, int rows, int cols) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -776,7 +776,7 @@ bool fits<linalg::fmatrix> (std::string name, int rows, int cols) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -847,7 +847,7 @@ void create<bool> (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -875,7 +875,7 @@ void create<bool> (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -943,7 +943,7 @@ void create<int> (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -971,7 +971,7 @@ void create<int> (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -1039,7 +1039,7 @@ void create<double> (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -1067,7 +1067,7 @@ void create<double> (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -1143,7 +1143,7 @@ void create<linalg::ivector> (std::string name, int dim) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -1171,7 +1171,7 @@ void create<linalg::ivector> (std::string name, int dim) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -1247,7 +1247,7 @@ void create<linalg::fvector> (std::string name, int dim) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -1275,7 +1275,7 @@ void create<linalg::fvector> (std::string name, int dim) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -1352,7 +1352,7 @@ void create<linalg::imatrix> (std::string name, int rows, int cols) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -1380,7 +1380,7 @@ void create<linalg::imatrix> (std::string name, int rows, int cols) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -1457,7 +1457,7 @@ void create<linalg::fmatrix> (std::string name, int rows, int cols) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -1485,7 +1485,7 @@ void create<linalg::fmatrix> (std::string name, int rows, int cols) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -1527,7 +1527,7 @@ void remove (std::string name) {
     }
 }
 
-int map (std::string name) {
+int open (std::string name) {
     int ret, desc, id = intern::data.size() + 1;
     std::size_t len;
     void * data;
@@ -1567,7 +1567,7 @@ int map (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -1600,7 +1600,7 @@ int map (std::string name) {
         logging::wrn(intern::mod,
             "Closing shared memory object"
         );
-        ret = close(desc);
+        ret = ::close(desc);
         if (ret < 0) {
             logging::err(intern::mod,
                 "Failed to close shared memory object ",
@@ -1618,7 +1618,7 @@ int map (std::string name) {
         "Closing shared memory object"
     );
 
-    ret = close(desc);
+    ret = ::close(desc);
     if (ret < 0) {
         logging::err(intern::mod,
             "Failed to close shared memory object ",
@@ -1648,7 +1648,7 @@ int map (std::string name) {
     return id;
 }
 
-void unmap (void) {
+void close (void) {
     int ret;
 
     for (auto i = 0; i < intern::data.size(); i++) {
@@ -1674,7 +1674,7 @@ void unmap (void) {
     intern::data.clear();
 }
 
-void write (int id, bool val) {
+void put (int id, bool val) {
     std::size_t len;
     std::string oupt;
 
@@ -1709,7 +1709,7 @@ void write (int id, bool val) {
     intern::fail = false;
 }
 
-void write (int id, int val) {
+void put (int id, int val) {
     std::size_t len;
     std::string oupt;
 
@@ -1744,7 +1744,7 @@ void write (int id, int val) {
     intern::fail = false;
 }
 
-void write (int id, double val) {
+void put (int id, double val) {
     std::size_t len;
     std::string oupt;
 
@@ -1779,7 +1779,7 @@ void write (int id, double val) {
     intern::fail = false;
 }
 
-void write (int id, linalg::ivector val) {
+void put (int id, linalg::ivector val) {
     int dim = linalg::dim(val);
     std::size_t len;
     std::string oupt;
@@ -1826,7 +1826,7 @@ void write (int id, linalg::ivector val) {
     intern::fail = false;
 }
 
-void write (int id, linalg::fvector val) {
+void put (int id, linalg::fvector val) {
     int dim = linalg::dim(val);
     std::size_t len;
     std::string oupt;
@@ -1873,7 +1873,7 @@ void write (int id, linalg::fvector val) {
     intern::fail = false;
 }
 
-void write (int id, linalg::imatrix val) {
+void put (int id, linalg::imatrix val) {
     int rows = linalg::rows(val), cols = linalg::cols(val);
     std::size_t len;
     std::string oupt;
@@ -1923,7 +1923,7 @@ void write (int id, linalg::imatrix val) {
     intern::fail = false;
 }
 
-void write (int id, linalg::fmatrix val) {
+void put (int id, linalg::fmatrix val) {
     int rows = linalg::rows(val), cols = linalg::cols(val);
     std::size_t len;
     std::string oupt;
@@ -1974,7 +1974,7 @@ void write (int id, linalg::fmatrix val) {
 }
 
 template <>
-bool read<bool> (int id) {
+bool get<bool> (int id) {
     std::size_t len;
     bool val;
     std::string oupt;
@@ -2016,7 +2016,7 @@ bool read<bool> (int id) {
 }
 
 template <>
-int read<int> (int id) {
+int get<int> (int id) {
     std::size_t len;
     int val;
     std::string oupt;
@@ -2058,7 +2058,7 @@ int read<int> (int id) {
 }
 
 template <>
-double read<double> (int id) {
+double get<double> (int id) {
     std::size_t len;
     double val;
     std::string oupt;
@@ -2100,7 +2100,7 @@ double read<double> (int id) {
 }
 
 template <>
-linalg::ivector read<linalg::ivector> (int id, int dim) {
+linalg::ivector get<linalg::ivector> (int id, int dim) {
     std::size_t len;
     linalg::ivector val;
     std::string oupt;
@@ -2154,7 +2154,7 @@ linalg::ivector read<linalg::ivector> (int id, int dim) {
 }
 
 template <>
-linalg::fvector read<linalg::fvector> (int id, int dim) {
+linalg::fvector get<linalg::fvector> (int id, int dim) {
     std::size_t len;
     linalg::fvector val;
     std::string oupt;
@@ -2208,7 +2208,7 @@ linalg::fvector read<linalg::fvector> (int id, int dim) {
 }
 
 template <>
-linalg::imatrix read<linalg::imatrix> (int id, int rows, int cols) {
+linalg::imatrix get<linalg::imatrix> (int id, int rows, int cols) {
     std::size_t len;
     linalg::imatrix val;
     std::string oupt;
@@ -2264,7 +2264,7 @@ linalg::imatrix read<linalg::imatrix> (int id, int rows, int cols) {
 }
 
 template <>
-linalg::fmatrix read<linalg::fmatrix> (int id, int rows, int cols) {
+linalg::fmatrix get<linalg::fmatrix> (int id, int rows, int cols) {
     std::size_t len;
     linalg::fmatrix val;
     std::string oupt;

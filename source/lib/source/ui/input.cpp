@@ -98,7 +98,7 @@ bool eof (void) {
 }
 
 template <>
-bool scan<bool> (void) {
+bool get<bool> (void) {
     std::string inpt, oupt;
     bool val;
 
@@ -154,7 +154,7 @@ bool scan<bool> (void) {
 }
 
 template <>
-std::string scan<std::string> (void) {
+std::string get<std::string> (void) {
     std::string inpt, oupt;
     std::string val;
 
@@ -210,7 +210,7 @@ std::string scan<std::string> (void) {
 }
 
 template <>
-int scan<int> (void) {
+int get<int> (void) {
     std::string inpt, oupt;
     int val;
 
@@ -266,7 +266,7 @@ int scan<int> (void) {
 }
 
 template <>
-double scan<double> (void) {
+double get<double> (void) {
     std::string inpt, oupt;
     double val;
 
@@ -322,7 +322,7 @@ double scan<double> (void) {
 }
 
 template <>
-linalg::ivector scan<linalg::ivector> (void) {
+linalg::ivector get<linalg::ivector> (void) {
     std::string inpt, oupt;
     linalg::ivector val;
 
@@ -378,7 +378,7 @@ linalg::ivector scan<linalg::ivector> (void) {
 }
 
 template <>
-linalg::fvector scan<linalg::fvector> (void) {
+linalg::fvector get<linalg::fvector> (void) {
     std::string inpt, oupt;
     linalg::fvector val;
 
@@ -434,7 +434,7 @@ linalg::fvector scan<linalg::fvector> (void) {
 }
 
 template <>
-linalg::imatrix scan<linalg::imatrix> (void) {
+linalg::imatrix get<linalg::imatrix> (void) {
     std::string inpt, oupt;
     linalg::imatrix val;
 
@@ -490,7 +490,7 @@ linalg::imatrix scan<linalg::imatrix> (void) {
 }
 
 template <>
-linalg::fmatrix scan<linalg::fmatrix> (void) {
+linalg::fmatrix get<linalg::fmatrix> (void) {
     std::string inpt, oupt;
     linalg::fmatrix val;
 

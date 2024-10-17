@@ -35,7 +35,7 @@ std::string conv_val_to_disp (linalg::fmatrix val);
 
 namespace output {
 
-void print (bool val) {
+void put (bool val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -48,7 +48,7 @@ void print (bool val) {
     std::cout.flush();
 }
 
-void print (std::string val) {
+void put (std::string val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -61,7 +61,7 @@ void print (std::string val) {
     std::cout.flush();
 }
 
-void print (int val) {
+void put (int val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -74,7 +74,7 @@ void print (int val) {
     std::cout.flush();
 }
 
-void print (double val) {
+void put (double val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -87,7 +87,7 @@ void print (double val) {
     std::cout.flush();
 }
 
-void print (linalg::ivector val) {
+void put (linalg::ivector val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -100,7 +100,7 @@ void print (linalg::ivector val) {
     std::cout.flush();
 }
 
-void print (linalg::fvector val) {
+void put (linalg::fvector val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -113,7 +113,7 @@ void print (linalg::fvector val) {
     std::cout.flush();
 }
 
-void print (linalg::imatrix val) {
+void put (linalg::imatrix val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -126,7 +126,7 @@ void print (linalg::imatrix val) {
     std::cout.flush();
 }
 
-void print (linalg::fmatrix val) {
+void put (linalg::fmatrix val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(val);
@@ -139,7 +139,7 @@ void print (linalg::fmatrix val) {
     std::cout.flush();
 }
 
-void print (const char * val) {
+void put (const char * val) {
     std::string oupt, disp;
 
     oupt = intern::conv_val_to_oupt(std::string(val));

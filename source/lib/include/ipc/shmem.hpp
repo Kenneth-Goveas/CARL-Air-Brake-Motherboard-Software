@@ -73,46 +73,46 @@ void create<linalg::fmatrix> (std::string name, int rows, int cols);
 
 void remove (std::string name);
 
-int map (std::string name);
-void unmap (void);
+int open (std::string name);
+void close (void);
 
-void write (int id, bool val);
-void write (int id, int val);
-void write (int id, double val);
-void write (int id, linalg::ivector val);
-void write (int id, linalg::fvector val);
-void write (int id, linalg::imatrix val);
-void write (int id, linalg::fmatrix val);
-
-template <typename type>
-type read (int id);
+void put (int id, bool val);
+void put (int id, int val);
+void put (int id, double val);
+void put (int id, linalg::ivector val);
+void put (int id, linalg::fvector val);
+void put (int id, linalg::imatrix val);
+void put (int id, linalg::fmatrix val);
 
 template <typename type>
-type read (int id, int dim);
+type get (int id);
 
 template <typename type>
-type read (int id, int rows, int cols);
+type get (int id, int dim);
+
+template <typename type>
+type get (int id, int rows, int cols);
 
 template <>
-bool read<bool> (int id);
+bool get<bool> (int id);
 
 template <>
-int read<int> (int id);
+int get<int> (int id);
 
 template <>
-double read<double> (int id);
+double get<double> (int id);
 
 template <>
-linalg::ivector read<linalg::ivector> (int id, int dim);
+linalg::ivector get<linalg::ivector> (int id, int dim);
 
 template <>
-linalg::fvector read<linalg::fvector> (int id, int dim);
+linalg::fvector get<linalg::fvector> (int id, int dim);
 
 template <>
-linalg::imatrix read<linalg::imatrix> (int id, int rows, int cols);
+linalg::imatrix get<linalg::imatrix> (int id, int rows, int cols);
 
 template <>
-linalg::fmatrix read<linalg::fmatrix> (int id, int rows, int cols);
+linalg::fmatrix get<linalg::fmatrix> (int id, int rows, int cols);
 
 }
 

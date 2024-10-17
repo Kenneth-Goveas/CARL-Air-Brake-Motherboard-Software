@@ -15,51 +15,51 @@ bool eof (void);
 void init (void);
 void deinit (void);
 
-int draw (terminal::color clr, int row, int col, int hght, int wdth);
-void erase (void);
+int open (terminal::color clr, int row, int col, int hght, int wdth);
+void close (void);
 
-void print (terminal::color clr, int id, int row, int col, bool val);
-void print (terminal::color clr, int id, int row, int col, std::string val);
-void print (terminal::color clr, int id, int row, int col, int val);
-void print (terminal::color clr, int id, int row, int col, double val);
-void print (terminal::color clr, int id, int row, int col, linalg::ivector val);
-void print (terminal::color clr, int id, int row, int col, linalg::fvector val);
-void print (terminal::color clr, int id, int row, int col, linalg::imatrix val);
-void print (terminal::color clr, int id, int row, int col, linalg::fmatrix val);
-void print (terminal::color clr, int id, int row, int col, const char * val);
+void put (terminal::color clr, int id, int row, int col, bool val);
+void put (terminal::color clr, int id, int row, int col, std::string val);
+void put (terminal::color clr, int id, int row, int col, int val);
+void put (terminal::color clr, int id, int row, int col, double val);
+void put (terminal::color clr, int id, int row, int col, linalg::ivector val);
+void put (terminal::color clr, int id, int row, int col, linalg::fvector val);
+void put (terminal::color clr, int id, int row, int col, linalg::imatrix val);
+void put (terminal::color clr, int id, int row, int col, linalg::fmatrix val);
+void put (terminal::color clr, int id, int row, int col, const char * val);
 
 template <typename type>
-type scan (terminal::color clr, int id, int row, int col);
+type get (terminal::color clr, int id, int row, int col);
 
 template <>
-bool scan<bool> (terminal::color clr, int id, int row, int col);
+bool get<bool> (terminal::color clr, int id, int row, int col);
 
 template <>
-std::string scan<std::string> (terminal::color clr, int id, int row, int col);
+std::string get<std::string> (terminal::color clr, int id, int row, int col);
 
 template <>
-int scan<int> (terminal::color clr, int id, int row, int col);
+int get<int> (terminal::color clr, int id, int row, int col);
 
 template <>
-double scan<double> (terminal::color clr, int id, int row, int col);
+double get<double> (terminal::color clr, int id, int row, int col);
 
 template <>
-linalg::ivector scan<linalg::ivector> (
+linalg::ivector get<linalg::ivector> (
     terminal::color clr, int id, int row, int col
 );
 
 template <>
-linalg::fvector scan<linalg::fvector> (
+linalg::fvector get<linalg::fvector> (
     terminal::color clr, int id, int row, int col
 );
 
 template <>
-linalg::imatrix scan<linalg::imatrix> (
+linalg::imatrix get<linalg::imatrix> (
     terminal::color clr, int id, int row, int col
 );
 
 template <>
-linalg::fmatrix scan<linalg::fmatrix> (
+linalg::fmatrix get<linalg::fmatrix> (
     terminal::color clr, int id, int row, int col
 );
 

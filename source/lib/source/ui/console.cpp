@@ -42,17 +42,7 @@ bool eof (void) {
     return intern::eof;
 }
 
-void newline (void) {
-    logging::inf(intern::mod,
-        "Entering new line"
-    );
-
-    terminal::color_default();
-    terminal::newline();
-    terminal::erase_line();
-}
-
-void print (terminal::color clr, int col, bool val) {
+void put (terminal::color clr, int col, bool val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -72,12 +62,12 @@ void print (terminal::color clr, int col, bool val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, std::string val) {
+void put (terminal::color clr, int col, std::string val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -97,12 +87,12 @@ void print (terminal::color clr, int col, std::string val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, int val) {
+void put (terminal::color clr, int col, int val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -122,12 +112,12 @@ void print (terminal::color clr, int col, int val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, double val) {
+void put (terminal::color clr, int col, double val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -147,12 +137,12 @@ void print (terminal::color clr, int col, double val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, linalg::ivector val) {
+void put (terminal::color clr, int col, linalg::ivector val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -172,12 +162,12 @@ void print (terminal::color clr, int col, linalg::ivector val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, linalg::fvector val) {
+void put (terminal::color clr, int col, linalg::fvector val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -197,12 +187,12 @@ void print (terminal::color clr, int col, linalg::fvector val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, linalg::imatrix val) {
+void put (terminal::color clr, int col, linalg::imatrix val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -222,12 +212,12 @@ void print (terminal::color clr, int col, linalg::imatrix val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, linalg::fmatrix val) {
+void put (terminal::color clr, int col, linalg::fmatrix val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -247,12 +237,12 @@ void print (terminal::color clr, int col, linalg::fmatrix val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
-void print (terminal::color clr, int col, const char * val) {
+void put (terminal::color clr, int col, const char * val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
@@ -272,13 +262,13 @@ void print (terminal::color clr, int col, const char * val) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    output::print(val);
+    output::put(val);
 
     intern::fail = false;
 }
 
 template <>
-bool scan<bool> (terminal::color clr, int col) {
+bool get<bool> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     bool val;
 
@@ -299,7 +289,7 @@ bool scan<bool> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<bool>();
+    val = input::get<bool>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -330,7 +320,7 @@ bool scan<bool> (terminal::color clr, int col) {
 }
 
 template <>
-std::string scan<std::string> (terminal::color clr, int col) {
+std::string get<std::string> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     std::string val;
 
@@ -351,7 +341,7 @@ std::string scan<std::string> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<std::string>();
+    val = input::get<std::string>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -382,7 +372,7 @@ std::string scan<std::string> (terminal::color clr, int col) {
 }
 
 template <>
-int scan<int> (terminal::color clr, int col) {
+int get<int> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     int val;
 
@@ -403,7 +393,7 @@ int scan<int> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<int>();
+    val = input::get<int>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -434,7 +424,7 @@ int scan<int> (terminal::color clr, int col) {
 }
 
 template <>
-double scan<double> (terminal::color clr, int col) {
+double get<double> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     double val;
 
@@ -455,7 +445,7 @@ double scan<double> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<double>();
+    val = input::get<double>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -486,7 +476,7 @@ double scan<double> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::ivector scan<linalg::ivector> (terminal::color clr, int col) {
+linalg::ivector get<linalg::ivector> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     linalg::ivector val;
 
@@ -507,7 +497,7 @@ linalg::ivector scan<linalg::ivector> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<linalg::ivector>();
+    val = input::get<linalg::ivector>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -538,7 +528,7 @@ linalg::ivector scan<linalg::ivector> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::fvector scan<linalg::fvector> (terminal::color clr, int col) {
+linalg::fvector get<linalg::fvector> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     linalg::fvector val;
 
@@ -559,7 +549,7 @@ linalg::fvector scan<linalg::fvector> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<linalg::fvector>();
+    val = input::get<linalg::fvector>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -590,7 +580,7 @@ linalg::fvector scan<linalg::fvector> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::imatrix scan<linalg::imatrix> (terminal::color clr, int col) {
+linalg::imatrix get<linalg::imatrix> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     linalg::imatrix val;
 
@@ -611,7 +601,7 @@ linalg::imatrix scan<linalg::imatrix> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<linalg::imatrix>();
+    val = input::get<linalg::imatrix>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -642,7 +632,7 @@ linalg::imatrix scan<linalg::imatrix> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::fmatrix scan<linalg::fmatrix> (terminal::color clr, int col) {
+linalg::fmatrix get<linalg::fmatrix> (terminal::color clr, int col) {
     std::string oupt_clr, oupt_val;
     linalg::fmatrix val;
 
@@ -663,7 +653,7 @@ linalg::fmatrix scan<linalg::fmatrix> (terminal::color clr, int col) {
 
     terminal::color_fore(clr);
     terminal::cursor_col(col);
-    val = input::scan<linalg::fmatrix>();
+    val = input::get<linalg::fmatrix>();
 
     if (input::fail()) {
         logging::err(intern::mod,
@@ -691,6 +681,16 @@ linalg::fmatrix scan<linalg::fmatrix> (terminal::color clr, int col) {
     intern::fail = false;
     intern::eof = false;
     return val;
+}
+
+void newline (void) {
+    logging::inf(intern::mod,
+        "Entering new line"
+    );
+
+    terminal::color_default();
+    terminal::newline();
+    terminal::erase_line();
 }
 
 }
