@@ -162,7 +162,11 @@ void remove (std::string name) {
             "Failed to remove semaphore ",
             "(", std::strerror(errno), ")"
         );
+        intern::fail = true;
+        return;
     }
+
+    intern::fail = false;
 }
 
 int open (std::string name) {
@@ -193,6 +197,7 @@ int open (std::string name) {
 void close (void) {
     int ret;
 
+    intern::fail = false;
     for (auto i = 0; i < intern::sem.size(); i++) {
         logging::inf(intern::mod,
             "Closing semaphore #", i + 1
@@ -203,6 +208,7 @@ void close (void) {
                 "Failed to close semaphore #", i + 1, " ",
                 "(", std::strerror(errno), ")"
             );
+            intern::fail = true;
         }
     }
 
