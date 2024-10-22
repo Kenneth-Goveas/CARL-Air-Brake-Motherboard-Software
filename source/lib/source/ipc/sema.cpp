@@ -19,7 +19,6 @@ std::string mod = "sema";
 bool fail;
 
 std::vector<sem_t *> sem;
-std::vector<bool> held;
 
 }
 
@@ -188,7 +187,6 @@ int open (std::string name) {
     }
 
     intern::sem.push_back(sem);
-    intern::held.push_back(false);
 
     intern::fail = false;
     return id;
@@ -213,7 +211,6 @@ void close (void) {
     }
 
     intern::sem.clear();
-    intern::held.clear();
 }
 
 void acquire (int id) {
@@ -231,14 +228,6 @@ void acquire (int id) {
         return;
     }
 
-    if (intern::held[id - 1]) {
-        logging::err(intern::mod,
-            "Failed to acquire semaphore #", id, " (Semaphore already acquired)"
-        );
-        intern::fail = true;
-        return;
-    }
-
     ret = sem_wait(intern::sem[id - 1]);
     if (ret < 0) {
         logging::err(intern::mod,
@@ -248,8 +237,6 @@ void acquire (int id) {
         intern::fail = true;
         return;
     }
-
-    intern::held[id - 1] = true;
 
     intern::fail = false;
 }
@@ -269,14 +256,6 @@ void release (int id) {
         return;
     }
 
-    if (!intern::held[id - 1]) {
-        logging::err(intern::mod,
-            "Failed to release semaphore #", id, " (Semaphore not acquired)"
-        );
-        intern::fail = true;
-        return;
-    }
-
     ret = sem_post(intern::sem[id - 1]);
     if (ret < 0) {
         logging::err(intern::mod,
@@ -286,8 +265,6 @@ void release (int id) {
         intern::fail = true;
         return;
     }
-
-    intern::held[id - 1] = false;
 
     intern::fail = false;
 }
