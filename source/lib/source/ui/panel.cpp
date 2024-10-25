@@ -417,7 +417,7 @@ void put (terminal::color clr, int id, int row, int col, const char * val) {
     std::string oupt_clr, oupt_val;
 
     oupt_clr = intern::conv_color_to_oupt(clr);
-    oupt_val = intern::conv_val_to_oupt(val);
+    oupt_val = intern::conv_val_to_oupt(std::string(val));
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
         "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
