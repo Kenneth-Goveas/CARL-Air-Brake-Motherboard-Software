@@ -35,6 +35,9 @@ lib_add(sys_logging sys logging)
 lib_add(sys_config sys config)
 lib_lnk_tgt(sys_config math_linalg sys_logging)
 
+lib_add(sys_interrupt sys interrupt)
+lib_lnk_tgt(sys_interrupt sys_logging)
+
 lib_add(sys_timing sys timing)
 lib_lnk_tgt(sys_timing sys_logging)
 
