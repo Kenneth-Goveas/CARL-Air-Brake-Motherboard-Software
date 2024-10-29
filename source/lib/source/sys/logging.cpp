@@ -68,29 +68,38 @@ void deinit (void) {
 namespace logging :: intern {
 
 void head (std::string lev, std::string mod) {
-    auto tstamp = std::chrono::steady_clock::now().time_since_epoch();
-    int hour, min, sec, msec, usec;
+    std::chrono::steady_clock::time_point tpnt;
+    std::chrono::steady_clock::duration tdur;
+    std::chrono::hours hour;
+    std::chrono::minutes min;
+    std::chrono::seconds sec;
+    std::chrono::milliseconds msec;
+    std::chrono::microseconds usec;
 
-    hour = std::chrono::duration_cast<std::chrono::hours>(tstamp).count();
-    min  = std::chrono::duration_cast<std::chrono::minutes>(tstamp).count()
-           - 60 * hour;
-    sec  = std::chrono::duration_cast<std::chrono::seconds>(tstamp).count()
-           - 3600 * hour - 60 * min;
-    msec = std::chrono::duration_cast<std::chrono::milliseconds>(tstamp).count()
-           - 3600000 * hour - 60000 * min - 1000 * sec;
-    usec = std::chrono::duration_cast<std::chrono::microseconds>(tstamp).count()
-           - 3600000000 * hour - 60000000 * min - 1000000 * sec - 1000 * msec;
+    tpnt = std::chrono::steady_clock::now();
+    tdur = tpnt.time_since_epoch();
+
+    hour = std::chrono::duration_cast<std::chrono::hours>(tdur);
+    min = std::chrono::duration_cast<std::chrono::minutes>(tdur);
+    sec = std::chrono::duration_cast<std::chrono::seconds>(tdur);
+    msec = std::chrono::duration_cast<std::chrono::milliseconds>(tdur);
+    usec = std::chrono::duration_cast<std::chrono::microseconds>(tdur);
+
+    usec -= msec;
+    msec -= sec;
+    sec -= min;
+    min -= hour;
 
     file << "["
-         << std::setfill('0') << std::setw(2) << hour
+         << std::setfill('0') << std::setw(2) << hour.count()
          << ":"
-         << std::setfill('0') << std::setw(2) << min
+         << std::setfill('0') << std::setw(2) << min.count()
          << ":"
-         << std::setfill('0') << std::setw(2) << sec
+         << std::setfill('0') << std::setw(2) << sec.count()
          << "."
-         << std::setfill('0') << std::setw(3) << msec
+         << std::setfill('0') << std::setw(3) << msec.count()
          << ","
-         << std::setfill('0') << std::setw(3) << usec
+         << std::setfill('0') << std::setw(3) << usec.count()
          << "] "
          << "<" << lev << "> " << unit << "/" << mod << ": ";
 

@@ -1,5 +1,3 @@
-#include <cstdint>
-
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -27,7 +25,9 @@ bool fail (void) {
 }
 
 double get_time (void) {
-    auto tstamp = std::chrono::steady_clock::now().time_since_epoch();
+    std::chrono::steady_clock::time_point tpnt;
+    std::chrono::steady_clock::duration tdur;
+    std::chrono::duration<double> sec;
     double time;
     std::string oupt;
 
@@ -35,8 +35,11 @@ double get_time (void) {
         "Getting current time"
     );
 
-    time = std::chrono::duration_cast<std::chrono::nanoseconds>(tstamp).count();
-    time *= 1e-9;
+    tpnt = std::chrono::steady_clock::now();
+    tdur = tpnt.time_since_epoch();
+
+    sec = std::chrono::duration_cast<std::chrono::duration<double>>(tdur);
+    time = sec.count();
 
     oupt = intern::conv_val_to_oupt(time);
     logging::inf(intern::mod,
@@ -47,7 +50,7 @@ double get_time (void) {
 }
 
 void pause (double dur) {
-    std::chrono::nanoseconds nsec((std::int64_t)(1e9 * dur));
+    std::chrono::duration<double> sec(dur);
     std::string oupt;
 
     oupt = intern::conv_val_to_oupt(dur);
@@ -63,7 +66,7 @@ void pause (double dur) {
         return;
     }
 
-    std::this_thread::sleep_for(nsec);
+    std::this_thread::sleep_for(sec);
 
     intern::fail = false;
 }
