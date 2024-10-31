@@ -66,3 +66,6 @@ lib_lnk_tgt(ipc_shmem rt math_linalg sys_logging)
 
 lib_add(ipc_channel ipc channel)
 lib_lnk_tgt(ipc_channel math_linalg sys_logging ipc_sema ipc_shmem)
+
+lib_add(dev_i2c dev i2c)
+lib_lnk_tgt(dev_i2c sys_logging)
