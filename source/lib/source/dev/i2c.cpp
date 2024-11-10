@@ -48,7 +48,7 @@ bool fail (void) {
 
 void init (std::string path) {
     logging::inf(intern::mod,
-        "Opening device node: Path: ", path
+        "Opening device node: Path: “", path, "”"
     );
 
     intern::desc = open(path.c_str(), O_RDWR);
