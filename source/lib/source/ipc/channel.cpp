@@ -8,8 +8,8 @@
 
 #include <sys/logging.hpp>
 
-#include <ipc/sema.hpp>
-#include <ipc/shmem.hpp>
+#include <ipc/semaphore.hpp>
+#include <ipc/sharedmem.hpp>
 #include <ipc/channel.hpp>
 
 namespace channel :: intern {
@@ -93,8 +93,8 @@ bool exists (void) {
         "Checking if access control semaphore exists"
     );
 
-    flag = sema::exists("acces");
-    if (sema::fail()) {
+    flag = semaphore::exists("acces");
+    if (semaphore::fail()) {
         logging::err(intern::mod,
             "Failed to check if access control semaphore exists"
         );
@@ -127,8 +127,8 @@ bool exists (void) {
             "Type: Control"
         );
 
-        flag = shmem::exists("ctrl-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("ctrl-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel status shared memory object exists"
             );
@@ -160,8 +160,8 @@ bool exists (void) {
             "Type: Control"
         );
 
-        flag = shmem::fits<bool>("ctrl-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::fits<bool>("ctrl-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel status shared memory object"
             );
@@ -193,8 +193,8 @@ bool exists (void) {
             "Type: Control"
         );
 
-        flag = shmem::exists("ctrl-data");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("ctrl-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel data shared memory object exists"
             );
@@ -226,8 +226,8 @@ bool exists (void) {
             "Type: Control"
         );
 
-        flag = shmem::fits<double>("ctrl-data");
-        if (shmem::fail()) {
+        flag = sharedmem::fits<double>("ctrl-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel data shared memory object"
             );
@@ -261,8 +261,8 @@ bool exists (void) {
             "Type: State"
         );
 
-        flag = shmem::exists("stat-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("stat-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel status shared memory object exists"
             );
@@ -294,8 +294,8 @@ bool exists (void) {
             "Type: State"
         );
 
-        flag = shmem::fits<bool>("stat-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::fits<bool>("stat-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel status shared memory object"
             );
@@ -327,8 +327,8 @@ bool exists (void) {
             "Type: State"
         );
 
-        flag = shmem::exists("stat-data");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("stat-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel data shared memory object exists"
             );
@@ -360,8 +360,8 @@ bool exists (void) {
             "Type: State"
         );
 
-        flag = shmem::fits<linalg::fvector>("stat-data", 7);
-        if (shmem::fail()) {
+        flag = sharedmem::fits<linalg::fvector>("stat-data", 7);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel data shared memory object"
             );
@@ -395,8 +395,8 @@ bool exists (void) {
             "Type: Estimate"
         );
 
-        flag = shmem::exists("estm-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("estm-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel status shared memory object exists"
             );
@@ -428,8 +428,8 @@ bool exists (void) {
             "Type: Estimate"
         );
 
-        flag = shmem::fits<bool>("estm-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::fits<bool>("estm-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel status shared memory object"
             );
@@ -461,8 +461,8 @@ bool exists (void) {
             "Type: Estimate"
         );
 
-        flag = shmem::exists("estm-data");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("estm-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel data shared memory object exists"
             );
@@ -494,8 +494,8 @@ bool exists (void) {
             "Type: Estimate"
         );
 
-        flag = shmem::fits<linalg::fvector>("estm-data", 4);
-        if (shmem::fail()) {
+        flag = sharedmem::fits<linalg::fvector>("estm-data", 4);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel data shared memory object"
             );
@@ -529,8 +529,8 @@ bool exists (void) {
             "Type: Sensing"
         );
 
-        flag = shmem::exists("sens-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("sens-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel status shared memory object exists"
             );
@@ -562,8 +562,8 @@ bool exists (void) {
             "Type: Sensing"
         );
 
-        flag = shmem::fits<bool>("sens-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::fits<bool>("sens-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel status shared memory object"
             );
@@ -595,8 +595,8 @@ bool exists (void) {
             "Type: Sensing"
         );
 
-        flag = shmem::exists("sens-data");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("sens-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel data shared memory object exists"
             );
@@ -628,8 +628,8 @@ bool exists (void) {
             "Type: Sensing"
         );
 
-        flag = shmem::fits<linalg::fvector>("sens-data", 11);
-        if (shmem::fail()) {
+        flag = sharedmem::fits<linalg::fvector>("sens-data", 11);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel data shared memory object"
             );
@@ -663,8 +663,8 @@ bool exists (void) {
             "Type: Update"
         );
 
-        flag = shmem::exists("updt-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("updt-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel status shared memory object exists"
             );
@@ -696,8 +696,8 @@ bool exists (void) {
             "Type: Update"
         );
 
-        flag = shmem::fits<bool>("updt-drdy");
-        if (shmem::fail()) {
+        flag = sharedmem::fits<bool>("updt-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel status shared memory object"
             );
@@ -729,8 +729,8 @@ bool exists (void) {
             "Type: Update"
         );
 
-        flag = shmem::exists("updt-data");
-        if (shmem::fail()) {
+        flag = sharedmem::exists("updt-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check if channel data shared memory object exists"
             );
@@ -762,8 +762,8 @@ bool exists (void) {
             "Type: Update"
         );
 
-        flag = shmem::fits<linalg::fvector>("updt-data", 4);
-        if (shmem::fail()) {
+        flag = sharedmem::fits<linalg::fvector>("updt-data", 4);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to check size of channel data shared memory object"
             );
@@ -810,8 +810,8 @@ void create (void) {
         "Creating access control semaphore"
     );
 
-    sema::create("acces");
-    if (sema::fail()) {
+    semaphore::create("acces");
+    if (semaphore::fail()) {
         logging::err(intern::mod,
             "Failed to create access control semaphore"
         );
@@ -828,16 +828,16 @@ void create (void) {
             "Type: Control"
         );
 
-        shmem::create<bool>("ctrl-drdy");
-        if (shmem::fail()) {
+        sharedmem::create<bool>("ctrl-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -854,16 +854,16 @@ void create (void) {
             "Type: Control"
         );
 
-        shmem::create<double>("ctrl-data");
-        if (shmem::fail()) {
+        sharedmem::create<double>("ctrl-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -872,8 +872,8 @@ void create (void) {
                 "Removing channel status shared memory object: ",
                 "Type: Control"
             );
-            shmem::remove("ctrl-drdy");
-            if (shmem::fail()) {
+            sharedmem::remove("ctrl-drdy");
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove channel status shared memory object"
                 );
@@ -892,16 +892,16 @@ void create (void) {
             "Type: State"
         );
 
-        shmem::create<bool>("stat-drdy");
-        if (shmem::fail()) {
+        sharedmem::create<bool>("stat-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -911,8 +911,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -921,8 +921,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -940,16 +940,16 @@ void create (void) {
             "Type: State"
         );
 
-        shmem::create<linalg::fvector>("stat-data", 7);
-        if (shmem::fail()) {
+        sharedmem::create<linalg::fvector>("stat-data", 7);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -959,8 +959,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -969,8 +969,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -980,8 +980,8 @@ void create (void) {
                 "Removing channel status shared memory object: ",
                 "Type: State"
             );
-            shmem::remove("stat-drdy");
-            if (shmem::fail()) {
+            sharedmem::remove("stat-drdy");
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove channel status shared memory object"
                 );
@@ -1000,16 +1000,16 @@ void create (void) {
             "Type: Estimate"
         );
 
-        shmem::create<bool>("estm-drdy");
-        if (shmem::fail()) {
+        sharedmem::create<bool>("estm-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -1019,8 +1019,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1029,8 +1029,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1041,8 +1041,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1051,8 +1051,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-data");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1070,16 +1070,16 @@ void create (void) {
             "Type: Estimate"
         );
 
-        shmem::create<linalg::fvector>("estm-data", 4);
-        if (shmem::fail()) {
+        sharedmem::create<linalg::fvector>("estm-data", 4);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -1089,8 +1089,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1099,8 +1099,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1111,8 +1111,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1121,8 +1121,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-data");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1132,8 +1132,8 @@ void create (void) {
                 "Removing channel status shared memory object: ",
                 "Type: Estimate"
             );
-            shmem::remove("estm-drdy");
-            if (shmem::fail()) {
+            sharedmem::remove("estm-drdy");
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove channel status shared memory object"
                 );
@@ -1152,16 +1152,16 @@ void create (void) {
             "Type: Sensing"
         );
 
-        shmem::create<bool>("sens-drdy");
-        if (shmem::fail()) {
+        sharedmem::create<bool>("sens-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -1171,8 +1171,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1181,8 +1181,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1193,8 +1193,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1203,8 +1203,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-data");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1215,8 +1215,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1225,8 +1225,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-data");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1244,16 +1244,16 @@ void create (void) {
             "Type: Sensing"
         );
 
-        shmem::create<linalg::fvector>("sens-data", 11);
-        if (shmem::fail()) {
+        sharedmem::create<linalg::fvector>("sens-data", 11);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -1263,8 +1263,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1273,8 +1273,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1285,8 +1285,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1295,8 +1295,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-data");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1307,8 +1307,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1317,8 +1317,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-data");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1328,8 +1328,8 @@ void create (void) {
                 "Removing channel status shared memory object: ",
                 "Type: Sensing"
             );
-            shmem::remove("sens-drdy");
-            if (shmem::fail()) {
+            sharedmem::remove("sens-drdy");
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove channel status shared memory object"
                 );
@@ -1348,16 +1348,16 @@ void create (void) {
             "Type: Update"
         );
 
-        shmem::create<bool>("updt-drdy");
-        if (shmem::fail()) {
+        sharedmem::create<bool>("updt-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -1367,8 +1367,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1377,8 +1377,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1389,8 +1389,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1399,8 +1399,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-data");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1411,8 +1411,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1421,8 +1421,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-data");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1433,8 +1433,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Sensing"
                 );
-                shmem::remove("sens-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("sens-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1443,8 +1443,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Sensing"
                 );
-                shmem::remove("sens-data");
-                if (shmem::fail()) {
+                sharedmem::remove("sens-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1462,16 +1462,16 @@ void create (void) {
             "Type: Update"
         );
 
-        shmem::create<linalg::fvector>("updt-data", 4);
-        if (shmem::fail()) {
+        sharedmem::create<linalg::fvector>("updt-data", 4);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to create channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Removing access control semaphore"
             );
-            sema::remove("acces");
-            if (sema::fail()) {
+            semaphore::remove("acces");
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove access control semaphore"
                 );
@@ -1481,8 +1481,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1491,8 +1491,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Control"
                 );
-                shmem::remove("ctrl-data");
-                if (shmem::fail()) {
+                sharedmem::remove("ctrl-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1503,8 +1503,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1513,8 +1513,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: State"
                 );
-                shmem::remove("stat-data");
-                if (shmem::fail()) {
+                sharedmem::remove("stat-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1525,8 +1525,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1535,8 +1535,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Estimate"
                 );
-                shmem::remove("estm-data");
-                if (shmem::fail()) {
+                sharedmem::remove("estm-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1547,8 +1547,8 @@ void create (void) {
                     "Removing channel status shared memory object: ",
                     "Type: Sensing"
                 );
-                shmem::remove("sens-drdy");
-                if (shmem::fail()) {
+                sharedmem::remove("sens-drdy");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel status shared memory object"
                     );
@@ -1557,8 +1557,8 @@ void create (void) {
                     "Removing channel data shared memory object: ",
                     "Type: Sensing"
                 );
-                shmem::remove("sens-data");
-                if (shmem::fail()) {
+                sharedmem::remove("sens-data");
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to remove channel data shared memory object"
                     );
@@ -1568,8 +1568,8 @@ void create (void) {
                 "Removing channel status shared memory object: ",
                 "Type: Update"
             );
-            shmem::remove("updt-drdy");
-            if (shmem::fail()) {
+            sharedmem::remove("updt-drdy");
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to remove channel status shared memory object"
                 );
@@ -1596,8 +1596,8 @@ void remove (void) {
         "Removing access control semaphore"
     );
 
-    sema::remove("acces");
-    if (sema::fail()) {
+    semaphore::remove("acces");
+    if (semaphore::fail()) {
         logging::err(intern::mod,
             "Failed to remove access control semaphore"
         );
@@ -1609,8 +1609,8 @@ void remove (void) {
             "Removing channel status shared memory object: ",
             "Type: Control"
         );
-        shmem::remove("ctrl-drdy");
-        if (shmem::fail()) {
+        sharedmem::remove("ctrl-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel status shared memory object"
             );
@@ -1620,8 +1620,8 @@ void remove (void) {
             "Removing channel data shared memory object: ",
             "Type: Control"
         );
-        shmem::remove("ctrl-data");
-        if (shmem::fail()) {
+        sharedmem::remove("ctrl-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel data shared memory object"
             );
@@ -1634,8 +1634,8 @@ void remove (void) {
             "Removing channel status shared memory object: ",
             "Type: State"
         );
-        shmem::remove("stat-drdy");
-        if (shmem::fail()) {
+        sharedmem::remove("stat-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel status shared memory object"
             );
@@ -1645,8 +1645,8 @@ void remove (void) {
             "Removing channel data shared memory object: ",
             "Type: State"
         );
-        shmem::remove("stat-data");
-        if (shmem::fail()) {
+        sharedmem::remove("stat-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel data shared memory object"
             );
@@ -1659,8 +1659,8 @@ void remove (void) {
             "Removing channel status shared memory object: ",
             "Type: Estimate"
         );
-        shmem::remove("estm-drdy");
-        if (shmem::fail()) {
+        sharedmem::remove("estm-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel status shared memory object"
             );
@@ -1670,8 +1670,8 @@ void remove (void) {
             "Removing channel data shared memory object: ",
             "Type: Estimate"
         );
-        shmem::remove("estm-data");
-        if (shmem::fail()) {
+        sharedmem::remove("estm-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel data shared memory object"
             );
@@ -1684,8 +1684,8 @@ void remove (void) {
             "Removing channel status shared memory object: ",
             "Type: Sensing"
         );
-        shmem::remove("sens-drdy");
-        if (shmem::fail()) {
+        sharedmem::remove("sens-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel status shared memory object"
             );
@@ -1695,8 +1695,8 @@ void remove (void) {
             "Removing channel data shared memory object: ",
             "Type: Sensing"
         );
-        shmem::remove("sens-data");
-        if (shmem::fail()) {
+        sharedmem::remove("sens-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel data shared memory object"
             );
@@ -1709,8 +1709,8 @@ void remove (void) {
             "Removing channel status shared memory object: ",
             "Type: Update"
         );
-        shmem::remove("updt-drdy");
-        if (shmem::fail()) {
+        sharedmem::remove("updt-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel status shared memory object"
             );
@@ -1720,8 +1720,8 @@ void remove (void) {
             "Removing channel data shared memory object: ",
             "Type: Update"
         );
-        shmem::remove("updt-data");
-        if (shmem::fail()) {
+        sharedmem::remove("updt-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to remove channel data shared memory object"
             );
@@ -1745,8 +1745,8 @@ void open (void) {
         "Opening access control semaphore"
     );
 
-    intern::id_acces = sema::open("acces");
-    if (sema::fail()) {
+    intern::id_acces = semaphore::open("acces");
+    if (semaphore::fail()) {
         logging::err(intern::mod,
             "Failed to open access control semaphore"
         );
@@ -1763,16 +1763,16 @@ void open (void) {
             "Type: Control"
         );
 
-        intern::id_ctrl_drdy = shmem::open("ctrl-drdy");
-        if (shmem::fail()) {
+        intern::id_ctrl_drdy = sharedmem::open("ctrl-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -1789,16 +1789,16 @@ void open (void) {
             "Type: Control"
         );
 
-        intern::id_ctrl_data = shmem::open("ctrl-data");
-        if (shmem::fail()) {
+        intern::id_ctrl_data = sharedmem::open("ctrl-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -1806,8 +1806,8 @@ void open (void) {
             logging::wrn(intern::mod,
                 "Closing opened shared memory objects"
             );
-            shmem::close();
-            if (shmem::fail()) {
+            sharedmem::close();
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened shared memory objects"
                 );
@@ -1826,16 +1826,16 @@ void open (void) {
             "Type: State"
         );
 
-        intern::id_stat_drdy = shmem::open("stat-drdy");
-        if (shmem::fail()) {
+        intern::id_stat_drdy = sharedmem::open("stat-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -1844,8 +1844,8 @@ void open (void) {
                 logging::wrn(intern::mod,
                     "Closing opened shared memory objects"
                 );
-                shmem::close();
-                if (shmem::fail()) {
+                sharedmem::close();
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to close opened shared memory objects"
                     );
@@ -1863,16 +1863,16 @@ void open (void) {
             "Type: State"
         );
 
-        intern::id_stat_data = shmem::open("stat-data");
-        if (shmem::fail()) {
+        intern::id_stat_data = sharedmem::open("stat-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -1880,8 +1880,8 @@ void open (void) {
             logging::wrn(intern::mod,
                 "Closing opened shared memory objects"
             );
-            shmem::close();
-            if (shmem::fail()) {
+            sharedmem::close();
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened shared memory objects"
                 );
@@ -1900,16 +1900,16 @@ void open (void) {
             "Type: Estimate"
         );
 
-        intern::id_estm_drdy = shmem::open("estm-drdy");
-        if (shmem::fail()) {
+        intern::id_estm_drdy = sharedmem::open("estm-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -1918,8 +1918,8 @@ void open (void) {
                 logging::wrn(intern::mod,
                     "Closing opened shared memory objects"
                 );
-                shmem::close();
-                if (shmem::fail()) {
+                sharedmem::close();
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to close opened shared memory objects"
                     );
@@ -1937,16 +1937,16 @@ void open (void) {
             "Type: Estimate"
         );
 
-        intern::id_estm_data = shmem::open("estm-data");
-        if (shmem::fail()) {
+        intern::id_estm_data = sharedmem::open("estm-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -1954,8 +1954,8 @@ void open (void) {
             logging::wrn(intern::mod,
                 "Closing opened shared memory objects"
             );
-            shmem::close();
-            if (shmem::fail()) {
+            sharedmem::close();
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened shared memory objects"
                 );
@@ -1974,16 +1974,16 @@ void open (void) {
             "Type: Sensing"
         );
 
-        intern::id_sens_drdy = shmem::open("sens-drdy");
-        if (shmem::fail()) {
+        intern::id_sens_drdy = sharedmem::open("sens-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -1992,8 +1992,8 @@ void open (void) {
                 logging::wrn(intern::mod,
                     "Closing opened shared memory objects"
                 );
-                shmem::close();
-                if (shmem::fail()) {
+                sharedmem::close();
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to close opened shared memory objects"
                     );
@@ -2011,16 +2011,16 @@ void open (void) {
             "Type: Sensing"
         );
 
-        intern::id_sens_data = shmem::open("sens-data");
-        if (shmem::fail()) {
+        intern::id_sens_data = sharedmem::open("sens-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -2028,8 +2028,8 @@ void open (void) {
             logging::wrn(intern::mod,
                 "Closing opened shared memory objects"
             );
-            shmem::close();
-            if (shmem::fail()) {
+            sharedmem::close();
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened shared memory objects"
                 );
@@ -2048,16 +2048,16 @@ void open (void) {
             "Type: Update"
         );
 
-        intern::id_updt_drdy = shmem::open("updt-drdy");
-        if (shmem::fail()) {
+        intern::id_updt_drdy = sharedmem::open("updt-drdy");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel status shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -2069,8 +2069,8 @@ void open (void) {
                 logging::wrn(intern::mod,
                     "Closing opened shared memory objects"
                 );
-                shmem::close();
-                if (shmem::fail()) {
+                sharedmem::close();
+                if (sharedmem::fail()) {
                     logging::err(intern::mod,
                         "Failed to close opened shared memory objects"
                     );
@@ -2088,16 +2088,16 @@ void open (void) {
             "Type: Update"
         );
 
-        intern::id_updt_data = shmem::open("updt-data");
-        if (shmem::fail()) {
+        intern::id_updt_data = sharedmem::open("updt-data");
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to open channel data shared memory object"
             );
             logging::wrn(intern::mod,
                 "Closing opened semaphores"
             );
-            sema::close();
-            if (sema::fail()) {
+            semaphore::close();
+            if (semaphore::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened semaphores"
                 );
@@ -2105,8 +2105,8 @@ void open (void) {
             logging::wrn(intern::mod,
                 "Closing opened shared memory objects"
             );
-            shmem::close();
-            if (shmem::fail()) {
+            sharedmem::close();
+            if (sharedmem::fail()) {
                 logging::err(intern::mod,
                     "Failed to close opened shared memory objects"
                 );
@@ -2133,8 +2133,8 @@ void close (void) {
         "Closing opened semaphores"
     );
 
-    sema::close();
-    if (sema::fail()) {
+    semaphore::close();
+    if (semaphore::fail()) {
         logging::err(intern::mod,
             "Failed to close opened semaphores"
         );
@@ -2148,8 +2148,8 @@ void close (void) {
         logging::inf(intern::mod,
             "Closing opened shared memory objects"
         );
-        shmem::close();
-        if (shmem::fail()) {
+        sharedmem::close();
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to close opened shared memory objects"
             );
@@ -2176,8 +2176,8 @@ void put_ctrl (double ctrl) {
         "Writing to channel data shared memory object"
     );
 
-    shmem::put(intern::id_ctrl_data, ctrl);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_ctrl_data, ctrl);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel data shared memory object"
         );
@@ -2192,8 +2192,8 @@ void put_ctrl (double ctrl) {
         "Writing to channel status shared memory object"
     );
 
-    shmem::put(intern::id_ctrl_drdy, true);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_ctrl_drdy, true);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel status shared memory object"
         );
@@ -2220,8 +2220,8 @@ void put_stat (linalg::fvector stat) {
         "Writing to channel data shared memory object"
     );
 
-    shmem::put(intern::id_stat_data, stat);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_stat_data, stat);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel data shared memory object"
         );
@@ -2236,8 +2236,8 @@ void put_stat (linalg::fvector stat) {
         "Writing to channel status shared memory object"
     );
 
-    shmem::put(intern::id_stat_drdy, true);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_stat_drdy, true);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel status shared memory object"
         );
@@ -2264,8 +2264,8 @@ void put_estm (linalg::fvector estm) {
         "Writing to channel data shared memory object"
     );
 
-    shmem::put(intern::id_estm_data, estm);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_estm_data, estm);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel data shared memory object"
         );
@@ -2280,8 +2280,8 @@ void put_estm (linalg::fvector estm) {
         "Writing to channel status shared memory object"
     );
 
-    shmem::put(intern::id_estm_drdy, true);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_estm_drdy, true);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel status shared memory object"
         );
@@ -2308,8 +2308,8 @@ void put_sens (linalg::fvector sens) {
         "Writing to channel data shared memory object"
     );
 
-    shmem::put(intern::id_sens_data, sens);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_sens_data, sens);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel data shared memory object"
         );
@@ -2324,8 +2324,8 @@ void put_sens (linalg::fvector sens) {
         "Writing to channel status shared memory object"
     );
 
-    shmem::put(intern::id_sens_drdy, true);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_sens_drdy, true);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel status shared memory object"
         );
@@ -2352,8 +2352,8 @@ void put_updt (linalg::fvector updt) {
         "Writing to channel data shared memory object"
     );
 
-    shmem::put(intern::id_updt_data, updt);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_updt_data, updt);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel data shared memory object"
         );
@@ -2368,8 +2368,8 @@ void put_updt (linalg::fvector updt) {
         "Writing to channel status shared memory object"
     );
 
-    shmem::put(intern::id_updt_drdy, true);
-    if (shmem::fail()) {
+    sharedmem::put(intern::id_updt_drdy, true);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to write to channel status shared memory object"
         );
@@ -2397,8 +2397,8 @@ double get_ctrl (void) {
         "Reading from channel status shared memory object"
     );
 
-    flag = shmem::get<bool>(intern::id_ctrl_drdy);
-    if (shmem::fail()) {
+    flag = sharedmem::get<bool>(intern::id_ctrl_drdy);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel status shared memory object"
         );
@@ -2428,8 +2428,8 @@ double get_ctrl (void) {
         "Reading from channel data shared memory object"
     );
 
-    ctrl = shmem::get<double>(intern::id_ctrl_data);
-    if (shmem::fail()) {
+    ctrl = sharedmem::get<double>(intern::id_ctrl_data);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel data shared memory object"
         );
@@ -2464,8 +2464,8 @@ linalg::fvector get_stat (void) {
         "Reading from channel status shared memory object"
     );
 
-    flag = shmem::get<bool>(intern::id_stat_drdy);
-    if (shmem::fail()) {
+    flag = sharedmem::get<bool>(intern::id_stat_drdy);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel status shared memory object"
         );
@@ -2495,8 +2495,8 @@ linalg::fvector get_stat (void) {
         "Reading from channel data shared memory object"
     );
 
-    stat = shmem::get<linalg::fvector>(intern::id_stat_data, 7);
-    if (shmem::fail()) {
+    stat = sharedmem::get<linalg::fvector>(intern::id_stat_data, 7);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel data shared memory object"
         );
@@ -2531,8 +2531,8 @@ linalg::fvector get_estm (void) {
         "Reading from channel status shared memory object"
     );
 
-    flag = shmem::get<bool>(intern::id_estm_drdy);
-    if (shmem::fail()) {
+    flag = sharedmem::get<bool>(intern::id_estm_drdy);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel status shared memory object"
         );
@@ -2562,8 +2562,8 @@ linalg::fvector get_estm (void) {
         "Reading from channel data shared memory object"
     );
 
-    estm = shmem::get<linalg::fvector>(intern::id_estm_data, 4);
-    if (shmem::fail()) {
+    estm = sharedmem::get<linalg::fvector>(intern::id_estm_data, 4);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel data shared memory object"
         );
@@ -2598,8 +2598,8 @@ linalg::fvector get_sens (void) {
         "Reading from channel status shared memory object"
     );
 
-    flag = shmem::get<bool>(intern::id_sens_drdy);
-    if (shmem::fail()) {
+    flag = sharedmem::get<bool>(intern::id_sens_drdy);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel status shared memory object"
         );
@@ -2629,8 +2629,8 @@ linalg::fvector get_sens (void) {
         "Reading from channel data shared memory object"
     );
 
-    sens = shmem::get<linalg::fvector>(intern::id_sens_data, 11);
-    if (shmem::fail()) {
+    sens = sharedmem::get<linalg::fvector>(intern::id_sens_data, 11);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel data shared memory object"
         );
@@ -2665,8 +2665,8 @@ linalg::fvector get_updt (void) {
         "Reading from channel status shared memory object"
     );
 
-    flag = shmem::get<bool>(intern::id_updt_drdy);
-    if (shmem::fail()) {
+    flag = sharedmem::get<bool>(intern::id_updt_drdy);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel status shared memory object"
         );
@@ -2696,8 +2696,8 @@ linalg::fvector get_updt (void) {
         "Reading from channel data shared memory object"
     );
 
-    updt = shmem::get<linalg::fvector>(intern::id_updt_data, 4);
-    if (shmem::fail()) {
+    updt = sharedmem::get<linalg::fvector>(intern::id_updt_data, 4);
+    if (sharedmem::fail()) {
         logging::err(intern::mod,
             "Failed to read from channel data shared memory object"
         );
@@ -2730,8 +2730,8 @@ void clear (void) {
         logging::inf(intern::mod,
             "Writing to channel status shared memory object: Type: Control"
         );
-        shmem::put(intern::id_ctrl_drdy, false);
-        if (shmem::fail()) {
+        sharedmem::put(intern::id_ctrl_drdy, false);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to write to channel status shared memory object"
             );
@@ -2743,8 +2743,8 @@ void clear (void) {
         logging::inf(intern::mod,
             "Writing to channel status shared memory object: Type: State"
         );
-        shmem::put(intern::id_stat_drdy, false);
-        if (shmem::fail()) {
+        sharedmem::put(intern::id_stat_drdy, false);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to write to channel status shared memory object"
             );
@@ -2756,8 +2756,8 @@ void clear (void) {
         logging::inf(intern::mod,
             "Writing to channel status shared memory object: Type: Estimate"
         );
-        shmem::put(intern::id_estm_drdy, false);
-        if (shmem::fail()) {
+        sharedmem::put(intern::id_estm_drdy, false);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to write to channel status shared memory object"
             );
@@ -2769,8 +2769,8 @@ void clear (void) {
         logging::inf(intern::mod,
             "Writing to channel status shared memory object: Type: Sensing"
         );
-        shmem::put(intern::id_sens_drdy, false);
-        if (shmem::fail()) {
+        sharedmem::put(intern::id_sens_drdy, false);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to write to channel status shared memory object"
             );
@@ -2782,8 +2782,8 @@ void clear (void) {
         logging::inf(intern::mod,
             "Writing to channel status shared memory object: Type: Update"
         );
-        shmem::put(intern::id_updt_drdy, false);
-        if (shmem::fail()) {
+        sharedmem::put(intern::id_updt_drdy, false);
+        if (sharedmem::fail()) {
             logging::err(intern::mod,
                 "Failed to write to channel status shared memory object"
             );
@@ -2803,8 +2803,8 @@ void acquire_acces (void) {
         "Acquiring access control semaphore"
     );
 
-    sema::acquire(intern::id_acces);
-    if (sema::fail()) {
+    semaphore::acquire(intern::id_acces);
+    if (semaphore::fail()) {
         logging::err(intern::mod,
             "Failed to acquire access control semaphore"
         );
@@ -2820,8 +2820,8 @@ void release_acces (void) {
         "Releasing access control semaphore"
     );
 
-    sema::release(intern::id_acces);
-    if (sema::fail()) {
+    semaphore::release(intern::id_acces);
+    if (semaphore::fail()) {
         logging::err(intern::mod,
             "Failed to release access control semaphore"
         );

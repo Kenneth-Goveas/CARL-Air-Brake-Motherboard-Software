@@ -18,11 +18,11 @@
 
 #include <sys/logging.hpp>
 
-#include <ipc/shmem.hpp>
+#include <ipc/sharedmem.hpp>
 
-namespace shmem :: intern {
+namespace sharedmem :: intern {
 
-std::string mod = "shmem";
+std::string mod = "sharedmem";
 
 bool fail;
 
@@ -39,7 +39,7 @@ std::string conv_val_to_oupt (linalg::fmatrix val);
 
 }
 
-namespace shmem {
+namespace sharedmem {
 
 bool fail (void) {
     return intern::fail;
@@ -2327,7 +2327,7 @@ linalg::fmatrix get<linalg::fmatrix> (int id, int rows, int cols) {
 
 }
 
-namespace shmem :: intern {
+namespace sharedmem :: intern {
 
 std::string conv_val_to_oupt (bool val) {
     std::string oupt;

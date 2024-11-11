@@ -1,9 +1,9 @@
-#ifndef __MATH_RANDN_HPP__
-#define __MATH_RANDN_HPP__
+#ifndef __MATH_RANDNUM_HPP__
+#define __MATH_RANDNUM_HPP__
 
 #include <math/linalg.hpp>
 
-namespace randn {
+namespace randnum {
 
 double unif (double lowr, double uppr);
 linalg::fvector unif (linalg::fvector lowr, linalg::fvector uppr);

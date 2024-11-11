@@ -6,9 +6,9 @@
 #include <random>
 
 #include <math/linalg.hpp>
-#include <math/randn.hpp>
+#include <math/randnum.hpp>
 
-namespace randn :: intern {
+namespace randnum :: intern {
 
 std::uint_fast64_t seed (void);
 
@@ -18,7 +18,7 @@ std::normal_distribution<double> gauss(0, 1);
 
 }
 
-namespace randn {
+namespace randnum {
 
 double unif (double lowr, double uppr) {
     double res;
@@ -122,7 +122,7 @@ linalg::fvector gauss (linalg::fvector mean, linalg::fmatrix var) {
 
 }
 
-namespace randn :: intern {
+namespace randnum :: intern {
 
 std::uint_fast64_t seed (void) {
     auto tstamp = std::chrono::steady_clock::now().time_since_epoch();

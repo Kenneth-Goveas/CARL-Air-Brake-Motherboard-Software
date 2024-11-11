@@ -1,11 +1,11 @@
-#ifndef __IPC_SHMEM_HPP__
-#define __IPC_SHMEM_HPP__
+#ifndef __IPC_SHAREDMEM_HPP__
+#define __IPC_SHAREDMEM_HPP__
 
 #include <string>
 
 #include <math/linalg.hpp>
 
-namespace shmem {
+namespace sharedmem {
 
 bool fail (void);
 

@@ -10,11 +10,11 @@
 
 #include <sys/logging.hpp>
 
-#include <ipc/sema.hpp>
+#include <ipc/semaphore.hpp>
 
-namespace sema :: intern {
+namespace semaphore :: intern {
 
-std::string mod = "sema";
+std::string mod = "semaphore";
 
 bool fail;
 
@@ -22,7 +22,7 @@ std::vector<sem_t *> sem;
 
 }
 
-namespace sema {
+namespace semaphore {
 
 bool fail (void) {
     return intern::fail;

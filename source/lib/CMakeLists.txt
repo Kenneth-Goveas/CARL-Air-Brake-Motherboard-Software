@@ -27,8 +27,8 @@ lib_add(math_linalg math linalg)
 lib_cmp_def(math_linalg _POSIX_C_SOURCE=200112L)
 lib_lnk_tgt(math_linalg m math_lapack)
 
-lib_add(math_randn math randn)
-lib_lnk_tgt(math_randn m math_linalg)
+lib_add(math_randnum math randnum)
+lib_lnk_tgt(math_randnum m math_linalg)
 
 lib_add(sys_logging sys logging)
 
@@ -56,16 +56,16 @@ lib_lnk_tgt(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
 lib_add(ui_console ui console)
 lib_lnk_tgt(ui_console math_linalg sys_logging ui_terminal ui_input ui_output)
 
-lib_add(ipc_sema ipc sema)
-lib_lnk_tgt(ipc_sema sys_logging)
-lib_lnk_opt(ipc_sema -pthread)
+lib_add(ipc_semaphore ipc semaphore)
+lib_lnk_tgt(ipc_semaphore sys_logging)
+lib_lnk_opt(ipc_semaphore -pthread)
 
-lib_add(ipc_shmem ipc shmem)
-lib_cmp_def(ipc_shmem _POSIX_C_SOURCE=200112L)
-lib_lnk_tgt(ipc_shmem rt math_linalg sys_logging)
+lib_add(ipc_sharedmem ipc sharedmem)
+lib_cmp_def(ipc_sharedmem _POSIX_C_SOURCE=200112L)
+lib_lnk_tgt(ipc_sharedmem rt math_linalg sys_logging)
 
 lib_add(ipc_channel ipc channel)
-lib_lnk_tgt(ipc_channel math_linalg sys_logging ipc_sema ipc_shmem)
+lib_lnk_tgt(ipc_channel math_linalg sys_logging ipc_semaphore ipc_sharedmem)
 
 lib_add(dev_i2c dev i2c)
 lib_lnk_tgt(dev_i2c sys_logging)

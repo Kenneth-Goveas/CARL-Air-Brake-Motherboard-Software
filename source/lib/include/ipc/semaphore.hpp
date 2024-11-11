@@ -1,9 +1,9 @@
-#ifndef __IPC_SEMA_HPP__
-#define __IPC_SEMA_HPP__
+#ifndef __IPC_SEMAPHORE_HPP__
+#define __IPC_SEMAPHORE_HPP__
 
 #include <string>
 
-namespace sema {
+namespace semaphore {
 
 bool fail (void);
 
