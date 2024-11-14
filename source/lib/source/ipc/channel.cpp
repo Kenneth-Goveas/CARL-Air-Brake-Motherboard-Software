@@ -2205,7 +2205,6 @@ void put_ctrl (double ctrl) {
     }
 
     intern::fail = false;
-    return;
 }
 
 void put_stat (linalg::fvector stat) {
@@ -2249,7 +2248,6 @@ void put_stat (linalg::fvector stat) {
     }
 
     intern::fail = false;
-    return;
 }
 
 void put_estm (linalg::fvector estm) {
@@ -2293,7 +2291,6 @@ void put_estm (linalg::fvector estm) {
     }
 
     intern::fail = false;
-    return;
 }
 
 void put_sens (linalg::fvector sens) {
@@ -2337,7 +2334,6 @@ void put_sens (linalg::fvector sens) {
     }
 
     intern::fail = false;
-    return;
 }
 
 void put_updt (linalg::fvector updt) {
@@ -2381,7 +2377,6 @@ void put_updt (linalg::fvector updt) {
     }
 
     intern::fail = false;
-    return;
 }
 
 double get_ctrl (void) {

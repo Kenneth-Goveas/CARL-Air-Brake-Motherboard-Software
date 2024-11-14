@@ -1575,7 +1575,6 @@ void parse (std::string line) {
     );
 
     fail = true;
-    return;
 }
 
 }
