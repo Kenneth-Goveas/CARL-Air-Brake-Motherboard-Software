@@ -28,7 +28,7 @@ std::string conv_val_to_oupt (linalg::fvector val);
 std::string conv_val_to_oupt (linalg::imatrix val);
 std::string conv_val_to_oupt (linalg::fmatrix val);
 
-std::string conv_color_to_oupt (terminal::color clr);
+std::string conv_color_to_oupt (terminal::color color);
 
 }
 
@@ -42,13 +42,13 @@ bool eof (void) {
     return intern::eof;
 }
 
-void put (terminal::color clr, int col, bool val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, bool val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Boolean, Value: ", oupt_val
     );
 
@@ -60,20 +60,20 @@ void put (terminal::color clr, int col, bool val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, std::string val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, std::string val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: String, Value: ", oupt_val
     );
 
@@ -85,20 +85,20 @@ void put (terminal::color clr, int col, std::string val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, int val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, int val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Integer scalar, Value: ", oupt_val
     );
 
@@ -110,20 +110,20 @@ void put (terminal::color clr, int col, int val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, double val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, double val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Real scalar, Value: ", oupt_val
     );
 
@@ -135,20 +135,20 @@ void put (terminal::color clr, int col, double val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, linalg::ivector val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, linalg::ivector val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Integer vector, Value: ", oupt_val
     );
 
@@ -160,20 +160,20 @@ void put (terminal::color clr, int col, linalg::ivector val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, linalg::fvector val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, linalg::fvector val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Real vector, Value: ", oupt_val
     );
 
@@ -185,20 +185,20 @@ void put (terminal::color clr, int col, linalg::fvector val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, linalg::imatrix val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, linalg::imatrix val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Integer matrix, Value: ", oupt_val
     );
 
@@ -210,20 +210,20 @@ void put (terminal::color clr, int col, linalg::imatrix val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, linalg::fmatrix val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, linalg::fmatrix val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Real matrix, Value: ", oupt_val
     );
 
@@ -235,20 +235,20 @@ void put (terminal::color clr, int col, linalg::fmatrix val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
     intern::fail = false;
 }
 
-void put (terminal::color clr, int col, const char * val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int col, const char * val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(std::string(val));
     logging::inf(intern::mod,
-        "Printing output: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Printing output: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: String, Value: ", oupt_val
     );
 
@@ -260,7 +260,7 @@ void put (terminal::color clr, int col, const char * val) {
         return;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     output::put(val);
 
@@ -268,13 +268,13 @@ void put (terminal::color clr, int col, const char * val) {
 }
 
 template <>
-bool get<bool> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+bool get<bool> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     bool val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Boolean"
     );
 
@@ -287,7 +287,7 @@ bool get<bool> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<bool>();
 
@@ -320,13 +320,13 @@ bool get<bool> (terminal::color clr, int col) {
 }
 
 template <>
-std::string get<std::string> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+std::string get<std::string> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     std::string val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: String"
     );
 
@@ -339,7 +339,7 @@ std::string get<std::string> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<std::string>();
 
@@ -372,13 +372,13 @@ std::string get<std::string> (terminal::color clr, int col) {
 }
 
 template <>
-int get<int> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+int get<int> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     int val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Integer scalar"
     );
 
@@ -391,7 +391,7 @@ int get<int> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<int>();
 
@@ -424,13 +424,13 @@ int get<int> (terminal::color clr, int col) {
 }
 
 template <>
-double get<double> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+double get<double> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     double val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Real scalar"
     );
 
@@ -443,7 +443,7 @@ double get<double> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<double>();
 
@@ -476,13 +476,13 @@ double get<double> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::ivector get<linalg::ivector> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+linalg::ivector get<linalg::ivector> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     linalg::ivector val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Integer vector"
     );
 
@@ -495,7 +495,7 @@ linalg::ivector get<linalg::ivector> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<linalg::ivector>();
 
@@ -528,13 +528,13 @@ linalg::ivector get<linalg::ivector> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::fvector get<linalg::fvector> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+linalg::fvector get<linalg::fvector> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     linalg::fvector val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Real vector"
     );
 
@@ -547,7 +547,7 @@ linalg::fvector get<linalg::fvector> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<linalg::fvector>();
 
@@ -580,13 +580,13 @@ linalg::fvector get<linalg::fvector> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::imatrix get<linalg::imatrix> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+linalg::imatrix get<linalg::imatrix> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     linalg::imatrix val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Integer matrix"
     );
 
@@ -599,7 +599,7 @@ linalg::imatrix get<linalg::imatrix> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<linalg::imatrix>();
 
@@ -632,13 +632,13 @@ linalg::imatrix get<linalg::imatrix> (terminal::color clr, int col) {
 }
 
 template <>
-linalg::fmatrix get<linalg::fmatrix> (terminal::color clr, int col) {
-    std::string oupt_clr, oupt_val;
+linalg::fmatrix get<linalg::fmatrix> (terminal::color color, int col) {
+    std::string oupt_color, oupt_val;
     linalg::fmatrix val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input: Color: ", oupt_clr, ", Col: ", col, ", ",
+        "Scanning input: Color: ", oupt_color, ", Col: ", col, ", ",
         "Type: Real matrix"
     );
 
@@ -651,7 +651,7 @@ linalg::fmatrix get<linalg::fmatrix> (terminal::color clr, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
+    terminal::color_fore(color);
     terminal::cursor_col(col);
     val = input::get<linalg::fmatrix>();
 
@@ -817,8 +817,8 @@ std::string conv_val_to_oupt (linalg::fmatrix val) {
     return oupt;
 }
 
-std::string conv_color_to_oupt (terminal::color clr) {
-    switch (clr) {
+std::string conv_color_to_oupt (terminal::color color) {
+    switch (color) {
         case terminal::black:
             return std::string("Black");
         case terminal::darkred:

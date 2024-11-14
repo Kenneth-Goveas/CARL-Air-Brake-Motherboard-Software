@@ -20,7 +20,7 @@ std::string mod = "panel";
 bool fail;
 bool eof;
 
-std::vector<terminal::color> clr;
+std::vector<terminal::color> color;
 std::vector<int> row;
 std::vector<int> col;
 
@@ -33,7 +33,7 @@ std::string conv_val_to_oupt (linalg::fvector val);
 std::string conv_val_to_oupt (linalg::imatrix val);
 std::string conv_val_to_oupt (linalg::fmatrix val);
 
-std::string conv_color_to_oupt (terminal::color clr);
+std::string conv_color_to_oupt (terminal::color color);
 
 }
 
@@ -69,13 +69,13 @@ void deinit (void) {
     terminal::erase_screen();
 }
 
-int open (terminal::color clr, int row, int col, int hght, int wdth) {
-    int id = intern::clr.size() + 1;
-    std::string oupt_clr, blank = "";
+int open (terminal::color color, int row, int col, int hght, int wdth) {
+    int id = intern::color.size() + 1;
+    std::string oupt_color, blank = "";
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Drawing panel #", id, ": Color: ", oupt_clr, ", ",
+        "Drawing panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Hght: ", hght, ", Wdth: ", wdth
     );
 
@@ -97,13 +97,13 @@ int open (terminal::color clr, int row, int col, int hght, int wdth) {
         blank += ' ';
     }
 
-    terminal::color_back(clr);
+    terminal::color_back(color);
     for (int i = 0; i < hght; i++) {
         terminal::cursor_pos(row + i, col);
         output::put(blank);
     }
 
-    intern::clr.push_back(clr);
+    intern::color.push_back(color);
     intern::row.push_back(row);
     intern::col.push_back(col);
 
@@ -120,23 +120,23 @@ void close (void) {
     terminal::cursor_pos(1, 1);
     terminal::erase_screen();
 
-    intern::clr.resize(0);
+    intern::color.resize(0);
     intern::row.resize(0);
     intern::col.resize(0);
 }
 
-void put (terminal::color clr, int id, int row, int col, bool val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int id, int row, int col, bool val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: Boolean, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -150,8 +150,8 @@ void put (terminal::color clr, int id, int row, int col, bool val) {
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -160,18 +160,18 @@ void put (terminal::color clr, int id, int row, int col, bool val) {
     intern::fail = false;
 }
 
-void put (terminal::color clr, int id, int row, int col, std::string val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int id, int row, int col, std::string val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: String, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -185,8 +185,8 @@ void put (terminal::color clr, int id, int row, int col, std::string val) {
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -195,18 +195,18 @@ void put (terminal::color clr, int id, int row, int col, std::string val) {
     intern::fail = false;
 }
 
-void put (terminal::color clr, int id, int row, int col, int val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int id, int row, int col, int val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: Integer scalar, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -220,8 +220,8 @@ void put (terminal::color clr, int id, int row, int col, int val) {
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -230,18 +230,18 @@ void put (terminal::color clr, int id, int row, int col, int val) {
     intern::fail = false;
 }
 
-void put (terminal::color clr, int id, int row, int col, double val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int id, int row, int col, double val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: Real scalar, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -255,8 +255,8 @@ void put (terminal::color clr, int id, int row, int col, double val) {
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -266,19 +266,19 @@ void put (terminal::color clr, int id, int row, int col, double val) {
 }
 
 void put (
-    terminal::color clr, int id, int row, int col, linalg::ivector val
+    terminal::color color, int id, int row, int col, linalg::ivector val
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: Integer vector, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -292,8 +292,8 @@ void put (
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -303,19 +303,19 @@ void put (
 }
 
 void put (
-    terminal::color clr, int id, int row, int col, linalg::fvector val
+    terminal::color color, int id, int row, int col, linalg::fvector val
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: Real vector, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -329,8 +329,8 @@ void put (
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -340,19 +340,19 @@ void put (
 }
 
 void put (
-    terminal::color clr, int id, int row, int col, linalg::imatrix val
+    terminal::color color, int id, int row, int col, linalg::imatrix val
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: Integer matrix, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -366,8 +366,8 @@ void put (
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -377,19 +377,19 @@ void put (
 }
 
 void put (
-    terminal::color clr, int id, int row, int col, linalg::fmatrix val
+    terminal::color color, int id, int row, int col, linalg::fmatrix val
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(val);
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: Real matrix, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -403,8 +403,8 @@ void put (
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -413,18 +413,18 @@ void put (
     intern::fail = false;
 }
 
-void put (terminal::color clr, int id, int row, int col, const char * val) {
-    std::string oupt_clr, oupt_val;
+void put (terminal::color color, int id, int row, int col, const char * val) {
+    std::string oupt_color, oupt_val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     oupt_val = intern::conv_val_to_oupt(std::string(val));
     logging::inf(intern::mod,
         "Printing output on panel #", id, ": ",
-        "Color: ", oupt_clr, ", Row: ", row, ", Col: ", col, ", ",
+        "Color: ", oupt_color, ", Row: ", row, ", Col: ", col, ", ",
         "Type: String, Value: ", oupt_val
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to print output on panel #", id, " (Panel not found)"
         );
@@ -438,8 +438,8 @@ void put (terminal::color clr, int id, int row, int col, const char * val) {
         return;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -449,17 +449,17 @@ void put (terminal::color clr, int id, int row, int col, const char * val) {
 }
 
 template <>
-bool get<bool> (terminal::color clr, int id, int row, int col) {
-    std::string oupt_clr, oupt_val;
+bool get<bool> (terminal::color color, int id, int row, int col) {
+    std::string oupt_color, oupt_val;
     bool val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: Boolean"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -475,8 +475,8 @@ bool get<bool> (terminal::color clr, int id, int row, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -513,17 +513,17 @@ bool get<bool> (terminal::color clr, int id, int row, int col) {
 }
 
 template <>
-std::string get<std::string> (terminal::color clr, int id, int row, int col) {
-    std::string oupt_clr, oupt_val;
+std::string get<std::string> (terminal::color color, int id, int row, int col) {
+    std::string oupt_color, oupt_val;
     std::string val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: String"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -539,8 +539,8 @@ std::string get<std::string> (terminal::color clr, int id, int row, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -577,17 +577,17 @@ std::string get<std::string> (terminal::color clr, int id, int row, int col) {
 }
 
 template <>
-int get<int> (terminal::color clr, int id, int row, int col) {
-    std::string oupt_clr, oupt_val;
+int get<int> (terminal::color color, int id, int row, int col) {
+    std::string oupt_color, oupt_val;
     int val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: Integer scalar"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -603,8 +603,8 @@ int get<int> (terminal::color clr, int id, int row, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -641,17 +641,17 @@ int get<int> (terminal::color clr, int id, int row, int col) {
 }
 
 template <>
-double get<double> (terminal::color clr, int id, int row, int col) {
-    std::string oupt_clr, oupt_val;
+double get<double> (terminal::color color, int id, int row, int col) {
+    std::string oupt_color, oupt_val;
     double val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: Real scalar"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -667,8 +667,8 @@ double get<double> (terminal::color clr, int id, int row, int col) {
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -706,18 +706,18 @@ double get<double> (terminal::color clr, int id, int row, int col) {
 
 template <>
 linalg::ivector get<linalg::ivector> (
-    terminal::color clr, int id, int row, int col
+    terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
     linalg::ivector val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: Integer vector"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -733,8 +733,8 @@ linalg::ivector get<linalg::ivector> (
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -772,18 +772,18 @@ linalg::ivector get<linalg::ivector> (
 
 template <>
 linalg::fvector get<linalg::fvector> (
-    terminal::color clr, int id, int row, int col
+    terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
     linalg::fvector val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: Real vector"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -799,8 +799,8 @@ linalg::fvector get<linalg::fvector> (
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -838,18 +838,18 @@ linalg::fvector get<linalg::fvector> (
 
 template <>
 linalg::imatrix get<linalg::imatrix> (
-    terminal::color clr, int id, int row, int col
+    terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
     linalg::imatrix val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: Integer matrix"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -865,8 +865,8 @@ linalg::imatrix get<linalg::imatrix> (
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -904,18 +904,18 @@ linalg::imatrix get<linalg::imatrix> (
 
 template <>
 linalg::fmatrix get<linalg::fmatrix> (
-    terminal::color clr, int id, int row, int col
+    terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_clr, oupt_val;
+    std::string oupt_color, oupt_val;
     linalg::fmatrix val;
 
-    oupt_clr = intern::conv_color_to_oupt(clr);
+    oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
-        "Scanning input on panel #", id, ": Color: ", oupt_clr, ", ",
+        "Scanning input on panel #", id, ": Color: ", oupt_color, ", ",
         "Row: ", row, ", Col: ", col, ", Type: Real matrix"
     );
 
-    if (!(id > 0 && id <= intern::clr.size())) {
+    if (!(id > 0 && id <= intern::color.size())) {
         logging::err(intern::mod,
             "Failed to scan input on panel #", id, " (Panel not found)"
         );
@@ -931,8 +931,8 @@ linalg::fmatrix get<linalg::fmatrix> (
         return val;
     }
 
-    terminal::color_fore(clr);
-    terminal::color_back(intern::clr[id - 1]);
+    terminal::color_fore(color);
+    terminal::color_back(intern::color[id - 1]);
     terminal::cursor_pos(
         intern::row[id - 1] + row - 1, intern::col[id - 1] + col - 1
     );
@@ -1092,8 +1092,8 @@ std::string conv_val_to_oupt (linalg::fmatrix val) {
     return oupt;
 }
 
-std::string conv_color_to_oupt (terminal::color clr) {
-    switch (clr) {
+std::string conv_color_to_oupt (terminal::color color) {
+    switch (color) {
         case terminal::black:
             return std::string("Black");
         case terminal::darkred:

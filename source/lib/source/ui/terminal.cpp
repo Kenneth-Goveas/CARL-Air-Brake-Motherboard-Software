@@ -12,7 +12,7 @@ std::string mod = "terminal";
 
 bool fail;
 
-std::string conv_color_to_oupt (color clr);
+std::string conv_color_to_oupt (color color);
 
 }
 
@@ -57,27 +57,27 @@ void color_default (void) {
     std::cout.flush();
 }
 
-void color_fore (color clr) {
+void color_fore (color color) {
     std::string oupt;
 
-    oupt = intern::conv_color_to_oupt(clr);
+    oupt = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
         "Setting foreground color: ", oupt
     );
 
-    std::cout << "\e[38;5;" << clr << "m";
+    std::cout << "\e[38;5;" << color << "m";
     std::cout.flush();
 }
 
-void color_back (color clr) {
+void color_back (color color) {
     std::string oupt;
 
-    oupt = intern::conv_color_to_oupt(clr);
+    oupt = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
         "Setting background color: ", oupt
     );
 
-    std::cout << "\e[48;5;" << clr << "m";
+    std::cout << "\e[48;5;" << color << "m";
     std::cout.flush();
 }
 
@@ -160,8 +160,8 @@ void cursor_pos (int row, int col) {
 
 namespace terminal :: intern {
 
-std::string conv_color_to_oupt (color clr) {
-    switch (clr) {
+std::string conv_color_to_oupt (color color) {
+    switch (color) {
         case black:
             return std::string("Black");
         case darkred:

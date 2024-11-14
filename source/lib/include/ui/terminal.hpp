@@ -30,8 +30,8 @@ void erase_line (void);
 void erase_screen (void);
 
 void color_default (void);
-void color_fore (color clr);
-void color_back (color clr);
+void color_fore (color color);
+void color_back (color color);
 
 void cursor_hide (void);
 void cursor_show (void);
