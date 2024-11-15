@@ -72,3 +72,7 @@ lib_lnk_tgt(dev_i2c sys_logging)
 
 lib_add(dev_servo dev servo)
 lib_lnk_tgt(dev_servo sys_logging dev_i2c)
+
+lib_add(dev_bmp388 dev bmp388)
+lib_cmp_def(dev_bmp388 _POSIX_C_SOURCE=200112L _GNU_SOURCE)
+lib_lnk_tgt(dev_bmp388 m math_linalg sys_logging dev_i2c)
