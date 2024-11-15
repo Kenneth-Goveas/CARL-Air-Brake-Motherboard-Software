@@ -99,8 +99,8 @@ bool eof (void) {
 
 template <>
 bool get<bool> (void) {
-    std::string inpt, oupt;
     bool val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: Boolean"
@@ -155,8 +155,8 @@ bool get<bool> (void) {
 
 template <>
 std::string get<std::string> (void) {
-    std::string inpt, oupt;
     std::string val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: String"
@@ -211,8 +211,8 @@ std::string get<std::string> (void) {
 
 template <>
 int get<int> (void) {
-    std::string inpt, oupt;
     int val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: Integer scalar"
@@ -267,8 +267,8 @@ int get<int> (void) {
 
 template <>
 double get<double> (void) {
-    std::string inpt, oupt;
     double val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: Real scalar"
@@ -323,8 +323,8 @@ double get<double> (void) {
 
 template <>
 linalg::ivector get<linalg::ivector> (void) {
-    std::string inpt, oupt;
     linalg::ivector val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: Integer vector"
@@ -379,8 +379,8 @@ linalg::ivector get<linalg::ivector> (void) {
 
 template <>
 linalg::fvector get<linalg::fvector> (void) {
-    std::string inpt, oupt;
     linalg::fvector val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: Real vector"
@@ -435,8 +435,8 @@ linalg::fvector get<linalg::fvector> (void) {
 
 template <>
 linalg::imatrix get<linalg::imatrix> (void) {
-    std::string inpt, oupt;
     linalg::imatrix val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: Integer matrix"
@@ -491,8 +491,8 @@ linalg::imatrix get<linalg::imatrix> (void) {
 
 template <>
 linalg::fmatrix get<linalg::fmatrix> (void) {
-    std::string inpt, oupt;
     linalg::fmatrix val;
+    std::string inpt, oupt;
 
     logging::inf(intern::mod,
         "Scanning input: Type: Real matrix"

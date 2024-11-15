@@ -32,7 +32,6 @@ std::string conv_val_to_oupt (linalg::ivector val);
 std::string conv_val_to_oupt (linalg::fvector val);
 std::string conv_val_to_oupt (linalg::imatrix val);
 std::string conv_val_to_oupt (linalg::fmatrix val);
-
 std::string conv_color_to_oupt (terminal::color color);
 
 }
@@ -450,8 +449,8 @@ void put (terminal::color color, int id, int row, int col, const char * val) {
 
 template <>
 bool get<bool> (terminal::color color, int id, int row, int col) {
-    std::string oupt_color, oupt_val;
     bool val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
@@ -514,8 +513,8 @@ bool get<bool> (terminal::color color, int id, int row, int col) {
 
 template <>
 std::string get<std::string> (terminal::color color, int id, int row, int col) {
-    std::string oupt_color, oupt_val;
     std::string val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
@@ -578,8 +577,8 @@ std::string get<std::string> (terminal::color color, int id, int row, int col) {
 
 template <>
 int get<int> (terminal::color color, int id, int row, int col) {
-    std::string oupt_color, oupt_val;
     int val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
@@ -642,8 +641,8 @@ int get<int> (terminal::color color, int id, int row, int col) {
 
 template <>
 double get<double> (terminal::color color, int id, int row, int col) {
-    std::string oupt_color, oupt_val;
     double val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
@@ -708,8 +707,8 @@ template <>
 linalg::ivector get<linalg::ivector> (
     terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_color, oupt_val;
     linalg::ivector val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
@@ -774,8 +773,8 @@ template <>
 linalg::fvector get<linalg::fvector> (
     terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_color, oupt_val;
     linalg::fvector val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
@@ -840,8 +839,8 @@ template <>
 linalg::imatrix get<linalg::imatrix> (
     terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_color, oupt_val;
     linalg::imatrix val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,
@@ -906,8 +905,8 @@ template <>
 linalg::fmatrix get<linalg::fmatrix> (
     terminal::color color, int id, int row, int col
 ) {
-    std::string oupt_color, oupt_val;
     linalg::fmatrix val;
+    std::string oupt_color, oupt_val;
 
     oupt_color = intern::conv_color_to_oupt(color);
     logging::inf(intern::mod,

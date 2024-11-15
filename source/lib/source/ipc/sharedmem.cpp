@@ -814,7 +814,7 @@ void create<bool> (std::string name) {
 
     logging::inf(intern::mod,
         "Creating shared memory object: ",
-        "Name: “", name, "”, Type: Boolean, Size: ", len 
+        "Name: “", name, "”, Type: Boolean, Size: ", len
     );
 
     logging::inf(intern::mod,
@@ -910,7 +910,7 @@ void create<int> (std::string name) {
 
     logging::inf(intern::mod,
         "Creating shared memory object: ",
-        "Name: “", name, "”, Type: Integer scalar, Size: ", len 
+        "Name: “", name, "”, Type: Integer scalar, Size: ", len
     );
 
     logging::inf(intern::mod,
@@ -1006,7 +1006,7 @@ void create<double> (std::string name) {
 
     logging::inf(intern::mod,
         "Creating shared memory object: ",
-        "Name: “", name, "”, Type: Real scalar, Size: ", len 
+        "Name: “", name, "”, Type: Real scalar, Size: ", len
     );
 
     logging::inf(intern::mod,
@@ -1102,7 +1102,7 @@ void create<linalg::ivector> (std::string name, int dim) {
 
     logging::inf(intern::mod,
         "Creating shared memory object: ",
-        "Name: “", name, "”, Type: Integer vector, Dim: ", dim, ", Size: ", len 
+        "Name: “", name, "”, Type: Integer vector, Dim: ", dim, ", Size: ", len
     );
 
     if (!(dim > 0)) {
@@ -1206,7 +1206,7 @@ void create<linalg::fvector> (std::string name, int dim) {
 
     logging::inf(intern::mod,
         "Creating shared memory object: ",
-        "Name: “", name, "”, Type: Real vector, Dim: ", dim, ", Size: ", len 
+        "Name: “", name, "”, Type: Real vector, Dim: ", dim, ", Size: ", len
     );
 
     if (!(dim > 0)) {
@@ -1311,7 +1311,7 @@ void create<linalg::imatrix> (std::string name, int rows, int cols) {
     logging::inf(intern::mod,
         "Creating shared memory object: ",
         "Name: “", name, "”, Type: Integer matrix, ",
-        "Rows: ", rows, ", Cols: ", cols, ", Size: ", len 
+        "Rows: ", rows, ", Cols: ", cols, ", Size: ", len
     );
 
     if (!(rows > 0 && cols > 0)) {
@@ -1416,7 +1416,7 @@ void create<linalg::fmatrix> (std::string name, int rows, int cols) {
     logging::inf(intern::mod,
         "Creating shared memory object: ",
         "Name: “", name, "”, Type: Real matrix, ",
-        "Rows: ", rows, ", Cols: ", cols, ", Size: ", len 
+        "Rows: ", rows, ", Cols: ", cols, ", Size: ", len
     );
 
     if (!(rows > 0 && cols > 0)) {
