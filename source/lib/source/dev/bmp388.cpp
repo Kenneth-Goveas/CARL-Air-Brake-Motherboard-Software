@@ -1,6 +1,5 @@
 #include <cstddef>
 #include <cstdint>
-#include <cmath>
 
 #include <iomanip>
 #include <iostream>
@@ -24,6 +23,9 @@ bool incomp;
 
 double pres1, temp1;
 double pres2, temp2;
+
+bool valid_pres1, valid_temp1;
+bool valid_pres2, valid_temp2;
 
 bool crdy1, drdy_pres1, drdy_temp1;
 bool crdy2, drdy_pres2, drdy_temp2;
@@ -108,11 +110,11 @@ double get_pres (void) {
         "Getting average pressure reading"
     );
 
-    if (!std::isnan(intern::pres1) && !std::isnan(intern::pres2)) {
+    if (intern::valid_pres1 && intern::valid_pres2) {
         pres = 0.5 * (intern::pres1 + intern::pres2);
-    } else if (!std::isnan(intern::pres1)) {
+    } else if (intern::valid_pres1) {
         pres = intern::pres1;
-    } else if (!std::isnan(intern::pres2)) {
+    } else if (intern::valid_pres2) {
         pres = intern::pres2;
     } else {
         logging::err(intern::mod,
@@ -139,11 +141,11 @@ double get_temp (void) {
         "Getting average temperature reading"
     );
 
-    if (!std::isnan(intern::temp1) && !std::isnan(intern::temp2)) {
+    if (intern::valid_temp1 && intern::valid_temp2) {
         temp = 0.5 * (intern::temp1 + intern::temp2);
-    } else if (!std::isnan(intern::temp1)) {
+    } else if (intern::valid_temp1) {
         temp = intern::temp1;
-    } else if (!std::isnan(intern::temp2)) {
+    } else if (intern::valid_temp2) {
         temp = intern::temp2;
     } else {
         logging::err(intern::mod,
@@ -1330,13 +1332,13 @@ void update (int num) {
     );
 
     if (num == 1) {
-        pres1 = NAN;
-        temp1 = NAN;
+        valid_pres1 = false;
+        valid_temp1 = false;
     }
 
     if (num == 2) {
-        pres2 = NAN;
-        temp2 = NAN;
+        valid_pres2 = false;
+        valid_temp2 = false;
     }
 
     get_sta(num);
@@ -1375,6 +1377,16 @@ void update (int num) {
         fail = true;
         incomp = false;
         return;
+    }
+
+    if (num == 1) {
+        valid_pres1 = true;
+        valid_temp1 = true;
+    }
+
+    if (num == 2) {
+        valid_pres2 = true;
+        valid_temp2 = true;
     }
 
     fail = false;
