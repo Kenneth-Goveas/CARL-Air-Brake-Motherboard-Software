@@ -25,8 +25,8 @@ bool incomp;
 double pres1, temp1;
 double pres2, temp2;
 
-bool cmd_rdy1, drdy_pres1, drdy_temp1;
-bool cmd_rdy2, drdy_pres2, drdy_temp2;
+bool crdy1, drdy_pres1, drdy_temp1;
+bool crdy2, drdy_pres2, drdy_temp2;
 
 linalg::fvector cal_pres1(11), cal_temp1(3);
 linalg::fvector cal_pres2(11), cal_temp2(3);
@@ -43,15 +43,15 @@ std::string conv_iir_to_oupt (iir iir);
 void put_reg (int num, std::uint8_t reg, std::uint8_t dat);
 std::vector<std::uint8_t> get_reg (int num, std::uint8_t reg, std::size_t len);
 
-void put_pwrctrl_sleep (int num);
-void put_pwrctrl_normal (int num);
+void put_pwr_slp (int num);
+void put_pwr_nrm (int num);
 void put_odr (int num, drate drate);
 void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp);
-void put_config (int num, iir iir);
+void put_cfg (int num, iir iir);
 
-void get_status (int num);
-void get_calib (int num);
-void get_data (int num);
+void get_sta (int num);
+void get_cal (int num);
+void get_dat (int num);
 
 void wait (int num);
 void reset (int num);
@@ -467,19 +467,19 @@ std::vector<std::uint8_t> get_reg (int num, std::uint8_t reg, std::size_t len) {
     return dat;
 }
 
-void put_pwrctrl_sleep (int num) {
-    std::uint8_t pwrctrl = 0x00;
+void put_pwr_slp (int num) {
+    std::uint8_t pwr = 0x00;
     std::vector<std::uint8_t> err;
 
     logging::inf(mod,
         "Setting sensor #", num, " power mode: Sleep"
     );
 
-    pwrctrl = BMP388_PUT_BITS(pwrctrl, BMP388_BIT_PRESEN, 1);
-    pwrctrl = BMP388_PUT_BITS(pwrctrl, BMP388_BIT_TEMPEN, 1);
-    pwrctrl = BMP388_PUT_BITS(pwrctrl, BMP388_BIT_MODE, BMP388_PRST_MODE_SLEEP);
+    pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABP, 1);
+    pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABT, 1);
+    pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_MODE, BMP388_PRST_MODE_SLP);
 
-    put_reg(num, BMP388_REG_PWRCTRL, pwrctrl);
+    put_reg(num, BMP388_REG_PWR, pwr);
     if (fail) {
         logging::err(mod,
             "Failed to set sensor #", num, " power mode"
@@ -497,7 +497,7 @@ void put_pwrctrl_sleep (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " power mode ",
             "(Sensor fatal error)"
@@ -515,7 +515,7 @@ void put_pwrctrl_sleep (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " power mode ",
             "(Sensor config error)"
@@ -527,21 +527,19 @@ void put_pwrctrl_sleep (int num) {
     fail = false;
 }
 
-void put_pwrctrl_normal (int num) {
-    std::uint8_t pwrctrl = 0x00;
+void put_pwr_nrm (int num) {
+    std::uint8_t pwr = 0x00;
     std::vector<std::uint8_t> err;
 
     logging::inf(mod,
         "Setting sensor #", num, " power mode: Normal"
     );
 
-    pwrctrl = BMP388_PUT_BITS(pwrctrl, BMP388_BIT_PRESEN, 1);
-    pwrctrl = BMP388_PUT_BITS(pwrctrl, BMP388_BIT_TEMPEN, 1);
-    pwrctrl = BMP388_PUT_BITS(
-        pwrctrl, BMP388_BIT_MODE, BMP388_PRST_MODE_NORMAL
-    );
+    pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABP, 1);
+    pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABT, 1);
+    pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_MODE, BMP388_PRST_MODE_NRM);
 
-    put_reg(num, BMP388_REG_PWRCTRL, pwrctrl);
+    put_reg(num, BMP388_REG_PWR, pwr);
     if (fail) {
         logging::err(mod,
             "Failed to set sensor #", num, " power mode"
@@ -559,7 +557,7 @@ void put_pwrctrl_normal (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " power mode ",
             "(Sensor fatal error)"
@@ -577,7 +575,7 @@ void put_pwrctrl_normal (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " power mode ",
             "(Sensor config error)"
@@ -599,7 +597,7 @@ void put_odr (int num, drate drate) {
         "Setting sensor #", num, " data rate: ", oupt
     );
 
-    odr = BMP388_PUT_BITS(odr, BMP388_BIT_ODRSEL, drate);
+    odr = BMP388_PUT_BITS(odr, BMP388_BIT_ODR, drate);
 
     put_reg(num, BMP388_REG_ODR, odr);
     if (fail) {
@@ -619,7 +617,7 @@ void put_odr (int num, drate drate) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " data rate ",
             "(Sensor fatal error)"
@@ -637,7 +635,7 @@ void put_odr (int num, drate drate) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " data rate ",
             "(Sensor config error)"
@@ -682,7 +680,7 @@ void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " oversampling ",
             "(Sensor fatal error)"
@@ -700,7 +698,7 @@ void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " oversampling ",
             "(Sensor config error)"
@@ -712,8 +710,8 @@ void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
     fail = false;
 }
 
-void put_config (int num, iir iir) {
-    std::uint8_t config = 0x00;
+void put_cfg (int num, iir iir) {
+    std::uint8_t cfg = 0x00;
     std::vector<std::uint8_t> err;
     std::string oupt;
 
@@ -722,9 +720,9 @@ void put_config (int num, iir iir) {
         "Setting sensor #", num, " IIR filter coefficient: ", oupt
     );
 
-    config = BMP388_PUT_BITS(config, BMP388_BIT_IIRFILTER, iir);
+    cfg = BMP388_PUT_BITS(cfg, BMP388_BIT_IIR, iir);
 
-    put_reg(num, BMP388_REG_CONFIG, config);
+    put_reg(num, BMP388_REG_CFG, cfg);
     if (fail) {
         logging::err(mod,
             "Failed to set sensor #", num, " IIR filter coefficient"
@@ -742,7 +740,7 @@ void put_config (int num, iir iir) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " IIR filter coefficient ",
             "(Sensor fatal error)"
@@ -760,7 +758,7 @@ void put_config (int num, iir iir) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to set sensor #", num, " IIR filter coefficient ",
             "(Sensor config error)"
@@ -772,9 +770,9 @@ void put_config (int num, iir iir) {
     fail = false;
 }
 
-void get_status (int num) {
-    std::vector<std::uint8_t> status, err;
-    std::string oupt_cmd_rdy, oupt_drdy_pres, oupt_drdy_temp;
+void get_sta (int num) {
+    std::vector<std::uint8_t> sta, err;
+    std::string oupt_crdy, oupt_drdy_pres, oupt_drdy_temp;
 
     logging::inf(mod,
         "Getting sensor #", num, " status"
@@ -789,7 +787,7 @@ void get_status (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to get sensor #", num, " status ",
             "(Sensor fatal error)"
@@ -807,7 +805,7 @@ void get_status (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to get sensor #", num, " status ",
             "(Sensor config error)"
@@ -816,7 +814,7 @@ void get_status (int num) {
         return;
     }
 
-    status = get_reg(num, BMP388_REG_STATUS, 1);
+    sta = get_reg(num, BMP388_REG_STA, 1);
     if (fail) {
         logging::err(mod,
             "Failed to get sensor #", num, " status"
@@ -826,61 +824,61 @@ void get_status (int num) {
     }
 
     if (num == 1) {
-        if (BMP388_GET_BITS(status[0], BMP388_BIT_CMDRDY)) {
-            cmd_rdy1 = true;
+        if (BMP388_GET_BITS(sta[0], BMP388_BIT_CRDY)) {
+            crdy1 = true;
         } else {
-            cmd_rdy1 = false;
+            crdy1 = false;
         }
 
-        if (BMP388_GET_BITS(status[0], BMP388_BIT_DRDYPRES)) {
+        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYP)) {
             drdy_pres1 = true;
         } else {
             drdy_pres1 = false;
         }
 
-        if (BMP388_GET_BITS(status[0], BMP388_BIT_DRDYTEMP)) {
+        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYT)) {
             drdy_temp1 = true;
         } else {
             drdy_temp1 = false;
         }
 
-        oupt_cmd_rdy = conv_val_to_oupt(cmd_rdy1);
+        oupt_crdy = conv_val_to_oupt(crdy1);
         oupt_drdy_pres = conv_val_to_oupt(drdy_pres1);
         oupt_drdy_temp = conv_val_to_oupt(drdy_temp1);
 
         logging::inf(mod,
             "Got sensor #", num, " status: ",
-            "Cmd rdy: ", oupt_cmd_rdy, ", ",
+            "Cmd rdy: ", oupt_crdy, ", ",
             "Pres drdy: ", oupt_drdy_pres, ", Temp drdy: ", oupt_drdy_temp
         );
     }
 
     if (num == 2) {
-        if (BMP388_GET_BITS(status[0], BMP388_BIT_CMDRDY)) {
-            cmd_rdy2 = true;
+        if (BMP388_GET_BITS(sta[0], BMP388_BIT_CRDY)) {
+            crdy2 = true;
         } else {
-            cmd_rdy2 = false;
+            crdy2 = false;
         }
 
-        if (BMP388_GET_BITS(status[0], BMP388_BIT_DRDYPRES)) {
+        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYP)) {
             drdy_pres2 = true;
         } else {
             drdy_pres2 = false;
         }
 
-        if (BMP388_GET_BITS(status[0], BMP388_BIT_DRDYTEMP)) {
+        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYT)) {
             drdy_temp2 = true;
         } else {
             drdy_temp2 = false;
         }
 
-        oupt_cmd_rdy = conv_val_to_oupt(cmd_rdy2);
+        oupt_crdy = conv_val_to_oupt(crdy2);
         oupt_drdy_pres = conv_val_to_oupt(drdy_pres2);
         oupt_drdy_temp = conv_val_to_oupt(drdy_temp2);
 
         logging::inf(mod,
             "Got sensor #", num, " status: ",
-            "Cmd rdy: ", oupt_cmd_rdy, ", ",
+            "Cmd rdy: ", oupt_crdy, ", ",
             "Pres drdy: ", oupt_drdy_pres, ", Temp drdy: ", oupt_drdy_temp
         );
     }
@@ -888,8 +886,8 @@ void get_status (int num) {
     fail = false;
 }
 
-void get_calib (int num) {
-    std::vector<std::uint8_t> calib, err;
+void get_cal (int num) {
+    std::vector<std::uint8_t> cal, err;
     std::string oupt_cal_pres, oupt_cal_temp;
 
     logging::inf(mod,
@@ -905,7 +903,7 @@ void get_calib (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to get sensor #", num, " calibration parameters ",
             "(Sensor fatal error)"
@@ -923,7 +921,7 @@ void get_calib (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to get sensor #", num, " calibration parameters ",
             "(Sensor config error)"
@@ -932,7 +930,7 @@ void get_calib (int num) {
         return;
     }
 
-    calib = get_reg(num, BMP388_REG_CALIB, 21);
+    cal = get_reg(num, BMP388_REG_CAL, 21);
     if (fail) {
         logging::err(mod,
             "Failed to get sensor #", num, " calibration parameters"
@@ -942,20 +940,20 @@ void get_calib (int num) {
     }
 
     if (num == 1) {
-        cal_pres1[0] = (double)((std::int16_t)(calib[5] | (calib[6] << 8)));
-        cal_pres1[1] = (double)((std::int16_t)(calib[7] | (calib[8] << 8)));
-        cal_pres1[2] = (double)((std::int8_t)(calib[9]));
-        cal_pres1[3] = (double)((std::int8_t)(calib[10]));
-        cal_pres1[4] = (double)((std::uint16_t)(calib[11] | (calib[12] << 8)));
-        cal_pres1[5] = (double)((std::uint16_t)(calib[13] | (calib[14] << 8)));
-        cal_pres1[6] = (double)((std::int8_t)(calib[15]));
-        cal_pres1[7] = (double)((std::int8_t)(calib[16]));
-        cal_pres1[8] = (double)((std::int16_t)(calib[17] | (calib[18] << 8)));
-        cal_pres1[9] = (double)((std::int8_t)(calib[19]));
-        cal_pres1[10] = (double)((std::int8_t)(calib[20]));
-        cal_temp1[0] = (double)((std::uint16_t)(calib[0] | (calib[1] << 8)));
-        cal_temp1[1] = (double)((std::uint16_t)(calib[2] | (calib[3] << 8)));
-        cal_temp1[2] = (double)((std::int8_t)(calib[4]));
+        cal_pres1[0] = (double)((std::int16_t)(cal[5] | (cal[6] << 8)));
+        cal_pres1[1] = (double)((std::int16_t)(cal[7] | (cal[8] << 8)));
+        cal_pres1[2] = (double)((std::int8_t)(cal[9]));
+        cal_pres1[3] = (double)((std::int8_t)(cal[10]));
+        cal_pres1[4] = (double)((std::uint16_t)(cal[11] | (cal[12] << 8)));
+        cal_pres1[5] = (double)((std::uint16_t)(cal[13] | (cal[14] << 8)));
+        cal_pres1[6] = (double)((std::int8_t)(cal[15]));
+        cal_pres1[7] = (double)((std::int8_t)(cal[16]));
+        cal_pres1[8] = (double)((std::int16_t)(cal[17] | (cal[18] << 8)));
+        cal_pres1[9] = (double)((std::int8_t)(cal[19]));
+        cal_pres1[10] = (double)((std::int8_t)(cal[20]));
+        cal_temp1[0] = (double)((std::uint16_t)(cal[0] | (cal[1] << 8)));
+        cal_temp1[1] = (double)((std::uint16_t)(cal[2] | (cal[3] << 8)));
+        cal_temp1[2] = (double)((std::int8_t)(cal[4]));
 
         cal_pres1[0] -= std::pow(2, 14);
         cal_pres1[1] -= std::pow(2, 14);
@@ -984,20 +982,20 @@ void get_calib (int num) {
     }
 
     if (num == 2) {
-        cal_pres2[0] = (double)((std::int16_t)(calib[5] | (calib[6] << 8)));
-        cal_pres2[1] = (double)((std::int16_t)(calib[7] | (calib[8] << 8)));
-        cal_pres2[2] = (double)((std::int8_t)(calib[9]));
-        cal_pres2[3] = (double)((std::int8_t)(calib[10]));
-        cal_pres2[4] = (double)((std::uint16_t)(calib[11] | (calib[12] << 8)));
-        cal_pres2[5] = (double)((std::uint16_t)(calib[13] | (calib[14] << 8)));
-        cal_pres2[6] = (double)((std::int8_t)(calib[15]));
-        cal_pres2[7] = (double)((std::int8_t)(calib[16]));
-        cal_pres2[8] = (double)((std::int16_t)(calib[17] | (calib[18] << 8)));
-        cal_pres2[9] = (double)((std::int8_t)(calib[19]));
-        cal_pres2[10] = (double)((std::int8_t)(calib[20]));
-        cal_temp2[0] = (double)((std::uint16_t)(calib[0] | (calib[1] << 8)));
-        cal_temp2[1] = (double)((std::uint16_t)(calib[2] | (calib[3] << 8)));
-        cal_temp2[2] = (double)((std::int8_t)(calib[4]));
+        cal_pres2[0] = (double)((std::int16_t)(cal[5] | (cal[6] << 8)));
+        cal_pres2[1] = (double)((std::int16_t)(cal[7] | (cal[8] << 8)));
+        cal_pres2[2] = (double)((std::int8_t)(cal[9]));
+        cal_pres2[3] = (double)((std::int8_t)(cal[10]));
+        cal_pres2[4] = (double)((std::uint16_t)(cal[11] | (cal[12] << 8)));
+        cal_pres2[5] = (double)((std::uint16_t)(cal[13] | (cal[14] << 8)));
+        cal_pres2[6] = (double)((std::int8_t)(cal[15]));
+        cal_pres2[7] = (double)((std::int8_t)(cal[16]));
+        cal_pres2[8] = (double)((std::int16_t)(cal[17] | (cal[18] << 8)));
+        cal_pres2[9] = (double)((std::int8_t)(cal[19]));
+        cal_pres2[10] = (double)((std::int8_t)(cal[20]));
+        cal_temp2[0] = (double)((std::uint16_t)(cal[0] | (cal[1] << 8)));
+        cal_temp2[1] = (double)((std::uint16_t)(cal[2] | (cal[3] << 8)));
+        cal_temp2[2] = (double)((std::int8_t)(cal[4]));
 
         cal_pres2[0] -= std::pow(2, 14);
         cal_pres2[1] -= std::pow(2, 14);
@@ -1028,8 +1026,8 @@ void get_calib (int num) {
     fail = false;
 }
 
-void get_data (int num) {
-    std::vector<std::uint8_t> data, err;
+void get_dat (int num) {
+    std::vector<std::uint8_t> dat, err;
     double raw_pres, raw_temp;
     double aux[6];
     std::string oupt_pres, oupt_temp;
@@ -1047,7 +1045,7 @@ void get_data (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to get sensor #", num, " data ",
             "(Sensor fatal error)"
@@ -1065,7 +1063,7 @@ void get_data (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to get sensor #", num, " data ",
             "(Sensor config error)"
@@ -1074,7 +1072,7 @@ void get_data (int num) {
         return;
     }
 
-    data = get_reg(num, BMP388_REG_DATA, 6);
+    dat = get_reg(num, BMP388_REG_DAT, 6);
     if (fail) {
         logging::err(mod,
             "Failed to get sensor #", num, " data"
@@ -1084,8 +1082,8 @@ void get_data (int num) {
     }
 
     if (num == 1) {
-        raw_pres = data[0] | (data[1] << 8) | (data[2] << 16);
-        raw_temp = data[3] | (data[4] << 8) | (data[5] << 16);
+        raw_pres = dat[0] | (dat[1] << 8) | (dat[2] << 16);
+        raw_temp = dat[3] | (dat[4] << 8) | (dat[5] << 16);
 
         aux[0] = raw_temp - cal_temp1[0];
         aux[1] = aux[0] * cal_temp1[1];
@@ -1118,8 +1116,8 @@ void get_data (int num) {
     }
 
     if (num == 2) {
-        raw_pres = data[0] | (data[1] << 8) | (data[2] << 16);
-        raw_temp = data[3] | (data[4] << 8) | (data[5] << 16);
+        raw_pres = dat[0] | (dat[1] << 8) | (dat[2] << 16);
+        raw_temp = dat[3] | (dat[4] << 8) | (dat[5] << 16);
 
         aux[0] = raw_temp - cal_temp2[0];
         aux[1] = aux[0] * cal_temp2[1];
@@ -1160,7 +1158,7 @@ void wait (int num) {
     );
 
     while (true) {
-        get_status(num);
+        get_sta(num);
         if (fail) {
             logging::err(mod,
                 "Failed to wait for sensor #", num, " to become ready"
@@ -1169,11 +1167,11 @@ void wait (int num) {
             return;
         }
 
-        if (num == 1 && cmd_rdy1) {
+        if (num == 1 && crdy1) {
             break;
         }
 
-        if (num == 2 && cmd_rdy2) {
+        if (num == 2 && crdy2) {
             break;
         }
     }
@@ -1189,7 +1187,7 @@ void reset (int num) {
         "Resetting sensor #", num
     );
 
-    cmd = BMP388_PRST_CMD_SOFTRESET;
+    cmd = BMP388_PRST_CMD_RST;
 
     put_reg(num, BMP388_REG_CMD, cmd);
     if (fail) {
@@ -1209,7 +1207,7 @@ void reset (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FATALERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
         logging::err(mod,
             "Failed to reset sensor #", num, " (Sensor fatal error)"
         );
@@ -1225,7 +1223,7 @@ void reset (int num) {
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CONFERR)) {
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
         logging::err(mod,
             "Failed to reset sensor #", num, " (Sensor config error)"
         );
@@ -1269,7 +1267,7 @@ void init (int num, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir) {
         return;
     }
 
-    put_pwrctrl_sleep(num);
+    put_pwr_slp(num);
     if (fail) {
         logging::err(mod,
             "Failed to initialize sensor #", num
@@ -1296,7 +1294,7 @@ void init (int num, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir) {
         return;
     }
 
-    put_config(num, iir);
+    put_cfg(num, iir);
     if (fail) {
         logging::err(mod,
             "Failed to initialize sensor #", num
@@ -1305,7 +1303,7 @@ void init (int num, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir) {
         return;
     }
 
-    get_calib(num);
+    get_cal(num);
     if (fail) {
         logging::err(mod,
             "Failed to initialize sensor #", num
@@ -1314,7 +1312,7 @@ void init (int num, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir) {
         return;
     }
 
-    put_pwrctrl_normal(num);
+    put_pwr_nrm(num);
     if (fail) {
         logging::err(mod,
             "Failed to initialize sensor #", num
@@ -1341,7 +1339,7 @@ void update (int num) {
         temp2 = NAN;
     }
 
-    get_status(num);
+    get_sta(num);
     if (fail) {
         logging::err(mod,
             "Failed to get sensor #", num, " readings"
@@ -1369,7 +1367,7 @@ void update (int num) {
         return;
     }
 
-    get_data(num);
+    get_dat(num);
     if (fail) {
         logging::err(mod,
             "Failed to get sensor #", num, " readings"
