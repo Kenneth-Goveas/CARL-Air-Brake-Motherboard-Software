@@ -592,11 +592,9 @@ void put_pwr_nrm (int num) {
 void put_odr (int num, drate drate) {
     std::uint8_t odr = 0x00;
     std::vector<std::uint8_t> err;
-    std::string oupt;
 
-    oupt = conv_drate_to_oupt(drate);
     logging::inf(mod,
-        "Setting sensor #", num, " data rate: ", oupt
+        "Setting sensor #", num, " data rate"
     );
 
     odr = BMP388_PUT_BITS(odr, BMP388_BIT_ODR, drate);
@@ -652,13 +650,9 @@ void put_odr (int num, drate drate) {
 void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
     std::uint8_t osr = 0x00;
     std::vector<std::uint8_t> err;
-    std::string oupt_ovsmp_pres, oupt_ovsmp_temp;
 
-    oupt_ovsmp_pres = conv_ovsmp_to_oupt(ovsmp_pres);
-    oupt_ovsmp_temp = conv_ovsmp_to_oupt(ovsmp_temp);
     logging::inf(mod,
-        "Setting sensor #", num, " oversampling: ",
-        "Pres ovsmp: ", oupt_ovsmp_pres, ", Temp ovsmp: ", oupt_ovsmp_temp
+        "Setting sensor #", num, " oversampling"
     );
 
     osr = BMP388_PUT_BITS(osr, BMP388_BIT_OSRP, ovsmp_pres);
@@ -715,11 +709,9 @@ void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
 void put_cfg (int num, iir iir) {
     std::uint8_t cfg = 0x00;
     std::vector<std::uint8_t> err;
-    std::string oupt;
 
-    oupt = conv_iir_to_oupt(iir);
     logging::inf(mod,
-        "Setting sensor #", num, " IIR filter coefficient: ", oupt
+        "Setting sensor #", num, " IIR filter coefficient"
     );
 
     cfg = BMP388_PUT_BITS(cfg, BMP388_BIT_IIR, iir);
