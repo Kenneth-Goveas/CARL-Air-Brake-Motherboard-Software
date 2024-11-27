@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <cstdint>
+#include <cmath>
 
 #include <iomanip>
 #include <iostream>
@@ -21,17 +22,22 @@ std::string mod = "bmp388";
 bool fail;
 bool incomp;
 
-double pres1, temp1;
-double pres2, temp2;
+std::vector<linalg::fvector> cal_pres(2, linalg::fvector(11));
+std::vector<linalg::fvector> cal_temp(2, linalg::fvector(3));
 
-bool valid_pres1, valid_temp1;
-bool valid_pres2, valid_temp2;
+std::vector<double> pres(2);
+std::vector<double> temp(2);
 
-bool crdy1, drdy_pres1, drdy_temp1;
-bool crdy2, drdy_pres2, drdy_temp2;
+std::vector<bool> valid_pres(2);
+std::vector<bool> valid_temp(2);
 
-linalg::fvector cal_pres1(11), cal_temp1(3);
-linalg::fvector cal_pres2(11), cal_temp2(3);
+std::vector<bool> sta_crdy(2);
+std::vector<bool> sta_drdyp(2);
+std::vector<bool> sta_drdyt(2);
+
+std::vector<bool> err_ftl(2);
+std::vector<bool> err_cmd(2);
+std::vector<bool> err_cfg(2);
 
 std::string conv_val_to_oupt (bool val);
 std::string conv_val_to_oupt (double val);
@@ -42,24 +48,20 @@ std::string conv_drate_to_oupt (drate drate);
 std::string conv_ovsmp_to_oupt (ovsmp ovsmp);
 std::string conv_iir_to_oupt (iir iir);
 
-void put_reg (int num, std::uint8_t reg, std::uint8_t dat);
-std::vector<std::uint8_t> get_reg (int num, std::uint8_t reg, std::size_t len);
+void put_reg (int id, std::uint8_t reg, std::uint8_t dat);
+std::vector<std::uint8_t> get_reg (int id, std::uint8_t reg, std::size_t len);
 
-void put_pwr_slp (int num);
-void put_pwr_nrm (int num);
-void put_odr (int num, drate drate);
-void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp);
-void put_cfg (int num, iir iir);
+void put_cmd_rst (int id);
+void put_pwr_slp (int id);
+void put_pwr_nrm (int id);
+void put_odr (int id, drate drate);
+void put_osr (int id, ovsmp ovsmp_pres, ovsmp ovsmp_temp);
+void put_cfg (int id, iir iir);
 
-void get_sta (int num);
-void get_cal (int num);
-void get_dat (int num);
-
-void wait (int num);
-void reset (int num);
-
-void init (int num, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir);
-void update (int num);
+void get_sta (int id);
+void get_err (int id);
+void get_cal (int id);
+void get_dat (int id);
 
 }
 
@@ -73,27 +75,329 @@ bool incomp (void) {
     return intern::incomp;
 }
 
-void init (
-    drate drate1, ovsmp ovsmp_pres1, ovsmp ovsmp_temp1, iir iir1,
-    drate drate2, ovsmp ovsmp_pres2, ovsmp ovsmp_temp2, iir iir2
-) {
+void init (int id, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir) {
+    std::string oupt_drate, oupt_ovsmp_pres, oupt_ovsmp_temp, oupt_iir;
+
+    oupt_drate = intern::conv_drate_to_oupt(drate);
+    oupt_ovsmp_pres = intern::conv_ovsmp_to_oupt(ovsmp_pres);
+    oupt_ovsmp_temp = intern::conv_ovsmp_to_oupt(ovsmp_temp);
+    oupt_iir = intern::conv_iir_to_oupt(iir);
     logging::inf(intern::mod,
-        "Initializing sensors"
+        "Initializing sensor #", id, ": ",
+        "Data rate: ", oupt_drate, ", ",
+        "Pres ovsmp: ", oupt_ovsmp_pres, ", ",
+        "Temp ovsmp: ", oupt_ovsmp_temp, ", ",
+        "IIR coef: ", oupt_iir
     );
 
-    intern::init(1, drate1, ovsmp_pres1, ovsmp_temp1, iir1);
-    if (intern::fail) {
+    if (!(id == 1 || id == 2)) {
         logging::err(intern::mod,
-            "Failed to initialize sensors"
+            "Failed to initialize sensor #", id, " (Sensor does not exist)"
         );
         intern::fail = true;
         return;
     }
 
-    intern::init(2, drate2, ovsmp_pres2, ovsmp_temp2, iir2);
+    do {
+        intern::get_err(id);
+        if (intern::fail) {
+            logging::err(intern::mod,
+                "Failed to initialize sensor #", id
+            );
+            intern::fail = true;
+            return;
+        }
+
+        if (intern::err_ftl[id - 1]) {
+            logging::err(intern::mod,
+                "Failed to initialize sensor #", id, " (Sensor fatal error)"
+            );
+            intern::fail = true;
+            return;
+        }
+
+        if (intern::err_cmd[id - 1]) {
+            logging::err(intern::mod,
+                "Failed to initialize sensor #", id, " (Sensor command error)"
+            );
+            intern::fail = true;
+            return;
+        }
+
+        if (intern::err_cfg[id - 1]) {
+            logging::err(intern::mod,
+                "Failed to initialize sensor #", id, " (Sensor config error)"
+            );
+            intern::fail = true;
+            return;
+        }
+
+        intern::get_sta(id);
+        if (intern::fail) {
+            logging::err(intern::mod,
+                "Failed to initialize sensor #", id
+            );
+            intern::fail = true;
+            return;
+        }
+    } while (!intern::sta_crdy[id - 1]);
+
+    intern::put_cmd_rst(id);
     if (intern::fail) {
         logging::err(intern::mod,
-            "Failed to initialize sensors"
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor fatal error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor command error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor config error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::put_pwr_slp(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor fatal error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor command error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor config error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::put_odr(id, drate);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor fatal error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor command error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor config error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::put_osr(id, ovsmp_pres, ovsmp_temp);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor fatal error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor command error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor config error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::put_cfg(id, iir);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor fatal error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor command error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor config error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::get_cal(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::put_pwr_nrm(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor fatal error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor command error)"
+        );
+        intern::fail = true;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to initialize sensor #", id, " (Sensor config error)"
         );
         intern::fail = true;
         return;
@@ -102,129 +406,212 @@ void init (
     intern::fail = false;
 }
 
-double get_pres (void) {
+double get_pres (int id) {
     double pres;
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting average pressure reading"
+        "Getting sensor #", id, " pressure reading"
     );
 
-    if (intern::valid_pres1 && intern::valid_pres2) {
-        pres = 0.5 * (intern::pres1 + intern::pres2);
-    } else if (intern::valid_pres1) {
-        pres = intern::pres1;
-    } else if (intern::valid_pres2) {
-        pres = intern::pres2;
-    } else {
+    if (!(id == 1 || id == 2)) {
         logging::err(intern::mod,
-            "Failed to get average pressure reading (Invalid readings)"
+            "Failed to get sensor #", id, " pressure reading ",
+            "(Sensor does not exist)"
         );
         intern::fail = true;
         return pres;
     }
 
+    if (!intern::valid_pres[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to get sensor #", id, " pressure reading ",
+            "(Reading unavailable)"
+        );
+        intern::fail = true;
+        return pres;
+    }
+
+    pres = intern::pres[id - 1];
+
     oupt = intern::conv_val_to_oupt(pres);
     logging::inf(intern::mod,
-        "Got average pressure reading: ", oupt, "Pa"
+        "Got sensor #", id, " pressure reading: ", oupt, "Pa"
     );
 
     intern::fail = false;
     return pres;
 }
 
-double get_temp (void) {
+double get_temp (int id) {
     double temp;
     std::string oupt;
 
     logging::inf(intern::mod,
-        "Getting average temperature reading"
+        "Getting sensor #", id, " temperature reading"
     );
 
-    if (intern::valid_temp1 && intern::valid_temp2) {
-        temp = 0.5 * (intern::temp1 + intern::temp2);
-    } else if (intern::valid_temp1) {
-        temp = intern::temp1;
-    } else if (intern::valid_temp2) {
-        temp = intern::temp2;
-    } else {
+    if (!(id == 1 || id == 2)) {
         logging::err(intern::mod,
-            "Failed to get average temperature reading (Invalid readings)"
+            "Failed to get sensor #", id, " temperature reading ",
+            "(Sensor does not exist)"
         );
         intern::fail = true;
         return temp;
     }
 
+    if (!intern::valid_temp[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to get sensor #", id, " temperature reading ",
+            "(Reading unavailable)"
+        );
+        intern::fail = true;
+        return temp;
+    }
+
+    temp = intern::temp[id - 1];
+
     oupt = intern::conv_val_to_oupt(temp);
     logging::inf(intern::mod,
-        "Got average temperature reading: ", oupt, "°C"
+        "Got sensor #", id, " temperature reading: ", oupt, "°C"
     );
 
     intern::fail = false;
     return temp;
 }
 
-void update (void) {
-    bool fail1, incomp1;
-    bool fail2, incomp2;
+void update (int id) {
+    std::string oupt_pres, oupt_temp;
 
     logging::inf(intern::mod,
-        "Getting sensor readings"
+        "Updating sensor #", id, "readings"
     );
 
-    intern::update(1);
-    if (intern::fail) {
-        logging::wrn(intern::mod,
-            "Sensor #1 readings unavailable due to failure"
-        );
-        fail1 = true;
-        incomp1 = false;
-    } else if (intern::incomp) {
-        logging::wrn(intern::mod,
-            "Sensor #1 readings unavailable due to incomplete measurement"
-        );
-        fail1 = false;
-        incomp1 = true;
-    } else {
-        fail1 = false;
-        incomp1 = false;
-    }
-
-    intern::update(2);
-    if (intern::fail) {
-        logging::wrn(intern::mod,
-            "Sensor #2 readings unavailable due to failure"
-        );
-        fail2 = true;
-        incomp2 = false;
-    } else if (intern::incomp) {
-        logging::wrn(intern::mod,
-            "Sensor #2 readings unavailable due to incomplete measurement"
-        );
-        fail2 = false;
-        incomp2 = true;
-    } else {
-        fail2 = false;
-        incomp2 = false;
-    }
-
-    if (fail1 && fail2) {
+    if (!(id == 1 || id == 2)) {
         logging::err(intern::mod,
-            "Failed to get sensor readings"
+            "Failed to update sensor #", id, " readings ",
+            "(Sensor does not exist)"
         );
         intern::fail = true;
         intern::incomp = false;
         return;
     }
 
-    if ((fail1 || incomp1) && (fail2 || incomp2)) {
+    intern::valid_pres[id - 1] = false;
+    intern::valid_temp[id - 1] = false;
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings (Sensor fatal error)"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings (Sensor command error)"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings (Sensor config error)"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    intern::get_sta(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    if (!(intern::sta_drdyp[id - 1] && intern::sta_drdyt[id - 1])) {
         logging::wrn(intern::mod,
-            "Sensor measurements incomplete"
+            "Sensor #", id, " measurement incomplete" 
         );
         intern::fail = false;
         intern::incomp = true;
         return;
     }
+
+    intern::get_err(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    if (intern::err_ftl[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings (Sensor fatal error)"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    if (intern::err_cmd[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings (Sensor command error)"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    if (intern::err_cfg[id - 1]) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings (Sensor config error)"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    intern::get_dat(id);
+    if (intern::fail) {
+        logging::err(intern::mod,
+            "Failed to update sensor #", id, " readings"
+        );
+        intern::fail = true;
+        intern::incomp = false;
+        return;
+    }
+
+    intern::valid_pres[id - 1] = true;
+    intern::valid_temp[id - 1] = true;
+
+    oupt_pres = intern::conv_val_to_oupt(intern::pres[id - 1]);
+    oupt_temp = intern::conv_val_to_oupt(intern::temp[id - 1]);
+    logging::inf(intern::mod,
+        "Updated sensor #", id, " readings: ",
+        "Pres: ", oupt_pres, "Pa, Temp: ", oupt_temp, "°C"
+    );
 
     intern::fail = false;
     intern::incomp = false;
@@ -386,7 +773,7 @@ std::string conv_iir_to_oupt (iir iir) {
     }
 }
 
-void put_reg (int num, std::uint8_t reg, std::uint8_t dat) {
+void put_reg (int id, std::uint8_t reg, std::uint8_t dat) {
     std::uint8_t addr;
     std::vector<std::uint8_t> cmd(2);
     std::string oupt_reg, oupt_dat;
@@ -394,19 +781,16 @@ void put_reg (int num, std::uint8_t reg, std::uint8_t dat) {
     oupt_reg = conv_hex_to_oupt(reg);
     oupt_dat = conv_hex_to_oupt(dat);
     logging::inf(mod,
-        "Writing to sensor #", num, ": Reg: ", oupt_reg, ", Data: ", oupt_dat
+        "Writing to sensor #", id, ": Reg: ", oupt_reg, ", Data: ", oupt_dat
     );
 
-    if (num == 1) {
-        addr = BMP388_ADDR1;
-    } else if (num == 2) {
-        addr = BMP388_ADDR2;
-    } else {
-        logging::err(mod,
-            "Failed to write to sensor #", num, " (Sensor does not exist)"
-        );
-        fail = true;
-        return;
+    switch (id) {
+        case 1:
+            addr = BMP388_ADDR1;
+            break;
+        case 2:
+            addr = BMP388_ADDR2;
+            break;
     }
 
     cmd[0] = reg;
@@ -416,7 +800,7 @@ void put_reg (int num, std::uint8_t reg, std::uint8_t dat) {
     i2c::exec();
     if (i2c::fail()) {
         logging::err(mod,
-            "Failed to write to sensor #", num
+            "Failed to write to sensor #", id
         );
         fail = true;
         return;
@@ -425,26 +809,23 @@ void put_reg (int num, std::uint8_t reg, std::uint8_t dat) {
     fail = false;
 }
 
-std::vector<std::uint8_t> get_reg (int num, std::uint8_t reg, std::size_t len) {
+std::vector<std::uint8_t> get_reg (int id, std::uint8_t reg, std::size_t len) {
     std::uint8_t addr;
     std::vector<std::uint8_t> cmd(1), dat(len);
     std::string oupt_reg, oupt_dat;
 
     oupt_reg = conv_hex_to_oupt(reg);
     logging::inf(mod,
-        "Reading from sensor #", num, ": Reg: ", oupt_reg, ", Len: ", len
+        "Reading from sensor #", id, ": Reg: ", oupt_reg, ", Len: ", len
     );
 
-    if (num == 1) {
-        addr = BMP388_ADDR1;
-    } else if (num == 2) {
-        addr = BMP388_ADDR2;
-    } else {
-        logging::err(mod,
-            "Failed to read from sensor #", num, " (Sensor does not exist)"
-        );
-        fail = true;
-        return dat;
+    switch (id) {
+        case 1:
+            addr = BMP388_ADDR1;
+            break;
+        case 2:
+            addr = BMP388_ADDR2;
+            break;
     }
 
     cmd[0] = reg;
@@ -454,7 +835,7 @@ std::vector<std::uint8_t> get_reg (int num, std::uint8_t reg, std::size_t len) {
     i2c::exec();
     if (i2c::fail()) {
         logging::err(mod,
-            "Failed to read from sensor #", num
+            "Failed to read from sensor #", id
         );
         fail = true;
         return dat;
@@ -462,65 +843,49 @@ std::vector<std::uint8_t> get_reg (int num, std::uint8_t reg, std::size_t len) {
 
     oupt_dat = conv_hex_to_oupt(dat);
     logging::inf(mod,
-        "Read from sensor #", num, ": Data: ", oupt_dat
+        "Read from sensor #", id, ": Data: ", oupt_dat
     );
 
     fail = false;
     return dat;
 }
 
-void put_pwr_slp (int num) {
-    std::uint8_t pwr = 0x00;
-    std::vector<std::uint8_t> err;
+void put_cmd_rst (int id) {
+    std::uint8_t cmd;
 
     logging::inf(mod,
-        "Setting sensor #", num, " power mode: Sleep"
+        "Resetting sensor #", id
+    );
+
+    cmd = BMP388_PRST_CMD_RST;
+
+    put_reg(id, BMP388_REG_CMD, cmd);
+    if (fail) {
+        logging::err(mod,
+            "Failed to reset sensor #", id
+        );
+        fail = true;
+        return;
+    }
+
+    fail = false;
+}
+
+void put_pwr_slp (int id) {
+    std::uint8_t pwr = 0x00;
+
+    logging::inf(mod,
+        "Setting sensor #", id, " power mode: Sleep"
     );
 
     pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABP, 1);
     pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABT, 1);
     pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_MODE, BMP388_PRST_MODE_SLP);
 
-    put_reg(num, BMP388_REG_PWR, pwr);
+    put_reg(id, BMP388_REG_PWR, pwr);
     if (fail) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode"
-        );
-        fail = true;
-        return;
-    }
-
-    err = get_reg(num, BMP388_REG_ERR, 1);
-    if (fail) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode ",
-            "(Sensor config error)"
+        logging::err(
+            "Failed to set sensor #", id, " power mode"
         );
         fail = true;
         return;
@@ -529,58 +894,21 @@ void put_pwr_slp (int num) {
     fail = false;
 }
 
-void put_pwr_nrm (int num) {
+void put_pwr_nrm (int id) {
     std::uint8_t pwr = 0x00;
-    std::vector<std::uint8_t> err;
 
     logging::inf(mod,
-        "Setting sensor #", num, " power mode: Normal"
+        "Setting sensor #", id, " power mode: Normal"
     );
 
     pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABP, 1);
     pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_ENABT, 1);
     pwr = BMP388_PUT_BITS(pwr, BMP388_BIT_MODE, BMP388_PRST_MODE_NRM);
 
-    put_reg(num, BMP388_REG_PWR, pwr);
+    put_reg(id, BMP388_REG_PWR, pwr);
     if (fail) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode"
-        );
-        fail = true;
-        return;
-    }
-
-    err = get_reg(num, BMP388_REG_ERR, 1);
-    if (fail) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " power mode ",
-            "(Sensor config error)"
+        logging::err(
+            "Failed to set sensor #", id, " power mode"
         );
         fail = true;
         return;
@@ -589,56 +917,19 @@ void put_pwr_nrm (int num) {
     fail = false;
 }
 
-void put_odr (int num, drate drate) {
+void put_odr (int id, drate drate) {
     std::uint8_t odr = 0x00;
-    std::vector<std::uint8_t> err;
 
     logging::inf(mod,
-        "Setting sensor #", num, " data rate"
+        "Setting sensor #", id, " data rate"
     );
 
     odr = BMP388_PUT_BITS(odr, BMP388_BIT_ODR, drate);
 
-    put_reg(num, BMP388_REG_ODR, odr);
+    put_reg(id, BMP388_REG_ODR, odr);
     if (fail) {
         logging::err(mod,
-            "Failed to set sensor #", num, " data rate"
-        );
-        fail = true;
-        return;
-    }
-
-    err = get_reg(num, BMP388_REG_ERR, 1);
-    if (fail) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " data rate"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " data rate ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " data rate ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " data rate ",
-            "(Sensor config error)"
+            "Failed to set sensor #", id, " data rate"
         );
         fail = true;
         return;
@@ -647,57 +938,20 @@ void put_odr (int num, drate drate) {
     fail = false;
 }
 
-void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
+void put_osr (int id, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
     std::uint8_t osr = 0x00;
-    std::vector<std::uint8_t> err;
 
     logging::inf(mod,
-        "Setting sensor #", num, " oversampling"
+        "Setting sensor #", id, " oversampling"
     );
 
     osr = BMP388_PUT_BITS(osr, BMP388_BIT_OSRP, ovsmp_pres);
     osr = BMP388_PUT_BITS(osr, BMP388_BIT_OSRT, ovsmp_temp);
 
-    put_reg(num, BMP388_REG_OSR, osr);
+    put_reg(id, BMP388_REG_OSR, osr);
     if (fail) {
         logging::err(mod,
-            "Failed to set sensor #", num, " oversampling"
-        );
-        fail = true;
-        return;
-    }
-
-    err = get_reg(num, BMP388_REG_ERR, 1);
-    if (fail) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " oversampling"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " oversampling ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " oversampling ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " oversampling ",
-            "(Sensor config error)"
+            "Failed to set sensor #", id, " oversampling"
         );
         fail = true;
         return;
@@ -706,56 +960,19 @@ void put_osr (int num, ovsmp ovsmp_pres, ovsmp ovsmp_temp) {
     fail = false;
 }
 
-void put_cfg (int num, iir iir) {
+void put_cfg (int id, iir iir) {
     std::uint8_t cfg = 0x00;
-    std::vector<std::uint8_t> err;
 
     logging::inf(mod,
-        "Setting sensor #", num, " IIR filter coefficient"
+        "Setting sensor #", id, " IIR coefficient"
     );
 
     cfg = BMP388_PUT_BITS(cfg, BMP388_BIT_IIR, iir);
 
-    put_reg(num, BMP388_REG_CFG, cfg);
+    put_reg(id, BMP388_REG_CFG, cfg);
     if (fail) {
         logging::err(mod,
-            "Failed to set sensor #", num, " IIR filter coefficient"
-        );
-        fail = true;
-        return;
-    }
-
-    err = get_reg(num, BMP388_REG_ERR, 1);
-    if (fail) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " IIR filter coefficient"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " IIR filter coefficient ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " IIR filter coefficient ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to set sensor #", num, " IIR filter coefficient ",
-            "(Sensor config error)"
+            "Failed to set sensor #", id, " IIR coefficient"
         );
         fail = true;
         return;
@@ -764,625 +981,207 @@ void put_cfg (int num, iir iir) {
     fail = false;
 }
 
-void get_sta (int num) {
-    std::vector<std::uint8_t> sta, err;
-    std::string oupt_crdy, oupt_drdy_pres, oupt_drdy_temp;
+void get_sta (int id) {
+    std::vector<std::uint8_t> sta;
+    std::string oupt_sta_crdy, oupt_sta_drdyp, oupt_sta_drdyt;
 
     logging::inf(mod,
-        "Getting sensor #", num, " status"
+        "Getting sensor #", id, " status flags"
     );
 
-    err = get_reg(num, BMP388_REG_ERR, 1);
+    sta = get_reg(id, BMP388_REG_STA, 1);
     if (fail) {
         logging::err(mod,
-            "Failed to get sensor #", num, " status"
+            "Failed to get sensor #", id, " status flags"
         );
         fail = true;
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " status ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
+    if (BMP388_GET_BITS(sta[0], BMP388_BIT_CRDY)) {
+        sta_crdy[id - 1] = true;
+    } else {
+        sta_crdy[id - 1] = false;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " status ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
+    if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYP)) {
+        sta_drdyp[id - 1] = true;
+    } else {
+        sta_drdyp[id - 1] = false;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " status ",
-            "(Sensor config error)"
-        );
-        fail = true;
-        return;
+    if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYT)) {
+        sta_drdyt[id - 1] = true;
+    } else {
+        sta_drdyt[id - 1] = false;
     }
 
-    sta = get_reg(num, BMP388_REG_STA, 1);
-    if (fail) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " status"
-        );
-        fail = true;
-        return;
-    }
-
-    if (num == 1) {
-        if (BMP388_GET_BITS(sta[0], BMP388_BIT_CRDY)) {
-            crdy1 = true;
-        } else {
-            crdy1 = false;
-        }
-
-        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYP)) {
-            drdy_pres1 = true;
-        } else {
-            drdy_pres1 = false;
-        }
-
-        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYT)) {
-            drdy_temp1 = true;
-        } else {
-            drdy_temp1 = false;
-        }
-
-        oupt_crdy = conv_val_to_oupt(crdy1);
-        oupt_drdy_pres = conv_val_to_oupt(drdy_pres1);
-        oupt_drdy_temp = conv_val_to_oupt(drdy_temp1);
-
-        logging::inf(mod,
-            "Got sensor #", num, " status: ",
-            "Cmd rdy: ", oupt_crdy, ", ",
-            "Pres drdy: ", oupt_drdy_pres, ", Temp drdy: ", oupt_drdy_temp
-        );
-    }
-
-    if (num == 2) {
-        if (BMP388_GET_BITS(sta[0], BMP388_BIT_CRDY)) {
-            crdy2 = true;
-        } else {
-            crdy2 = false;
-        }
-
-        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYP)) {
-            drdy_pres2 = true;
-        } else {
-            drdy_pres2 = false;
-        }
-
-        if (BMP388_GET_BITS(sta[0], BMP388_BIT_DRDYT)) {
-            drdy_temp2 = true;
-        } else {
-            drdy_temp2 = false;
-        }
-
-        oupt_crdy = conv_val_to_oupt(crdy2);
-        oupt_drdy_pres = conv_val_to_oupt(drdy_pres2);
-        oupt_drdy_temp = conv_val_to_oupt(drdy_temp2);
-
-        logging::inf(mod,
-            "Got sensor #", num, " status: ",
-            "Cmd rdy: ", oupt_crdy, ", ",
-            "Pres drdy: ", oupt_drdy_pres, ", Temp drdy: ", oupt_drdy_temp
-        );
-    }
+    oupt_sta_crdy = conv_val_to_oupt(sta_crdy[id - 1]);
+    oupt_sta_drdyp = conv_val_to_oupt(sta_drdyp[id - 1]);
+    oupt_sta_drdyt = conv_val_to_oupt(sta_drdyt[id - 1]);
+    logging::inf(mod,
+        "Got sensor #", id, " status flags: ",
+        "Cmd rdy: ", oupt_sta_crdy, ", ",
+        "Pres drdy: ", oupt_sta_drdyp, ", ",
+        "Temp drdy: ", oupt_sta_drdyt
+    );
 
     fail = false;
 }
 
-void get_cal (int num) {
-    std::vector<std::uint8_t> cal, err;
+void get_err (int id) {
+    std::vector<std::uint8_t> err;
+    std::string oupt_err_ftl, oupt_err_cmd, oupt_err_cfg;
+
+    logging::inf(mod,
+        "Getting sensor #", id, " error flags"
+    );
+
+    err = get_reg(id, BMP388_REG_ERR, 1);
+    if (fail) {
+        logging::err(mod,
+            "Failed to get sensor #", id, " error flags"
+        );
+        fail = true;
+        return;
+    }
+
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTL)) {
+        err_ftl[id - 1] = true;
+    } else {
+        err_ftl[id - 1] = false;
+    }
+
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMD)) {
+        err_cmd[id - 1] = true;
+    } else {
+        err_cmd[id - 1] = false;
+    }
+
+    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFG)) {
+        err_cfg[id - 1] = true;
+    } else {
+        err_cfg[id - 1] = false;
+    }
+
+    oupt_err_ftl = conv_val_to_oupt(err_ftl[id - 1]);
+    oupt_err_cmd = conv_val_to_oupt(err_cmd[id - 1]);
+    oupt_err_cfg = conv_val_to_oupt(err_cfg[id - 1]);
+    logging::inf(mod,
+        "Got sensor #", id, " error flags: ",
+        "Fatal err: ", oupt_err_ftl, ", ",
+        "Cmd err: ", oupt_err_cmd, ", ",
+        "Config err: ", oupt_err_cfg
+    );
+
+    fail = false;
+}
+
+void get_cal (int id) {
+    std::vector<std::uint8_t> cal;
     std::string oupt_cal_pres, oupt_cal_temp;
 
     logging::inf(mod,
-        "Getting sensor #", num, " calibration parameters"
+        "Getting sensor #", id, " calibration parameters"
     );
 
-    err = get_reg(num, BMP388_REG_ERR, 1);
+    cal = get_reg(id, BMP388_REG_CAL, 21);
     if (fail) {
         logging::err(mod,
-            "Failed to get sensor #", num, " calibration parameters"
+            "Failed to get sensor #", id, " calibration parameters"
         );
         fail = true;
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " calibration parameters ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
+    cal_pres[id - 1][0] = (double)((std::int16_t)(cal[5] | (cal[6] << 8)));
+    cal_pres[id - 1][1] = (double)((std::int16_t)(cal[7] | (cal[8] << 8)));
+    cal_pres[id - 1][2] = (double)((std::int8_t)(cal[9]));
+    cal_pres[id - 1][3] = (double)((std::int8_t)(cal[10]));
+    cal_pres[id - 1][4] = (double)((std::uint16_t)(cal[11] | (cal[12] << 8)));
+    cal_pres[id - 1][5] = (double)((std::uint16_t)(cal[13] | (cal[14] << 8)));
+    cal_pres[id - 1][6] = (double)((std::int8_t)(cal[15]));
+    cal_pres[id - 1][7] = (double)((std::int8_t)(cal[16]));
+    cal_pres[id - 1][8] = (double)((std::int16_t)(cal[17] | (cal[18] << 8)));
+    cal_pres[id - 1][9] = (double)((std::int8_t)(cal[19]));
+    cal_pres[id - 1][10] = (double)((std::int8_t)(cal[20]));
+    cal_temp[id - 1][0] = (double)((std::uint16_t)(cal[0] | (cal[1] << 8)));
+    cal_temp[id - 1][1] = (double)((std::uint16_t)(cal[2] | (cal[3] << 8)));
+    cal_temp[id - 1][2] = (double)((std::int8_t)(cal[4]));
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " calibration parameters ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
+    cal_pres[id - 1][0] -= std::pow(2, 14);
+    cal_pres[id - 1][1] -= std::pow(2, 14);
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " calibration parameters ",
-            "(Sensor config error)"
-        );
-        fail = true;
-        return;
-    }
+    cal_pres[id - 1][0] /= std::pow(2, 20);
+    cal_pres[id - 1][1] /= std::pow(2, 29);
+    cal_pres[id - 1][2] /= std::pow(2, 32);
+    cal_pres[id - 1][3] /= std::pow(2, 37);
+    cal_pres[id - 1][4] *= std::pow(2, 3);
+    cal_pres[id - 1][5] /= std::pow(2, 6);
+    cal_pres[id - 1][6] /= std::pow(2, 8);
+    cal_pres[id - 1][7] /= std::pow(2, 15);
+    cal_pres[id - 1][8] /= std::pow(2, 48);
+    cal_pres[id - 1][9] /= std::pow(2, 48);
+    cal_pres[id - 1][10] /= std::pow(2, 65);
+    cal_temp[id - 1][0] *= std::pow(2, 8);
+    cal_temp[id - 1][1] /= std::pow(2, 30);
+    cal_temp[id - 1][2] /= std::pow(2, 48);
 
-    cal = get_reg(num, BMP388_REG_CAL, 21);
-    if (fail) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " calibration parameters"
-        );
-        fail = true;
-        return;
-    }
-
-    if (num == 1) {
-        cal_pres1[0] = (double)((std::int16_t)(cal[5] | (cal[6] << 8)));
-        cal_pres1[1] = (double)((std::int16_t)(cal[7] | (cal[8] << 8)));
-        cal_pres1[2] = (double)((std::int8_t)(cal[9]));
-        cal_pres1[3] = (double)((std::int8_t)(cal[10]));
-        cal_pres1[4] = (double)((std::uint16_t)(cal[11] | (cal[12] << 8)));
-        cal_pres1[5] = (double)((std::uint16_t)(cal[13] | (cal[14] << 8)));
-        cal_pres1[6] = (double)((std::int8_t)(cal[15]));
-        cal_pres1[7] = (double)((std::int8_t)(cal[16]));
-        cal_pres1[8] = (double)((std::int16_t)(cal[17] | (cal[18] << 8)));
-        cal_pres1[9] = (double)((std::int8_t)(cal[19]));
-        cal_pres1[10] = (double)((std::int8_t)(cal[20]));
-        cal_temp1[0] = (double)((std::uint16_t)(cal[0] | (cal[1] << 8)));
-        cal_temp1[1] = (double)((std::uint16_t)(cal[2] | (cal[3] << 8)));
-        cal_temp1[2] = (double)((std::int8_t)(cal[4]));
-
-        cal_pres1[0] -= std::pow(2, 14);
-        cal_pres1[1] -= std::pow(2, 14);
-
-        cal_pres1[0] /= std::pow(2, 20);
-        cal_pres1[1] /= std::pow(2, 29);
-        cal_pres1[2] /= std::pow(2, 32);
-        cal_pres1[3] /= std::pow(2, 37);
-        cal_pres1[4] *= std::pow(2, 3);
-        cal_pres1[5] /= std::pow(2, 6);
-        cal_pres1[6] /= std::pow(2, 8);
-        cal_pres1[7] /= std::pow(2, 15);
-        cal_pres1[8] /= std::pow(2, 48);
-        cal_pres1[9] /= std::pow(2, 48);
-        cal_pres1[10] /= std::pow(2, 65);
-        cal_temp1[0] *= std::pow(2, 8);
-        cal_temp1[1] /= std::pow(2, 30);
-        cal_temp1[2] /= std::pow(2, 48);
-
-        oupt_cal_pres = conv_val_to_oupt(cal_pres1);
-        oupt_cal_temp = conv_val_to_oupt(cal_temp1);
-        logging::inf(mod,
-            "Got sensor #", num, " calibration parameters: ",
-            "Pres cal: ", oupt_cal_pres, ", Temp cal: ", oupt_cal_temp
-        );
-    }
-
-    if (num == 2) {
-        cal_pres2[0] = (double)((std::int16_t)(cal[5] | (cal[6] << 8)));
-        cal_pres2[1] = (double)((std::int16_t)(cal[7] | (cal[8] << 8)));
-        cal_pres2[2] = (double)((std::int8_t)(cal[9]));
-        cal_pres2[3] = (double)((std::int8_t)(cal[10]));
-        cal_pres2[4] = (double)((std::uint16_t)(cal[11] | (cal[12] << 8)));
-        cal_pres2[5] = (double)((std::uint16_t)(cal[13] | (cal[14] << 8)));
-        cal_pres2[6] = (double)((std::int8_t)(cal[15]));
-        cal_pres2[7] = (double)((std::int8_t)(cal[16]));
-        cal_pres2[8] = (double)((std::int16_t)(cal[17] | (cal[18] << 8)));
-        cal_pres2[9] = (double)((std::int8_t)(cal[19]));
-        cal_pres2[10] = (double)((std::int8_t)(cal[20]));
-        cal_temp2[0] = (double)((std::uint16_t)(cal[0] | (cal[1] << 8)));
-        cal_temp2[1] = (double)((std::uint16_t)(cal[2] | (cal[3] << 8)));
-        cal_temp2[2] = (double)((std::int8_t)(cal[4]));
-
-        cal_pres2[0] -= std::pow(2, 14);
-        cal_pres2[1] -= std::pow(2, 14);
-
-        cal_pres2[0] /= std::pow(2, 20);
-        cal_pres2[1] /= std::pow(2, 29);
-        cal_pres2[2] /= std::pow(2, 32);
-        cal_pres2[3] /= std::pow(2, 37);
-        cal_pres2[4] *= std::pow(2, 3);
-        cal_pres2[5] /= std::pow(2, 6);
-        cal_pres2[6] /= std::pow(2, 8);
-        cal_pres2[7] /= std::pow(2, 15);
-        cal_pres2[8] /= std::pow(2, 48);
-        cal_pres2[9] /= std::pow(2, 48);
-        cal_pres2[10] /= std::pow(2, 65);
-        cal_temp2[0] *= std::pow(2, 8);
-        cal_temp2[1] /= std::pow(2, 30);
-        cal_temp2[2] /= std::pow(2, 48);
-
-        oupt_cal_pres = conv_val_to_oupt(cal_pres2);
-        oupt_cal_temp = conv_val_to_oupt(cal_temp2);
-        logging::inf(mod,
-            "Got sensor #", num, " calibration parameters: ",
-            "Pres cal: ", oupt_cal_pres, ", Temp cal: ", oupt_cal_temp
-        );
-    }
+    oupt_cal_pres = conv_val_to_oupt(cal_pres[id - 1]);
+    oupt_cal_temp = conv_val_to_oupt(cal_temp[id - 1]);
+    logging::inf(mod,
+        "Got sensor #", id, " calibration parameters: ",
+        "Pres cal: ", oupt_cal_pres, ", Temp cal: ", oupt_cal_temp
+    );
 
     fail = false;
 }
 
-void get_dat (int num) {
-    std::vector<std::uint8_t> dat, err;
+void get_dat (int id) {
+    std::vector<std::uint8_t> dat;
     double raw_pres, raw_temp;
     double aux[6];
     std::string oupt_pres, oupt_temp;
 
     logging::inf(mod,
-        "Getting sensor #", num, " data"
+        "Getting sensor #", id, " data"
     );
 
-    err = get_reg(num, BMP388_REG_ERR, 1);
+    dat = get_reg(id, BMP388_REG_DAT, 6);
     if (fail) {
         logging::err(mod,
-            "Failed to get sensor #", num, " data"
+            "Failed to get sensor #", id, " data"
         );
         fail = true;
         return;
     }
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " data ",
-            "(Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
+    raw_pres = dat[0] | (dat[1] << 8) | (dat[2] << 16);
+    raw_temp = dat[3] | (dat[4] << 8) | (dat[5] << 16);
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " data ",
-            "(Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
+    aux[0] = raw_temp - cal_temp[id - 1][0];
+    aux[1] = aux[0] * cal_temp[id - 1][1];
 
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " data ",
-            "(Sensor config error)"
-        );
-        fail = true;
-        return;
-    }
+    temp[id - 1] = aux[1] + aux[0] * aux[0] * cal_temp[id - 1][2];
 
-    dat = get_reg(num, BMP388_REG_DAT, 6);
-    if (fail) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " data"
-        );
-        fail = true;
-        return;
-    }
+    aux[0] = cal_pres[id - 1][5] * temp[id - 1];
+    aux[1] = cal_pres[id - 1][6] * temp[id - 1] * temp[id - 1];
+    aux[2] = cal_pres[id - 1][7] * temp[id - 1] * temp[id - 1] * temp[id - 1];
+    aux[4] = cal_pres[id - 1][4] + aux[0] + aux[1] + aux[2];
 
-    if (num == 1) {
-        raw_pres = dat[0] | (dat[1] << 8) | (dat[2] << 16);
-        raw_temp = dat[3] | (dat[4] << 8) | (dat[5] << 16);
+    aux[0] = cal_pres[id - 1][1] * temp[id - 1];
+    aux[1] = cal_pres[id - 1][2] * temp[id - 1] * temp[id - 1];
+    aux[2] = cal_pres[id - 1][3] * temp[id - 1] * temp[id - 1] * temp[id - 1];
+    aux[5] = raw_pres * (cal_pres[id - 1][0] + aux[0] + aux[1] + aux[2]);
 
-        aux[0] = raw_temp - cal_temp1[0];
-        aux[1] = aux[0] * cal_temp1[1];
+    aux[0] = raw_pres * raw_pres;
+    aux[1] = cal_pres[id - 1][8] + cal_pres[id - 1][9] * temp[id - 1];
+    aux[2] = aux[0] * aux[1];
+    aux[3] = aux[2] + cal_pres[id - 1][10] * raw_pres * raw_pres * raw_pres;
 
-        temp1 = aux[1] + aux[0] * aux[0] * cal_temp1[2];
-
-        aux[0] = cal_pres1[5] * temp1;
-        aux[1] = cal_pres1[6] * temp1 * temp1;
-        aux[2] = cal_pres1[7] * temp1 * temp1 * temp1;
-        aux[4] = cal_pres1[4] + aux[0] + aux[1] + aux[2];
-
-        aux[0] = cal_pres1[1] * temp1;
-        aux[1] = cal_pres1[2] * temp1 * temp1;
-        aux[2] = cal_pres1[3] * temp1 * temp1 * temp1;
-        aux[5] = raw_pres * (cal_pres1[0] + aux[0] + aux[1] + aux[2]);
-
-        aux[0] = raw_pres * raw_pres;
-        aux[1] = cal_pres1[8] + cal_pres1[9] * temp1;
-        aux[2] = aux[0] * aux[1];
-        aux[3] = aux[2] + cal_pres1[10] * raw_pres * raw_pres * raw_pres;
-
-        pres1 = aux[3] + aux[4] + aux[5];
-
-        oupt_pres = conv_val_to_oupt(pres1);
-        oupt_temp = conv_val_to_oupt(temp1);
-        logging::inf(mod,
-            "Got sensor #", num, " data: ",
-            "Pres: ", oupt_pres, "Pa, Temp: ", oupt_temp, "°C"
-        );
-    }
-
-    if (num == 2) {
-        raw_pres = dat[0] | (dat[1] << 8) | (dat[2] << 16);
-        raw_temp = dat[3] | (dat[4] << 8) | (dat[5] << 16);
-
-        aux[0] = raw_temp - cal_temp2[0];
-        aux[1] = aux[0] * cal_temp2[1];
-
-        temp2 = aux[1] + aux[0] * aux[0] * cal_temp2[2];
-
-        aux[0] = cal_pres2[5] * temp2;
-        aux[1] = cal_pres2[6] * temp2 * temp2;
-        aux[2] = cal_pres2[7] * temp2 * temp2 * temp2;
-        aux[4] = cal_pres2[4] + aux[0] + aux[1] + aux[2];
-
-        aux[0] = cal_pres2[1] * temp2;
-        aux[1] = cal_pres2[2] * temp2 * temp2;
-        aux[2] = cal_pres2[3] * temp2 * temp2 * temp2;
-        aux[5] = raw_pres * (cal_pres2[0] + aux[0] + aux[1] + aux[2]);
-
-        aux[0] = raw_pres * raw_pres;
-        aux[1] = cal_pres2[8] + cal_pres2[9] * temp2;
-        aux[2] = aux[0] * aux[1];
-        aux[3] = aux[2] + cal_pres2[10] * raw_pres * raw_pres * raw_pres;
-
-        pres2 = aux[3] + aux[4] + aux[5];
-
-        oupt_pres = conv_val_to_oupt(pres2);
-        oupt_temp = conv_val_to_oupt(temp2);
-        logging::inf(mod,
-            "Got sensor #", num, " data: ",
-            "Pres: ", oupt_pres, "Pa, Temp: ", oupt_temp, "°C"
-        );
-    }
+    pres[id - 1] = aux[3] + aux[4] + aux[5];
 
     fail = false;
-}
-
-void wait (int num) {
-    logging::inf(mod,
-        "Waiting for sensor #", num, " to become ready"
-    );
-
-    while (true) {
-        get_sta(num);
-        if (fail) {
-            logging::err(mod,
-                "Failed to wait for sensor #", num, " to become ready"
-            );
-            fail = true;
-            return;
-        }
-
-        if (num == 1 && crdy1) {
-            break;
-        }
-
-        if (num == 2 && crdy2) {
-            break;
-        }
-    }
-
-    fail = false;
-}
-
-void reset (int num) {
-    std::uint8_t cmd;
-    std::vector<std::uint8_t> err;
-
-    logging::inf(mod,
-        "Resetting sensor #", num
-    );
-
-    cmd = BMP388_PRST_CMD_RST;
-
-    put_reg(num, BMP388_REG_CMD, cmd);
-    if (fail) {
-        logging::err(mod,
-            "Failed to reset sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    err = get_reg(num, BMP388_REG_ERR, 1);
-    if (fail) {
-        logging::err(mod,
-            "Failed to reset sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_FTLERR)) {
-        logging::err(mod,
-            "Failed to reset sensor #", num, " (Sensor fatal error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CMDERR)) {
-        logging::err(mod,
-            "Failed to reset sensor #", num, " (Sensor command error)"
-        );
-        fail = true;
-        return;
-    }
-
-    if (BMP388_GET_BITS(err[0], BMP388_BIT_CFGERR)) {
-        logging::err(mod,
-            "Failed to reset sensor #", num, " (Sensor config error)"
-        );
-        fail = true;
-        return;
-    }
-
-    fail = false;
-}
-
-void init (int num, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir) {
-    std::string oupt_drate, oupt_ovsmp_pres, oupt_ovsmp_temp, oupt_iir;
-
-    oupt_drate = conv_drate_to_oupt(drate);
-    oupt_ovsmp_pres = conv_ovsmp_to_oupt(ovsmp_pres);
-    oupt_ovsmp_temp = conv_ovsmp_to_oupt(ovsmp_temp);
-    oupt_iir = conv_iir_to_oupt(iir);
-    logging::inf(mod,
-        "Initializing sensor #", num, ": ",
-        "Data rate: ", oupt_drate, ", ",
-        "Pres ovsmp: ", oupt_ovsmp_pres, ", ",
-        "Temp ovsmp: ", oupt_ovsmp_temp, ", ",
-        "IIR coef: ", oupt_iir
-    );
-
-    wait(num);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    reset(num);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    put_pwr_slp(num);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    put_odr(num, drate);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    put_osr(num, ovsmp_pres, ovsmp_temp);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    put_cfg(num, iir);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    get_cal(num);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    put_pwr_nrm(num);
-    if (fail) {
-        logging::err(mod,
-            "Failed to initialize sensor #", num
-        );
-        fail = true;
-        return;
-    }
-
-    fail = false;
-}
-
-void update (int num) {
-    logging::inf(mod,
-        "Getting sensor #", num, " readings"
-    );
-
-    if (num == 1) {
-        valid_pres1 = false;
-        valid_temp1 = false;
-    }
-
-    if (num == 2) {
-        valid_pres2 = false;
-        valid_temp2 = false;
-    }
-
-    get_sta(num);
-    if (fail) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " readings"
-        );
-        fail = true;
-        incomp = false;
-        return;
-    }
-
-    if (num == 1 && !(drdy_pres1 && drdy_temp1)) {
-        logging::wrn(mod,
-            "Sensor #", num, " measurement incomplete"
-        );
-        fail = false;
-        incomp = true;
-        return;
-    }
-
-    if (num == 2 && !(drdy_pres2 && drdy_temp2)) {
-        logging::wrn(mod,
-            "Sensor #", num, " measurement incomplete"
-        );
-        fail = false;
-        incomp = true;
-        return;
-    }
-
-    get_dat(num);
-    if (fail) {
-        logging::err(mod,
-            "Failed to get sensor #", num, " readings"
-        );
-        fail = true;
-        incomp = false;
-        return;
-    }
-
-    if (num == 1) {
-        valid_pres1 = true;
-        valid_temp1 = true;
-    }
-
-    if (num == 2) {
-        valid_pres2 = true;
-        valid_temp2 = true;
-    }
-
-    fail = false;
-    incomp = false;
 }
 
 }

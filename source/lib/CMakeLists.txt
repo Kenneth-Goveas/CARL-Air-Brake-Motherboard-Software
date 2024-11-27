@@ -74,4 +74,4 @@ lib_add(dev_servo dev servo)
 lib_lnk_tgt(dev_servo sys_logging dev_i2c)
 
 lib_add(dev_bmp388 dev bmp388)
-lib_lnk_tgt(dev_bmp388 math_linalg sys_logging dev_i2c)
+lib_lnk_tgt(dev_bmp388 m math_linalg sys_logging dev_i2c)

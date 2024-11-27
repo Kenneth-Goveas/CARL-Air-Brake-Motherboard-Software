@@ -24,9 +24,9 @@
 #define BMP388_BIT_CRDY_MSK         0x10
 #define BMP388_BIT_DRDYP_MSK        0x20
 #define BMP388_BIT_DRDYT_MSK        0x40
-#define BMP388_BIT_FTLERR_MSK       0x01
-#define BMP388_BIT_CMDERR_MSK       0x02
-#define BMP388_BIT_CFGERR_MSK       0x04
+#define BMP388_BIT_FTL_MSK          0x01
+#define BMP388_BIT_CMD_MSK          0x02
+#define BMP388_BIT_CFG_MSK          0x04
 
 #define BMP388_BIT_ENABP_POS        0
 #define BMP388_BIT_ENABT_POS        1
@@ -38,9 +38,9 @@
 #define BMP388_BIT_CRDY_POS         4
 #define BMP388_BIT_DRDYP_POS        5
 #define BMP388_BIT_DRDYT_POS        6
-#define BMP388_BIT_FTLERR_POS       0
-#define BMP388_BIT_CMDERR_POS       1
-#define BMP388_BIT_CFGERR_POS       2
+#define BMP388_BIT_FTL_POS          0
+#define BMP388_BIT_CMD_POS          1
+#define BMP388_BIT_CFG_POS          2
 
 #define BMP388_PRST_CMD_RST         0xB6
 #define BMP388_PRST_MODE_SLP        0x00
@@ -130,15 +130,12 @@ typedef enum {
 bool fail (void);
 bool incomp (void);
 
-void init (
-    drate drate1, ovsmp ovsmp_pres1, ovsmp ovsmp_temp1, iir iir1,
-    drate drate2, ovsmp ovsmp_pres2, ovsmp ovsmp_temp2, iir iir2
-);
+void init (int id, drate drate, ovsmp ovsmp_pres, ovsmp ovsmp_temp, iir iir);
 
-double get_pres (void);
-double get_temp (void);
+double get_pres (int id);
+double get_temp (int id);
 
-void update (void);
+void update (int id);
 
 }
 
