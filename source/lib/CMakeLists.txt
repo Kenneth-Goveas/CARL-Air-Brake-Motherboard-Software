@@ -75,3 +75,6 @@ lib_lnk_tgt(dev_servo sys_logging dev_i2c)
 
 lib_add(dev_bmp388 dev bmp388)
 lib_lnk_tgt(dev_bmp388 m math_linalg sys_logging dev_i2c)
+
+lib_add(dev_bno055 dev bno055)
+lib_lnk_tgt(dev_bno055 math_linalg sys_logging dev_i2c)
