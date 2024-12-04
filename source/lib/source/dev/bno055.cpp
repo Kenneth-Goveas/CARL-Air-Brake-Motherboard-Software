@@ -4039,13 +4039,13 @@ void get_datrot (int id) {
     std::string oupt;
 
     logging::inf(mod,
-        "Getting sensor #", id, " angular velocity reading"
+        "Getting sensor #", id, " angular velocity data"
     );
 
     datrot = get_reg(id, BNO055_REG_DATROT, 6);
     if (fail) {
         logging::err(mod,
-            "Failed to get sensor #", id, " angular velocity reading"
+            "Failed to get sensor #", id, " angular velocity data"
         );
         fail = true;
         return;
@@ -4059,7 +4059,7 @@ void get_datrot (int id) {
 
     oupt = conv_val_to_oupt(rot[id - 1]);
     logging::inf(mod,
-        "Got sensor #", id, " angular velocity reading: ", oupt, "rad/s"
+        "Got sensor #", id, " angular velocity data: ", oupt, "rad/s"
     );
 
     fail = false;
@@ -4070,13 +4070,13 @@ void get_datqua (int id) {
     std::string oupt;
 
     logging::inf(mod,
-        "Getting sensor #", id, " attitude quaternion reading"
+        "Getting sensor #", id, " attitude quaternion data"
     );
 
     datqua = get_reg(id, BNO055_REG_DATQUA, 8);
     if (fail) {
         logging::err(mod,
-            "Failed to get sensor #", id, " attitude quaternion reading"
+            "Failed to get sensor #", id, " attitude quaternion data"
         );
         fail = true;
         return;
@@ -4091,7 +4091,7 @@ void get_datqua (int id) {
 
     oupt = conv_val_to_oupt(qua[id - 1]);
     logging::inf(mod,
-        "Got sensor #", id, " attitude quaternion reading: ", oupt
+        "Got sensor #", id, " attitude quaternion data: ", oupt
     );
 
     fail = false;
@@ -4102,13 +4102,13 @@ void get_datlia (int id) {
     std::string oupt;
 
     logging::inf(mod,
-        "Getting sensor #", id, " linear acceleration reading"
+        "Getting sensor #", id, " linear acceleration data"
     );
 
     datlia = get_reg(id, BNO055_REG_DATLIA, 6);
     if (fail) {
         logging::err(mod,
-            "Failed to get sensor #", id, " linear acceleration reading"
+            "Failed to get sensor #", id, " linear acceleration data"
         );
         fail = true;
         return;
@@ -4122,7 +4122,7 @@ void get_datlia (int id) {
 
     oupt = conv_val_to_oupt(lia[id - 1]);
     logging::inf(mod,
-        "Got sensor #", id, " linear acceleration reading: ", oupt, "m/s²"
+        "Got sensor #", id, " linear acceleration data: ", oupt, "m/s²"
     );
 
     fail = false;

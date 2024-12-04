@@ -481,8 +481,6 @@ double get_temp (int id) {
 }
 
 void update (int id) {
-    std::string oupt_pres, oupt_temp;
-
     logging::inf(intern::mod,
         "Updating sensor #", id, " readings"
     );
@@ -605,13 +603,6 @@ void update (int id) {
 
     intern::valid_pres[id - 1] = true;
     intern::valid_temp[id - 1] = true;
-
-    oupt_pres = intern::conv_val_to_oupt(intern::pres[id - 1]);
-    oupt_temp = intern::conv_val_to_oupt(intern::temp[id - 1]);
-    logging::inf(intern::mod,
-        "Updated sensor #", id, " readings: ",
-        "Pres: ", oupt_pres, "Pa, Temp: ", oupt_temp, "°C"
-    );
 
     intern::fail = false;
     intern::incomp = false;
@@ -1180,6 +1171,13 @@ void get_dat (int id) {
     aux[3] = aux[2] + cal_pres[id - 1][10] * raw_pres * raw_pres * raw_pres;
 
     pres[id - 1] = aux[3] + aux[4] + aux[5];
+
+    oupt_pres = conv_val_to_oupt(pres[id - 1]);
+    oupt_temp = conv_val_to_oupt(temp[id - 1]);
+    logging::inf(mod,
+        "Got sensor #", id, " data: ",
+        "Pres: ", oupt_pres, "Pa, Temp: ", oupt_temp, "°C"
+    );
 
     fail = false;
 }
