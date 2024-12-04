@@ -484,7 +484,7 @@ void update (int id) {
     std::string oupt_pres, oupt_temp;
 
     logging::inf(intern::mod,
-        "Updating sensor #", id, "readings"
+        "Updating sensor #", id, " readings"
     );
 
     if (!(id == 1 || id == 2)) {
