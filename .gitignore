@@ -1,5 +1,8 @@
 # Build directory
 build/
 
+# Records directory
+record/
+
 # Vim swap files
 *.swp
