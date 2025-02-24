@@ -19,3 +19,6 @@ endfunction()
 function(lib_comp_opts libname)
   target_compile_options(${libname} PRIVATE ${ARGN})
 endfunction()
+
+lib_add(math_lapack math lapack)
+lib_link_libs(math_lapack blas lapack)
