@@ -32,3 +32,6 @@ lib_link_libs(math_randnum m math_linalg)
 
 lib_add(sys_logging sys logging)
 lib_link_libs(sys_logging math_linalg)
+
+lib_add(sys_timing sys timing)
+lib_link_libs(sys_timing sys_logging)
