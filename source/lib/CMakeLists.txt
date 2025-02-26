@@ -29,3 +29,6 @@ lib_comp_defs(math_linalg _POSIX_C_SOURCE=200112L)
 
 lib_add(math_randnum math randnum)
 lib_link_libs(math_randnum m math_linalg)
+
+lib_add(sys_logging sys logging)
+lib_link_libs(sys_logging math_linalg)
