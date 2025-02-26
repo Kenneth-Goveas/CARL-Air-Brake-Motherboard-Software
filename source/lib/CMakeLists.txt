@@ -22,3 +22,7 @@ endfunction()
 
 lib_add(math_lapack math lapack)
 lib_link_libs(math_lapack blas lapack)
+
+lib_add(math_linalg math linalg)
+lib_link_libs(math_linalg m math_lapack)
+lib_comp_defs(math_linalg _POSIX_C_SOURCE=200112L)
