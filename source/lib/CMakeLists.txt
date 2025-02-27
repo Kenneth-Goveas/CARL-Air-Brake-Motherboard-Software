@@ -41,3 +41,6 @@ lib_link_libs(sys_interrupt sys_logging)
 
 lib_add(sys_timing sys timing)
 lib_link_libs(sys_timing sys_logging)
+
+lib_add(ui_terminal ui terminal)
+lib_link_libs(ui_terminal sys_logging)
