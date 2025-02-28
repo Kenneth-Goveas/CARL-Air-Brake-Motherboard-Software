@@ -47,3 +47,6 @@ lib_link_libs(ui_terminal sys_logging)
 
 lib_add(ui_input ui input)
 lib_link_libs(ui_input math_linalg sys_logging)
+
+lib_add(ui_output ui output)
+lib_link_libs(ui_output math_linalg sys_logging)
