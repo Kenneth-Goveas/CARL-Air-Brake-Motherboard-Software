@@ -50,3 +50,6 @@ lib_link_libs(ui_input math_linalg sys_logging)
 
 lib_add(ui_output ui output)
 lib_link_libs(ui_output math_linalg sys_logging)
+
+lib_add(ui_console ui console)
+lib_link_libs(ui_console math_linalg sys_logging ui_terminal ui_input ui_output)
