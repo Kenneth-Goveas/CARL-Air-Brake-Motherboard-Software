@@ -56,3 +56,7 @@ lib_link_libs(ui_console math_linalg sys_logging ui_terminal ui_input ui_output)
 
 lib_add(ui_panel ui panel)
 lib_link_libs(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
+
+lib_add(ipc_semaphore ipc semaphore)
+lib_link_libs(ipc_semaphore sys_logging)
+lib_link_opts(ipc_semaphore -pthread)
