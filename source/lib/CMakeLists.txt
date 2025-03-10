@@ -60,3 +60,7 @@ lib_link_libs(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
 lib_add(ipc_semaphore ipc semaphore)
 lib_link_libs(ipc_semaphore sys_logging)
 lib_link_opts(ipc_semaphore -pthread)
+
+lib_add(ipc_sharedmem ipc sharedmem)
+lib_link_libs(ipc_sharedmem rt math_linalg sys_logging)
+lib_comp_defs(ipc_sharedmem _POSIX_C_SOURCE=200112L)
