@@ -70,3 +70,6 @@ lib_link_libs(ipc_channel math_linalg sys_logging ipc_semaphore ipc_sharedmem)
 
 lib_add(dev_i2c dev i2c)
 lib_link_libs(dev_i2c sys_logging)
+
+lib_add(dev_servo dev servo)
+lib_link_libs(dev_servo sys_logging dev_i2c)
