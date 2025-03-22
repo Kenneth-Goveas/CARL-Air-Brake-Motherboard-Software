@@ -82,3 +82,6 @@ lib_link_libs(dev_bno055 math_linalg sys_logging dev_i2c)
 
 lib_add(dat_csvread dat csvread)
 lib_link_libs(dat_csvread sys_logging)
+
+lib_add(dat_csvwrite dat csvwrite)
+lib_link_libs(dat_csvwrite sys_logging)
