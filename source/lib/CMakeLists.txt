@@ -88,3 +88,6 @@ lib_link_libs(dat_csvwrite sys_logging)
 
 lib_add(dyn_simul dyn simul)
 lib_link_libs(dyn_simul m math_linalg math_randnum sys_logging dat_csvread)
+
+lib_add(dyn_cntrl dyn cntrl)
+lib_link_libs(dyn_cntrl m math_linalg sys_logging dat_csvread)
