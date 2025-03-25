@@ -91,3 +91,7 @@ lib_link_libs(dyn_simul m math_linalg math_randnum sys_logging dat_csvread)
 
 lib_add(dyn_cntrl dyn cntrl)
 lib_link_libs(dyn_cntrl m math_linalg sys_logging dat_csvread)
+
+lib_add(dyn_estim dyn estim)
+lib_link_libs(dyn_estim m math_linalg sys_logging dat_csvread)
+lib_comp_defs(dyn_estim _POSIX_C_SOURCE=200112L)
