@@ -36,6 +36,9 @@ lib_link_libs(sys_logging math_linalg)
 lib_add(sys_config sys config)
 lib_link_libs(sys_config math_linalg sys_logging)
 
+lib_add(sys_option sys option)
+lib_link_libs(sys_option sys_logging)
+
 lib_add(sys_interrupt sys interrupt)
 lib_link_libs(sys_interrupt sys_logging)
 
