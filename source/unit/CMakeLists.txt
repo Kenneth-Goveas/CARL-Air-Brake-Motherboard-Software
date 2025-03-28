@@ -18,3 +18,6 @@ endfunction()
 function(unit_comp_opts name)
   target_compile_options(${name} PRIVATE ${ARGN})
 endfunction()
+
+unit_add(memory)
+unit_link_libs(memory sys_logging sys_option ipc_channel)
