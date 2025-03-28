@@ -21,3 +21,6 @@ endfunction()
 
 unit_add(memory)
 unit_link_libs(memory sys_logging sys_option ipc_channel)
+
+unit_add(dashboard)
+unit_link_libs(dashboard math_linalg sys_logging sys_option sys_interrupt ui_terminal ui_panel ipc_channel)
