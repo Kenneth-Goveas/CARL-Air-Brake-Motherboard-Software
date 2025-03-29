@@ -24,3 +24,6 @@ unit_link_libs(memory sys_logging sys_option ipc_channel)
 
 unit_add(dashboard)
 unit_link_libs(dashboard math_linalg sys_logging sys_option sys_interrupt ui_terminal ui_panel ipc_channel)
+
+unit_add(streamer)
+unit_link_libs(streamer math_linalg sys_logging sys_config sys_option sys_interrupt sys_timing ui_terminal ui_panel ipc_channel)
