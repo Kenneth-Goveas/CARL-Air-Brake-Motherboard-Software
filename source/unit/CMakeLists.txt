@@ -30,3 +30,6 @@ unit_link_libs(streamer math_linalg sys_logging sys_config sys_option sys_interr
 
 unit_add(recorder)
 unit_link_libs(recorder math_linalg sys_logging sys_config sys_option sys_interrupt sys_timing ipc_channel dat_csvwrite)
+
+unit_add(detector)
+unit_link_libs(detector math_linalg sys_logging sys_config sys_interrupt sys_timing ipc_channel)
