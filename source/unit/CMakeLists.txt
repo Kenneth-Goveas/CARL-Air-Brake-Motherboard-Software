@@ -36,3 +36,6 @@ unit_link_libs(detector math_linalg sys_logging sys_config sys_interrupt sys_tim
 
 unit_add(calibrator)
 unit_link_libs(calibrator math_linalg sys_logging sys_config sys_interrupt sys_timing ui_terminal ui_console ui_panel dev_i2c dev_bno055)
+
+unit_add(instrument)
+unit_link_libs(instrument math_linalg sys_logging sys_config sys_interrupt sys_timing ipc_channel dev_i2c dev_bmp388 dev_bno055)
