@@ -39,3 +39,6 @@ unit_link_libs(calibrator math_linalg sys_logging sys_config sys_interrupt sys_t
 
 unit_add(instrument)
 unit_link_libs(instrument math_linalg sys_logging sys_config sys_interrupt sys_timing ipc_channel dev_i2c dev_bmp388 dev_bno055)
+
+unit_add(actuator)
+unit_link_libs(actuator sys_logging sys_config sys_interrupt ipc_channel dev_i2c dev_servo)
