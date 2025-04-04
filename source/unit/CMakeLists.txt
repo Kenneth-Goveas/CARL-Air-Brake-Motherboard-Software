@@ -45,3 +45,6 @@ unit_link_libs(actuator sys_logging sys_config sys_interrupt sys_timing ipc_chan
 
 unit_add(simulator)
 unit_link_libs(simulator math_linalg sys_logging sys_config sys_interrupt sys_timing ipc_channel dyn_simul)
+
+unit_add(controller)
+unit_link_libs(controller math_linalg sys_logging sys_config sys_interrupt sys_timing ipc_channel dyn_cntrl)
