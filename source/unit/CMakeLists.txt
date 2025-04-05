@@ -48,3 +48,6 @@ unit_link_libs(simulator math_linalg sys_logging sys_config sys_interrupt sys_ti
 
 unit_add(controller)
 unit_link_libs(controller math_linalg sys_logging sys_config sys_interrupt ipc_channel dyn_cntrl)
+
+unit_add(estimator)
+unit_link_libs(estimator math_linalg sys_logging sys_config sys_interrupt ipc_channel dyn_estim)
