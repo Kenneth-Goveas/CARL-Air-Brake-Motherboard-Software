@@ -13,7 +13,7 @@
 #include <ipc/channel.hpp>
 
 namespace logging :: local {
-    std::string path = "data/system.log";
+    std::string path = "log/system.log";
     std::string unit = "dashboard";
     std::string mod = "main";
 }

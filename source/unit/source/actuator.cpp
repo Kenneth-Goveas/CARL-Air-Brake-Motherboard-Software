@@ -11,7 +11,7 @@
 #include <dev/servo.hpp>
 
 namespace logging :: local {
-    std::string path = "data/system.log";
+    std::string path = "log/system.log";
     std::string unit = "actuator";
     std::string mod = "main";
 }

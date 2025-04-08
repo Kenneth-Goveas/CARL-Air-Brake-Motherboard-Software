@@ -14,7 +14,7 @@
 #include <dat/csvwrite.hpp>
 
 namespace logging :: local {
-    std::string path = "data/system.log";
+    std::string path = "log/system.log";
     std::string unit = "recorder";
     std::string mod = "main";
 }
@@ -44,7 +44,7 @@ namespace channel :: local {
 }
 
 namespace csvwrite :: local {
-    std::string path = "data/flight-record.csv";
+    std::string path = "output/flight-data.csv";
     std::vector<std::string> head;
     std::vector<double> body;
 }

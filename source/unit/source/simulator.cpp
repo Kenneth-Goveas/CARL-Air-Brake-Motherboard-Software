@@ -12,7 +12,7 @@
 #include <dyn/simul.hpp>
 
 namespace logging :: local {
-    std::string path = "data/system.log";
+    std::string path = "log/system.log";
     std::string unit = "simulator";
     std::string mod = "main";
 }
@@ -34,7 +34,7 @@ namespace channel :: local {
 }
 
 namespace simul :: local {
-    std::string aer_path = "data/aerodynamic-data.csv", atm_path = "data/atmospheric-data.csv";
+    std::string aer_path = "input/aerodynamic-data.csv", atm_path = "input/atmospheric-data.csv";
 
     std::string name_env_grvty = "gravitational_acceleration";
     std::string name_env_gcnst = "ideal_gas_constant";

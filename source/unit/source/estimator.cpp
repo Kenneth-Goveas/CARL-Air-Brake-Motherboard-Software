@@ -12,7 +12,7 @@
 #include <dyn/estim.hpp>
 
 namespace logging :: local {
-    std::string path = "data/system.log";
+    std::string path = "log/system.log";
     std::string unit = "estimator";
     std::string mod = "main";
 }
@@ -33,7 +33,7 @@ namespace channel :: local {
 }
 
 namespace estim :: local {
-    std::string atm_path = "data/atmospheric-data.csv";
+    std::string atm_path = "input/atmospheric-data.csv";
 
     std::string name_regr_count = "reading_count";
     int regr_count;

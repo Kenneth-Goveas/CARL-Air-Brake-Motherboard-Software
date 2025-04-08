@@ -16,7 +16,7 @@
 #include <dev/bno055.hpp>
 
 namespace logging :: local {
-    std::string path = "data/system.log";
+    std::string path = "log/system.log";
     std::string unit = "calibrator";
     std::string mod = "main";
 }
