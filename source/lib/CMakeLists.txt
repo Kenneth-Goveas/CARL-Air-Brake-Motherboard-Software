@@ -19,3 +19,6 @@ endfunction()
 function(lib_link_opts libname)
   target_link_options(${libname} INTERFACE ${ARGN})
 endfunction()
+
+lib_add(math lapack)
+lib_link_libs(math_lapack blas lapack)
