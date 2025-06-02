@@ -1,0 +1,14 @@
+# Build directory
+build/
+
+# System log directory
+log/
+
+# Input data directory
+input/
+
+# Output data directory
+output/
+
+# Vim swap files
+*.swp
