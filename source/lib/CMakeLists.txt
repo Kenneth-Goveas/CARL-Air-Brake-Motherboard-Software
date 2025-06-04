@@ -31,3 +31,6 @@ lib_link_libs(math_randnum m math_linalg)
 
 lib_add(sys logging)
 lib_link_libs(sys_logging math_linalg)
+
+lib_add(sys interrupt)
+lib_link_libs(sys_interrupt sys_logging)
