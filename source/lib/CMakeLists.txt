@@ -34,3 +34,6 @@ lib_link_libs(sys_logging math_linalg)
 
 lib_add(sys interrupt)
 lib_link_libs(sys_interrupt sys_logging)
+
+lib_add(sys timing)
+lib_link_libs(sys_timing sys_logging)
