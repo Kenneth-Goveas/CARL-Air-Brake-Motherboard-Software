@@ -37,3 +37,6 @@ lib_link_libs(sys_interrupt sys_logging)
 
 lib_add(sys timing)
 lib_link_libs(sys_timing sys_logging)
+
+lib_add(sys option)
+lib_link_libs(sys_option sys_logging)
