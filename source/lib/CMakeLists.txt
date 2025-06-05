@@ -46,3 +46,6 @@ lib_link_libs(sys_config math_linalg sys_logging)
 
 lib_add(ui terminal)
 lib_link_libs(ui_terminal sys_logging)
+
+lib_add(ui input)
+lib_link_libs(ui_input math_linalg sys_logging)
