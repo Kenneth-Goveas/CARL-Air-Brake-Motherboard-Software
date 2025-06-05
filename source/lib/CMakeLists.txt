@@ -40,3 +40,6 @@ lib_link_libs(sys_timing sys_logging)
 
 lib_add(sys option)
 lib_link_libs(sys_option sys_logging)
+
+lib_add(sys config)
+lib_link_libs(sys_config math_linalg sys_logging)
