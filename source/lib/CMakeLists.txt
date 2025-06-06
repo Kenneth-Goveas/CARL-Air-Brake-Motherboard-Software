@@ -58,3 +58,6 @@ lib_link_libs(ui_screen sys_logging ui_terminal)
 
 lib_add(ui panel)
 lib_link_libs(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
+
+lib_add(dat txtwrite)
+lib_link_libs(dat_txtwrite math_linalg sys_logging)
