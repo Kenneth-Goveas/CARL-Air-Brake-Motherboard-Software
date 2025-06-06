@@ -55,3 +55,6 @@ lib_link_libs(ui_output math_linalg sys_logging)
 
 lib_add(ui screen)
 lib_link_libs(ui_screen sys_logging ui_terminal)
+
+lib_add(ui panel)
+lib_link_libs(ui_panel math_linalg sys_logging ui_terminal ui_input ui_output)
