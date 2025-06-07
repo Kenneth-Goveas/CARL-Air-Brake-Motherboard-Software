@@ -64,3 +64,6 @@ lib_link_libs(dat_txtwrite math_linalg sys_logging)
 
 lib_add(dat csvwrite)
 lib_link_libs(dat_csvwrite sys_logging)
+
+lib_add(dat csvread)
+lib_link_libs(dat_csvread sys_logging)
