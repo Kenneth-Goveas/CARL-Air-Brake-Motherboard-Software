@@ -67,3 +67,7 @@ lib_link_libs(dat_csvwrite sys_logging)
 
 lib_add(dat csvread)
 lib_link_libs(dat_csvread sys_logging)
+
+lib_add(ipc semaphore)
+lib_link_libs(ipc_semaphore sys_logging)
+lib_link_opts(ipc_semaphore -pthread)
