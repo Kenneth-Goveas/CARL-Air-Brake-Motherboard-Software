@@ -75,3 +75,6 @@ lib_link_opts(ipc_semaphore -pthread)
 lib_add(ipc sharedmem)
 lib_link_libs(ipc_sharedmem rt math_linalg sys_logging)
 lib_comp_defs(ipc_sharedmem _POSIX_C_SOURCE=200112L)
+
+lib_add(ipc channel)
+lib_link_libs(ipc_channel math_linalg sys_logging ipc_semaphore ipc_sharedmem)
