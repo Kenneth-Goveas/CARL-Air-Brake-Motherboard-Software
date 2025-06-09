@@ -78,3 +78,6 @@ lib_comp_defs(ipc_sharedmem _POSIX_C_SOURCE=200112L)
 
 lib_add(ipc channel)
 lib_link_libs(ipc_channel math_linalg sys_logging ipc_semaphore ipc_sharedmem)
+
+lib_add(dev i2c)
+lib_link_libs(dev_i2c sys_logging)
