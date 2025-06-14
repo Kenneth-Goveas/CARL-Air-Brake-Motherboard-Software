@@ -84,3 +84,6 @@ lib_link_libs(dev_i2c sys_logging)
 
 lib_add(dev servo)
 lib_link_libs(dev_servo sys_logging dev_i2c)
+
+lib_add(dev bmp388)
+lib_link_libs(dev_bmp388 m sys_logging dev_i2c)
