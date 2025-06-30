@@ -93,3 +93,6 @@ lib_link_libs(dev_bno055 math_linalg sys_logging dev_i2c)
 
 lib_add(dyn simul)
 lib_link_libs(dyn_simul m math_linalg math_randnum sys_logging dat_csvread)
+
+lib_add(dyn cntrl)
+lib_link_libs(dyn_cntrl m math_linalg sys_logging dat_csvread)
