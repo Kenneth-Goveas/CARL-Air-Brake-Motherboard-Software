@@ -90,3 +90,6 @@ lib_link_libs(dev_bmp388 m sys_logging dev_i2c)
 
 lib_add(dev bno055)
 lib_link_libs(dev_bno055 math_linalg sys_logging dev_i2c)
+
+lib_add(dyn simul)
+lib_link_libs(dyn_simul m math_linalg math_randnum sys_logging dat_csvread)
