@@ -18,3 +18,9 @@ endfunction()
 function(app_link_opts name)
   target_link_options(${name} PRIVATE ${ARGN})
 endfunction()
+
+app_add(memory)
+app_link_libs(memory
+  sys_logging sys_option
+  ipc_channel
+)
