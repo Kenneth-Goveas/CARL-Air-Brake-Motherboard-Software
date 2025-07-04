@@ -32,3 +32,11 @@ app_link_libs(dashboard
   ui_terminal ui_input ui_output ui_screen ui_panel
   ipc_channel
 )
+
+app_add(streamer)
+app_link_libs(streamer
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_option sys_config
+  ui_terminal ui_input ui_output ui_screen ui_panel
+  ipc_channel
+)
