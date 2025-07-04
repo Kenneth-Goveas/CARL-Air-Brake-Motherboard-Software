@@ -24,3 +24,11 @@ app_link_libs(memory
   sys_logging sys_option
   ipc_channel
 )
+
+app_add(dashboard)
+app_link_libs(dashboard
+  math_linalg
+  sys_logging sys_interrupt sys_option
+  ui_terminal ui_input ui_output ui_screen ui_panel
+  ipc_channel
+)
