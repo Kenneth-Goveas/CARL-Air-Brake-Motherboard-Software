@@ -48,3 +48,10 @@ app_link_libs(recorder
   dat_csvwrite
   ipc_channel
 )
+
+app_add(detector)
+app_link_libs(detector
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_config
+  ipc_channel
+)
