@@ -40,3 +40,11 @@ app_link_libs(streamer
   ui_terminal ui_input ui_output ui_screen ui_panel
   ipc_channel
 )
+
+app_add(recorder)
+app_link_libs(recorder
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_option sys_config
+  dat_csvwrite
+  ipc_channel
+)
