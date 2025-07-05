@@ -55,3 +55,12 @@ app_link_libs(detector
   sys_logging sys_interrupt sys_timing sys_config
   ipc_channel
 )
+
+app_add(calibrator)
+app_link_libs(calibrator
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_config
+  ui_terminal ui_input ui_output ui_screen ui_panel
+  dat_txtwrite
+  dev_i2c dev_bno055
+)
