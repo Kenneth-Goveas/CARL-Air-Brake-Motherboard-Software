@@ -72,3 +72,10 @@ app_link_libs(instrument
   ipc_channel
   dev_i2c dev_bmp388 dev_bno055
 )
+
+app_add(actuator)
+app_link_libs(actuator
+  sys_logging sys_interrupt sys_timing sys_config
+  ipc_channel
+  dev_i2c dev_servo
+)
