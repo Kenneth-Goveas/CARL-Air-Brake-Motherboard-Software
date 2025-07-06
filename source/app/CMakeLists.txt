@@ -64,3 +64,11 @@ app_link_libs(calibrator
   dat_txtwrite
   dev_i2c dev_bno055
 )
+
+app_add(instrument)
+app_link_libs(instrument
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_config
+  ipc_channel
+  dev_i2c dev_bmp388 dev_bno055
+)
