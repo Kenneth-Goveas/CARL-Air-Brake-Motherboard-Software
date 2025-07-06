@@ -79,3 +79,11 @@ app_link_libs(actuator
   ipc_channel
   dev_i2c dev_servo
 )
+
+app_add(simulator)
+app_link_libs(simulator
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_config
+  ipc_channel
+  dyn_simul
+)
