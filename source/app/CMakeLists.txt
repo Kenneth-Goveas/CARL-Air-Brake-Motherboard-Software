@@ -95,3 +95,11 @@ app_link_libs(controller
   ipc_channel
   dyn_cntrl
 )
+
+app_add(estimator)
+app_link_libs(estimator
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_config
+  ipc_channel
+  dyn_estim
+)
