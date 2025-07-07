@@ -87,3 +87,11 @@ app_link_libs(simulator
   ipc_channel
   dyn_simul
 )
+
+app_add(controller)
+app_link_libs(controller
+  math_linalg
+  sys_logging sys_interrupt sys_timing sys_config
+  ipc_channel
+  dyn_cntrl
+)
